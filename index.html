@@ -5,7 +5,7 @@
 <title>Students Community of RUMC</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#05070a;--border:#1e2a3a;--blue:#7dd3fc;--text:#e5f2ff;--muted:#8aa0b8;--green:#4ade80}
+:root{--bg:#05070a;--border:#1e2a3a;--blue:#7dd3fc;--text:#e5f2ff;--muted:#8aa0b8;--green:#4ade80;--red:#ff6b6b}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif;overflow-x:hidden}
 .mono{font-family:"JetBrains Mono",monospace}
@@ -26,7 +26,7 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 .hero h1 span{color:var(--blue)}
 .hero-desc{max-width:580px;color:var(--muted);line-height:1.7;margin:24px 0 0;font-size:16px}
 .hero-desc b{color:var(--text)}
-.badge{margin-top:28px;display:inline-flex;gap:10px;align-items:center;border:1px solid var(--border);background:rgba(125,211,252,0.06);padding:10px 16px;border-radius:999px;font-size:12px;color:var(--blue)}
+.badge{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--border);background:rgba(125,211,252,0.06);padding:10px 16px;border-radius:999px;font-size:12px;color:var(--blue);margin-top:28px}
 .dot{width:6px;height:6px;background:var(--blue);border-radius:50%;box-shadow:0 0 10px var(--blue);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 .section{position:relative;z-index:2;padding:80px 6%;border-top:1px solid #101a28}
@@ -50,23 +50,28 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 .btn{border:none;cursor:pointer;border-radius:999px;padding:14px 22px;font-weight:600;font-size:14px;transition:all .2s}
 .btn-blue{background:var(--blue);color:#02050a} .btn-blue:hover{background:white;transform:translateY(-2px)}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)} .btn-ghost:hover{color:white;border-color:var(--blue)}
+.btn-red{border:1px solid #3a1a1a;background:#1a0a0a;color:var(--red)}
 .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(2,5,10,0.85);backdrop-filter:blur(18px);padding:20px}
 .modal.active{display:flex}
 .modal-box{width:100%;max-width:480px;background:#0b111d;border:1px solid var(--border);border-radius:20px;padding:32px;max-height:90vh;overflow:auto}
-.modal-box input{width:100%;background:#05070a;border:1px solid var(--border);border-radius:12px;padding:15px;color:white;margin-bottom:12px;outline:none}
+.modal-box input,.modal-box select{width:100%;background:#05070a;border:1px solid var(--border);border-radius:12px;padding:15px;color:white;margin-bottom:12px;outline:none}
 .modal-box input:focus{border-color:var(--blue)}
 .error{color:#ff8a8a;font-size:12px;display:none;margin:-6px 0 10px}
-#dashboard{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;overflow:auto;padding:100px 5% 40px}
-#dashboard.active{display:block}
+#dashboard,#adminPanel{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;overflow:auto;padding:100px 5% 40px}
+#dashboard.active,#adminPanel.active{display:block}
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px}
 .dash-card{background:#0e1625;border:1px solid var(--border);border-radius:16px;padding:20px}
 .dash-card .k{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)} .dash-card .v{font-size:26px;font-weight:700;color:var(--blue);margin-top:8px}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-align:left;padding:16px 12px;border-bottom:1px solid var(--border)}
+td{padding:14px 12px;border-bottom:1px solid #0f1a28;font-size:14px}
 .reveal{opacity:0;transform:translateY(80px) scale(0.92);filter:blur(8px);transition:all 1s cubic-bezier(0.16,1,0.3,1)}
 .reveal.in{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
-.reveal-left{opacity:0;transform:translateX(-80px);transition:all 0.9s cubic-bezier(0.16,1,0.3,1)}
+.reveal-left{opacity:0;transform:translateX(-80px);transition:all 0.9s}
 .reveal-left.in{opacity:1;transform:translateX(0)}
-.reveal-right{opacity:0;transform:translateX(80px);transition:all 0.9s cubic-bezier(0.16,1,0.3,1) 0.15s}
+.reveal-right{opacity:0;transform:translateX(80px);transition:all 0.9s 0.15s}
 .reveal-right.in{opacity:1;transform:translateX(0)}
+.owner-only{display:none} .admin-only{display:none}
 </style>
 </head>
 <body>
@@ -78,6 +83,7 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 <a id="loginBtn" onclick="openLogin()">Login</a>
 <a id="signupBtn" class="cta" onclick="openSign()">Sign up</a>
 <a id="dashBtn" style="display:none" onclick="openDashboard()">Dashboard</a>
+<a id="adminPanelBtn" style="display:none;background:#0f172a;border:1px solid var(--blue);color:var(--blue);padding:8px 14px;border-radius:999px" onclick="openAdminPanel()">Admin Panel</a>
 <a id="logoutBtn" style="display:none" onclick="logout()">Logout</a>
 </div>
 </nav>
@@ -85,8 +91,8 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 <section class="hero">
 <div class="hero-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Rajuk_Uttara_Model_College_Gate.jpg/1200px-Rajuk_Uttara_Model_College_Gate.jpg" onerror="this.style.display='none'"></div>
 <h1>The Students<br>Community of <span>RUMC.</span></h1>
-<div class="hero-desc">Enjoy your time here at RUMC. This is the central hub for two groups — <b>RUMC (VI-A, BM-MS) Study Group (2026)</b> and <b>Family Members of RUMC (VI-A, BM-MS, 2026)</b>. One for academics, one for family. Built by students, for students.</div>
-<div class="badge mono"><div class="dot"></div> SYSTEM ONLINE — OPEN SIGNUP — NO PASS NEEDED</div>
+<div class="hero-desc">Central hub for two groups — <b>RUMC (VI-A, BM-MS) Study Group</b> and <b>Family Members of RUMC</b>. One login for everyone — students get own dashboard, admins get admin panel with powers based on role. Built by students, for students.</div>
+<div class="badge mono"><div class="dot"></div> ONE LOGIN • OWN PASSWORDS • ROLE BASED • SAME DOMAIN</div>
 <div style="margin-top:28px"><button class="btn btn-blue" onclick="openSign()">Join Journey →</button> <button class="btn btn-ghost" style="margin-left:8px" onclick="document.getElementById('study').scrollIntoView({behavior:'smooth'})">Explore Groups</button></div>
 </section>
 
@@ -94,15 +100,12 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 <div class="section-label mono reveal">01 — Study Group</div>
 <h2 class="reveal">RUMC (VI-A, BM-MS) Study Group (2026)</h2>
 <div class="grid2">
-<div class="card reveal-left"><h3>About the Group</h3><p>Welcome! This group was specifically made for academics as by the name, and being helpful is our main priority. Want to leave? You will be asked for feedback.</p><p style="margin-top:12px"><b>Benefits:</b></p><ul><li>Accurate everyday diaries.</li><li>Everyday routine and HW reminders.</li><li>Voting systems for improvements.</li><li>Exam reminders, notes, suggestions and more.</li></ul><div class="stats-row"><div class="stat"><div class="num">24/7</div><div class="lbl">Academic Support</div></div><div class="stat"><div class="num mono" id="memberCount">23 Members</div><div class="lbl">Study Members</div></div></div></div>
-<div>
-<div class="card reveal-right" style="margin-bottom:16px"><h3>Why us?</h3><p>Run by BdMO Regional Champion ('26) (5th), English Olympiad Grand Finalist (Malaysia and Singapore '26), WMI & BdMSO TST 3rd, and more. Admins have passed voting and strictly follow rules.</p></div>
-<div class="card reveal-right"><h3>Rules</h3><ul><li>No insignificant or unimportant messages are allowed here. (Memes, random messages, random forwards, stickers, videos etc.)</li><li>Please use proper language and be kind to others. Swearing or bullying will not be tolerated.</li><li>Do not send any too many messages at once. Spamming or replying without reason is forbidden.</li><li>Forwarding or copying messages (Notes, diary, etc) from this group to other areas is strictly restricted. If anyone outside this group wants them, invite them. They will be added.</li></ul></div>
-</div>
+<div class="card reveal-left"><h3>About the Group</h3><p>Welcome! This group was specifically made for academics as by the name, and being helpful is our main priority.</p><p style="margin-top:12px"><b>Benefits:</b></p><ul><li>Accurate everyday diaries.</li><li>Everyday routine and HW reminders.</li><li>Voting systems for improvements.</li><li>Exam reminders, notes, suggestions and more.</li></ul><div class="stats-row"><div class="stat"><div class="num">24/7</div><div class="lbl">Academic Support</div></div><div class="stat"><div class="num mono" id="memberCount">23 Members</div><div class="lbl">Study Members</div></div></div></div>
+<div><div class="card reveal-right" style="margin-bottom:16px"><h3>Why us?</h3><p>Run by BdMO Regional Champion ('26) (5th), English Olympiad Grand Finalist, WMI & BdMSO TST 3rd, and more.</p></div><div class="card reveal-right"><h3>Rules</h3><ul><li>No insignificant or unimportant messages are allowed here.</li><li>Please use proper language and be kind to others.</li><li>Do not send too many messages at once.</li><li>Forwarding messages from this group is strictly restricted.</li></ul></div></div>
 </div>
 <div class="card reveal" style="margin-top:20px">
 <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Administrators</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('admins')">See all admins</button></div>
-<div class="admin-grid" id="adminsPreview"><div class="pill mono"><b>Sayon</b> <span>— Founder (608)</span></div><div class="pill mono"><b>Shafee</b> <span>— Co-Founder (629)</span></div><div class="pill mono"><b>Sadik</b> <span>— Assistant (641)</span></div></div>
+<div class="admin-grid" id="adminsPreview"></div>
 <div style="margin-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Members</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('members')">See all members — Name: (Code)</button></div>
 <div class="admin-grid" id="membersPreview"></div>
 </div>
@@ -112,49 +115,66 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 <div class="section-label mono reveal">02 — Family Group</div>
 <h2 class="reveal">Family Members of RUMC (VI-A, BM-MS, 2026)</h2>
 <div class="grid2">
-<div class="card reveal-left"><h3>About</h3><p>Welcome to our group! This group was made for chatting with one another and having a good time. Chill, chat and have fun. Enjoy this group. If you want academic help, go to the other group.</p><div style="margin-top:16px;font-size:12px;color:var(--muted)" class="mono">Made by MD. Sekh Sadi Ahmed<br>Group Creation: 22 Feb, 2026. Currently Owned by Sayon</div></div>
-<div>
-<div class="card reveal-right"><h3>Why us?</h3><p>Because college is not only about books. This is where memories are made — late night chats, birthday wishes, group photos at the RUMC gate, and a real family that stays after class ends.</p></div>
-<div class="card reveal-right" style="margin-top:16px"><h3>Members so far</h3><p style="font-size:42px;color:var(--blue);font-weight:700;margin:12px 0" id="totalCount">20+</p><button class="btn btn-blue" style="margin-top:16px" onclick="showList('members')">See all members details</button></div>
-</div>
+<div class="card reveal-left"><h3>About</h3><p>Welcome to our group! This group was made for chatting with one another and having a good time. Chill, chat and have fun.</p><div style="margin-top:16px;font-size:12px;color:var(--muted)" class="mono">Made by MD. Sekh Sadi Ahmed<br>Group Creation: 22 Feb, 2026. Currently Owned by Sayon</div></div>
+<div><div class="card reveal-right"><h3>Why us?</h3><p>Because college is not only about books. This is where memories are made — late night chats, birthday wishes, group photos at the RUMC gate.</p></div><div class="card reveal-right" style="margin-top:16px"><h3>Members so far</h3><p style="font-size:42px;color:var(--blue);font-weight:700;margin:12px 0" id="totalCount">20+</p><button class="btn btn-blue" style="margin-top:16px" onclick="showList('members')">See all members details</button></div></div>
 </div>
 </section>
 
-<section class="section">
-<div class="section-label mono reveal">Community Stats</div>
+<section class="section"><div class="section-label mono reveal">Community Stats</div>
 <div class="grid2">
-<div class="card reveal-left"><h3>Why us? (Overall)</h3><p>Two groups, one community. Study group for academic discipline with daily diaries, HW reminders, voting systems. Family group for bonding. Managed by champions and strict rules. Free registration, real tracking via WhatsApp.</p><div class="stats-row"><div class="stat"><div class="num">100%</div><div class="lbl">Free</div></div><div class="stat"><div class="num">2</div><div class="lbl">Groups</div></div><div class="stat"><div class="num mono" id="communityCount">23+</div><div class="lbl">Total Members</div></div></div></div>
-<div class="card reveal-right"><h3>Highlights</h3><ul><li>Daily diary system implemented</li><li>First voting system — 94% participation</li><li>Notes archive — 120+ files</li><li>100% read • Profile save + animations</li></ul></div>
+<div class="card reveal-left"><h3>Why us? (Overall)</h3><p>Two groups, one community. Study group for academic discipline, Family group for bonding.</p><div class="stats-row"><div class="stat"><div class="num">100%</div><div class="lbl">Free</div></div><div class="stat"><div class="num">2</div><div class="lbl">Groups</div></div><div class="stat"><div class="num mono" id="communityCount">23+</div><div class="lbl">Total Members</div></div></div></div>
+<div class="card reveal-right"><h3>Highlights</h3><ul><li>Daily diary system implemented</li><li>First voting system — 94% participation</li><li>Notes archive — 120+ files</li><li>Own passwords + role based panels</li></ul></div>
 </div>
 <div class="grid2" style="margin-top:20px">
-<div class="card reveal-left"><h3>Assistants</h3><p>Assistants helping us at every point.</p><p class="mono" style="font-size:12px;color:var(--muted);margin-top:8px" id="assistantsPreviewCount">Assistants: 0</p><button class="btn btn-ghost" style="margin-top:16px" onclick="showList('assistants')">See all assistants details</button></div>
-<div class="card reveal-right"><h3>Administrators</h3><p>Admins managing our project and staying with us everyday.</p><p class="mono" style="font-size:12px;color:var(--muted);margin-top:8px" id="adminsCountPreview">Admins: 3</p><button class="btn btn-ghost" style="margin-top:16px" onclick="showList('admins')">Show admins details</button></div>
+<div class="card reveal-left"><h3>Assistants</h3><p class="mono" id="assistantsPreviewCount">Assistants: 0</p><button class="btn btn-ghost" style="margin-top:16px" onclick="showList('assistants')">See all assistants</button></div>
+<div class="card reveal-right"><h3>Administrators</h3><p class="mono" id="adminsCountPreview">Admins: 3</p><button class="btn btn-ghost" style="margin-top:16px" onclick="showList('admins')">Show admins</button></div>
 </div>
 </section>
 
-<section class="section" style="background:radial-gradient(ellipse at center, #0e1e38 0%, var(--bg) 70%)">
-<div class="section-label mono reveal">Our History</div>
-<h2 class="reveal">From 6 to <span id="histCount" style="color:var(--blue)">17+</span> — and expanding.</h2>
-<p class="reveal" style="max-width:680px;color:var(--muted);margin:20px 0;line-height:1.7">Started officially from 12th April, 2026. Our group has gone from a small 6 members to now and expansion is going. Registration is open, completely free and waiting for you to click it.</p>
-<button class="btn btn-blue reveal" onclick="openSign()" style="padding:18px 36px;font-size:16px">Join our journey →</button>
-</section>
-
+<!-- MODALS -->
 <div id="signModal" class="modal" onclick="if(event.target===this)closeSign()"><div class="modal-box">
-<h2 id="modalTitle" style="font-size:28px;margin-bottom:6px">Sign up</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Each student has own dashboard. No access code needed. Profile stays logged in.</p>
+<h2 id="modalTitle" style="font-size:28px;margin-bottom:6px">Sign up</h2>
+<p style="color:var(--muted);font-size:13px;margin-bottom:20px" id="modalSub">Each student has own password. Login stays. Owner/Admin/Assistant use same login — system detects role automatically.</p>
 <input id="s_name" placeholder="Full Name (for signup)">
 <input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)">
 <div id="s_err" class="error">Valid BD number — 11 digits starting with 01</div>
 <input id="s_class" placeholder="Class Code (e.g. 608)">
+<input id="s_pass" placeholder="Your Own Password (min 4 chars) — everyone needs this" type="password">
+<div id="s_pass_err" class="error">Password required (min 4 chars)</div>
 <button class="btn btn-blue" style="width:100%;margin-top:8px" id="authBtn" onclick="handleAuth()">Create Profile & Stay Logged In →</button>
+<p style="color:var(--muted);font-size:11px;margin-top:12px" class="mono">Owner uses: adm99eog26 as password in this same box. Custom admins use their custom pass you set.</p>
 </div></div>
 
-<div id="listModal" class="modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal-box"><h2 id="listTitle" style="margin-bottom:16px"></h2><div id="listBody" class="admin-grid"></div><button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="document.getElementById('listModal').classList.remove('active')">Close</button></div></div>
+<div id="listModal" class="modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal-box"><h2 id="listTitle"></h2><div id="listBody" class="admin-grid"></div><button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="document.getElementById('listModal').classList.remove('active')">Close</button></div></div>
 
-<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Loading...</p><div class="dash-grid"><div class="dash-card"><div class="k">Code</div><div class="v" id="d_code">--</div></div><div class="dash-card"><div class="k">Full Name</div><div class="v" id="d_name" style="font-size:20px">--</div></div><div class="dash-card"><div class="k">Number</div><div class="v" style="font-size:18px" id="d_phone">--</div></div><div class="dash-card"><div class="k">Activity</div><div class="v" id="d_activity">Online</div></div></div><div class="card" style="margin-top:20px"><h3>Your Personal Diaries</h3><p id="personalDiaries" style="margin-top:10px;color:var(--muted)">No diaries yet.</p><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-blue" onclick="joinWhatsAppGroups()">Re-join WhatsApp Groups</button></div></div></div>
+<!-- STUDENT DASHBOARD -->
+<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Loading...</p><div class="dash-grid"><div class="dash-card"><div class="k">Code</div><div class="v" id="d_code">--</div></div><div class="dash-card"><div class="k">Full Name</div><div class="v" id="d_name" style="font-size:20px">--</div></div><div class="dash-card"><div class="k">Number</div><div class="v" style="font-size:18px" id="d_phone">--</div></div><div class="dash-card"><div class="k">Role</div><div class="v" id="d_role" style="font-size:18px">Student</div></div></div><div class="card" style="margin-top:20px"><h3>Your Personal Diaries</h3><p id="personalDiaries" style="margin-top:10px;color:var(--muted)">No diaries yet.</p><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-blue" onclick="joinWhatsAppGroups()">Re-join WhatsApp Groups</button></div></div></div>
+
+<!-- ADMIN PANEL — SAME DOMAIN -->
+<div id="adminPanel">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:20px">
+<div style="display:flex;gap:16px;align-items:center"><div style="width:48px;height:48px;background:var(--blue);color:#02050a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800" id="adminAvatar">S</div><div><div style="font-weight:700" id="adminName">Loading</div><div class="mono" style="font-size:11px;color:var(--muted)" id="adminRole">Role</div></div></div>
+<div style="display:flex;gap:8px"><button class="btn btn-ghost" onclick="closeAdminPanel()">← Site</button><button class="btn btn-ghost" onclick="loadUsers()">↻</button><button class="btn btn-red" onclick="logout()">Logout</button></div>
+</div>
+
+<div style="padding-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+<div class="card" style="min-width:160px"><div class="k">Total Users</div><div style="font-size:26px;font-weight:700;color:var(--blue);margin-top:6px" id="totalUsers">0</div></div>
+<div class="card" style="min-width:160px"><div class="k">Online Now</div><div style="font-size:26px;font-weight:700;color:var(--green);margin-top:6px" id="onlineUsers">0</div></div>
+<div class="card admin-only owner-only" style="min-width:320px;flex:1"><div class="k">Broadcast Notice (Admin+)</div><div style="display:flex;gap:8px;margin-top:10px"><input id="broadcastText" placeholder="Notice to all dashboards..." style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white"><button class="btn btn-blue" onclick="broadcast()">Send</button></div></div>
+</div>
+
+<div class="dash-grid" style="margin-top:20px">
+<div class="card owner-only admin-only"><h3>Add Member</h3><div class="k">Name: (Code)</div><input id="addMName" placeholder="Name"><input id="addMCode" placeholder="Code"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addMember()">Add Member →</button></div>
+<div class="card owner-only" style="border-color:var(--blue)"><h3>Create Admin Login (Owner)</h3><div class="k">Set different pass for each admin — own passwords</div><input id="newAdminPhone" placeholder="Admin Phone (01...)"><input id="newAdminName" placeholder="Name e.g. Shafee"><input id="newAdminCode" placeholder="Class Code e.g. 629"><input id="newAdminPass" placeholder="Set Custom Pass e.g. Shafee@629!" type="text"><select id="newAdminRole" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0"><option value="admin">Admin — Add members + broadcast</option><option value="assistant">Assistant — View only</option></select><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="createAdminAccount()">Create Login →</button><div id="adminAccountsList" style="margin-top:12px"></div></div>
+<div class="card owner-only"><h3>Set WhatsApp Counts</h3><input id="studyCount" type="number" placeholder="Study group members"><input id="familyCount" type="number" placeholder="Family group members"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="saveCounts()">Save Counts →</button></div>
+</div>
+
+<div style="margin-top:20px"><h3>Database — Code | Full Name | Number | Password | Activity</h3><div style="overflow:auto;margin-top:16px"><table><thead><tr><th>Code</th><th>Full Name</th><th>Number</th><th>Pass</th><th>Activity</th><th>Actions</th></tr></thead><tbody id="tbody"><tr><td colspan="6" style="padding:30px;text-align:center;color:var(--muted)">Loading...</td></tr></tbody></table></div></div>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBMiW2ctlpwAFhW4K4L_kjFP8cleaPSPK8",
   authDomain: "rumc-groupdsh.firebaseapp.com",
@@ -165,40 +185,34 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-window.db=db; window.doc=doc; window.setDoc=setDoc; window.getDoc=getDoc; window.collection=collection; window.getDocs=getDocs;
+window.db=db; window.doc=doc; window.setDoc=setDoc; window.getDoc=getDoc; window.collection=collection; window.getDocs=getDocs; window.deleteDoc=deleteDoc;
 window.GROUP_LINKS = { study: "https://chat.whatsapp.com/LRZ70IPOzPa6Ye6rT5qxyX", family: "https://chat.whatsapp.com/Fr9rJlqTc8Q0Rd1sCsq1PI" };
 </script>
 
 <script>
 (function(){ const s=document.getElementById('stars'); for(let i=0;i<120;i++){let d=document.createElement('div');d.className='star';d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.animationDelay=Math.random()*3+'s';s.appendChild(d);} })();
 const defaultMembers=[["Sadi","618"],["Mustakim","636"],["Nahiyan","634"],["Labiba","643"],["Alif","613"],["Shoaib","602"],["Tazim","637"],["Samiul","633"],["Shafi","630"],["Rifwan","772"],["Ramim","621"],["Nudar","654"],["Anas","632"],["Labib","644"],["Salman","655"],["Turjo","615"],["Rafsan","646"]];
-const defaultAdmins=[["Sayon","608","Founder"],["Shafee","629","Co-Founder"],["Sadik","641","Assistant"]];
+const defaultAdmins=[["Sayon","608","Founder, Lead Strategist, Owner"],["Shafee","629","Co-Founder"],["Sadik","641","Assistant"]];
 const defaultAssistants=[];
 let liveMembers=defaultMembers, liveAdmins=defaultAdmins, liveAssistants=defaultAssistants;
-function isValid(p){return /^01[0-9]{9}$/.test(p)}
+let currentAdmin=null;
+const OWNER_PASS="adm99eog26";
+
 window.openSign=()=>{document.getElementById('modalTitle').textContent='Sign up';document.getElementById('authBtn').textContent='Create Profile & Stay Logged In →';document.getElementById('signModal').classList.add('active')}
 window.openLogin=()=>{document.getElementById('modalTitle').textContent='Login';document.getElementById('authBtn').textContent='Login & Stay Logged In →';document.getElementById('signModal').classList.add('active')}
-window.closeSign=()=>{document.getElementById('signModal').classList.remove('active'); const e=document.getElementById('s_err'); if(e) e.style.display='none';}
+window.closeSign=()=>document.getElementById('signModal').classList.remove('active');
 window.closeDashboard=()=>document.getElementById('dashboard').classList.remove('active');
-window.logout=()=>{localStorage.removeItem('rumc_user');updateNav();closeDashboard();location.reload();}
+window.closeAdminPanel=()=>document.getElementById('adminPanel').classList.remove('active');
+window.openAdminPanel=()=>{ if(currentAdmin) document.getElementById('adminPanel').classList.add('active'); };
+window.logout=()=>{localStorage.removeItem('rumc_user');localStorage.removeItem('rumc_admin');sessionStorage.removeItem('rumc_admin_auth');updateNav();closeDashboard();closeAdminPanel();location.reload();}
 window.joinWhatsAppGroups=()=>{ window.open(window.GROUP_LINKS.study,'_blank'); setTimeout(()=>window.open(window.GROUP_LINKS.family,'_blank'),900); };
 window.showList=async(type)=>{
   await loadConfig();
   const modal=document.getElementById('listModal'), title=document.getElementById('listTitle'), body=document.getElementById('listBody');
   body.innerHTML='';
-  if(type==='members'){
-    title.textContent=`All Members (${liveMembers.length}) — Name: (Code)`;
-    liveMembers.forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; body.appendChild(d); });
-  }
-  if(type==='admins'){
-    title.textContent=`Admins (${liveAdmins.length})`;
-    liveAdmins.forEach(a=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${a[0]}</b>: <span>(${a[1]})</span> ${a[2]?'— '+a[2]:''}`; body.appendChild(d); });
-  }
-  if(type==='assistants'){
-    title.textContent=`Assistants (${liveAssistants.length})`;
-    if(liveAssistants.length===0) body.innerHTML='<p style="color:var(--muted)">No assistants yet — add from admin panel</p>';
-    else liveAssistants.forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; body.appendChild(d); });
-  }
+  if(type==='members'){ title.textContent=`All Members (${liveMembers.length}) — Name: (Code)`; liveMembers.forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; body.appendChild(d); }); }
+  if(type==='admins'){ title.textContent=`Admins (${liveAdmins.length})`; liveAdmins.forEach(a=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${a[0]}</b>: <span>(${a[1]})</span> ${a[2]?'— '+a[2]:''}`; body.appendChild(d); }); }
+  if(type==='assistants'){ title.textContent=`Assistants (${liveAssistants.length})`; if(liveAssistants.length===0) body.innerHTML='<p style="color:var(--muted)">No assistants yet</p>'; else liveAssistants.forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; body.appendChild(d); }); }
   modal.classList.add('active');
 };
 async function loadConfig(){
@@ -206,99 +220,214 @@ async function loadConfig(){
     const snap=await window.getDoc(window.doc(window.db,'config','lists'));
     if(snap.exists()){
       const data=snap.data();
-      if(data.members && data.members.length) liveMembers=data.members;
-      if(data.admins && data.admins.length) liveAdmins=data.admins;
+      if(data.members&&data.members.length) liveMembers=data.members;
+      if(data.admins&&data.admins.length) liveAdmins=data.admins;
       if(data.assistants) liveAssistants=data.assistants;
     }
     const usersSnap=await window.getDocs(window.collection(window.db,'users'));
     const fbCount=usersSnap.size;
     let studyCount=fbCount+liveMembers.length, familyCount=fbCount+20;
-    try{
-      const statsSnap=await window.getDoc(window.doc(window.db,'stats','whatsapp'));
-      if(statsSnap.exists()){ studyCount=statsSnap.data().study||studyCount; familyCount=statsSnap.data().family||familyCount; }
-    }catch(e){}
-    document.getElementById('memberCount').textContent=studyCount+' Members';
-    document.getElementById('totalCount').textContent=familyCount+'+';
-    document.getElementById('histCount').textContent=familyCount+'+';
-    const comm=document.getElementById('communityCount'); if(comm) comm.textContent=(studyCount>familyCount?studyCount:familyCount)+'+';
-    const admPrev=document.getElementById('adminsCountPreview'); if(admPrev) admPrev.textContent=`Admins: ${liveAdmins.length}`;
-    const assPrev=document.getElementById('assistantsPreviewCount'); if(assPrev) assPrev.textContent=`Assistants: ${liveAssistants.length}`;
-    const membersPreview=document.getElementById('membersPreview');
-    if(membersPreview){
-      membersPreview.innerHTML='';
-      liveMembers.slice(0,8).forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; membersPreview.appendChild(d); });
-      if(liveMembers.length>8){ let d=document.createElement('div'); d.className='pill mono'; d.textContent=`+${liveMembers.length-8} more`; membersPreview.appendChild(d); }
-    }
+    try{ const statsSnap=await window.getDoc(window.doc(window.db,'stats','whatsapp')); if(statsSnap.exists()){ studyCount=statsSnap.data().study||studyCount; familyCount=statsSnap.data().family||familyCount; } }catch(e){}
+    const mc=document.getElementById('memberCount'); if(mc) mc.textContent=studyCount+' Members';
+    const tc=document.getElementById('totalCount'); if(tc) tc.textContent=familyCount+'+';
+    const hc=document.getElementById('histCount'); if(hc) hc.textContent=familyCount+'+';
+    const cc=document.getElementById('communityCount'); if(cc) cc.textContent=(studyCount>familyCount?studyCount:familyCount)+'+';
+    const ap=document.getElementById('adminsCountPreview'); if(ap) ap.textContent=`Admins: ${liveAdmins.length}`;
+    const asp=document.getElementById('assistantsPreviewCount'); if(asp) asp.textContent=`Assistants: ${liveAssistants.length}`;
+    const mp=document.getElementById('membersPreview'); if(mp){ mp.innerHTML=''; liveMembers.slice(0,8).forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; mp.appendChild(d); }); if(liveMembers.length>8){ let d=document.createElement('div'); d.className='pill mono'; d.textContent=`+${liveMembers.length-8} more`; mp.appendChild(d);} }
+    const aprev=document.getElementById('adminsPreview'); if(aprev){ aprev.innerHTML=''; liveAdmins.forEach(a=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${a[0]}</b>: <span>(${a[1]})</span> ${a[2]?'— '+a[2]:''}`; aprev.appendChild(d); }); }
   }catch(e){ console.log(e); }
 }
 const observer=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.15});
 document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el=>observer.observe(el));
 
-// FIXED AUTH - NO PASS NEEDED
+// PERFECT UNIFIED AUTH
 window.handleAuth=async()=>{
   const name=document.getElementById('s_name').value.trim();
   const phone=document.getElementById('s_phone').value.trim().replace(/\s/g,'');
   const cls=document.getElementById('s_class').value.trim();
-  const err=document.getElementById('s_err');
-  if(err) err.style.display='none';
-  if(!/^01[0-9]{9}$/.test(phone)){ if(err){err.style.display='block';} return; }
+  const pass=document.getElementById('s_pass').value.trim();
+  const err=document.getElementById('s_err'), passErr=document.getElementById('s_pass_err');
+  if(err) err.style.display='none'; if(passErr) passErr.style.display='none';
+  if(!/^01[0-9]{9}$/.test(phone)){ if(err) err.style.display='block'; return; }
   if(!cls){ alert('Enter Class Code e.g. 608'); return; }
+  if(!pass||pass.length<4){ if(passErr){ passErr.style.display='block'; passErr.textContent='Password required (min 4) — own password for everyone'; } return; }
+
   const isSignup=document.getElementById('modalTitle').textContent==='Sign up';
-  const btn=document.getElementById('authBtn'); btn.textContent='Saving...'; btn.disabled=true;
+  const btn=document.getElementById('authBtn'); btn.textContent='Checking...'; btn.disabled=true;
+
   try{
+    // 1. OWNER CHECK — master pass
+    if(pass===OWNER_PASS){
+      const ownerData={name:name||"Sayon", phone, classCode:cls||"608", role:"owner", pass, label:"Founder, Lead Strategist, Owner — Full Access"};
+      currentAdmin=ownerData;
+      localStorage.setItem('rumc_admin', JSON.stringify(ownerData));
+      localStorage.setItem('rumc_user', JSON.stringify({name:ownerData.name, phone, classCode:ownerData.classCode, role:"owner"}));
+      updateNav(); closeSign(); openAdminPanelWithRole();
+      return;
+    }
+
+    // 2. CUSTOM ADMIN CHECK — by phone
+    try{
+      const adminRef=window.doc(window.db,'adminAccounts',phone);
+      const adminSnap=await window.getDoc(adminRef);
+      if(adminSnap.exists()){
+        const a=adminSnap.data();
+        if(isSignup){
+          alert('This admin phone already has account. Use Login with your custom pass.');
+          btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return;
+        }
+        if(a.pass!==pass){ alert('Wrong admin password!'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
+        currentAdmin={name:a.name, code:a.code, role:a.role, phone, pass, label:`${a.name} — Custom ${a.role}`};
+        localStorage.setItem('rumc_admin', JSON.stringify(currentAdmin));
+        localStorage.setItem('rumc_user', JSON.stringify({name:a.name, phone, classCode:a.code, role:a.role}));
+        updateNav(); closeSign(); openAdminPanelWithRole(); return;
+      }
+    }catch(e){ console.log('admin check error', e); }
+
+    // 3. STUDENT CHECK
     const ref=window.doc(window.db,'users',phone);
     const snap=await window.getDoc(ref);
+
     if(isSignup){
-      if(!name){ alert('Full Name required for signup'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
-      if(snap.exists()){
-        let data=snap.data();
-        await window.setDoc(ref,{lastSeen:new Date().toISOString(), classCode:cls, name},{merge:true});
-        localStorage.setItem('rumc_user',JSON.stringify({...data, classCode:cls, name, lastSeen:new Date().toISOString()}));
-        updateNav(); renderPersonal({...data, classCode:cls, name}); closeSign(); document.getElementById('dashboard').classList.add('active');
-        return;
-      }
-      const data={name,phone,classCode:cls,joinedAt:new Date().toISOString(),lastSeen:new Date().toISOString(),diaries:[`Welcome ${name}!`],whatsappJoined:false};
+      if(!name){ alert('Full Name required'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
+      if(snap.exists()){ alert('Account exists — Login with your password'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
+      const data={name,phone,classCode:cls,password:pass,role:"student",joinedAt:new Date().toISOString(),lastSeen:new Date().toISOString(),diaries:[`Welcome ${name}!`],whatsappJoined:false};
       await window.setDoc(ref,data);
       localStorage.setItem('rumc_user',JSON.stringify(data));
+      localStorage.removeItem('rumc_admin');
+      currentAdmin=null;
       updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
       setTimeout(()=>{ if(confirm(`Welcome ${name}! Join WhatsApp groups now?`)){ joinWhatsAppGroups(); } },600);
-    }else{
+    } else {
       if(!snap.exists()){ alert('No account with this number. Sign up first.'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
       let data=snap.data();
+      if(!data.password){ await window.setDoc(ref,{password:pass},{merge:true}); data.password=pass; }
+      else if(data.password!==pass){ alert('Wrong password! Use your own password'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
       await window.setDoc(ref,{lastSeen:new Date().toISOString(), classCode:cls},{merge:true});
       data.classCode=cls; data.lastSeen=new Date().toISOString();
       localStorage.setItem('rumc_user',JSON.stringify(data));
+      localStorage.removeItem('rumc_admin');
+      currentAdmin=null;
       updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
     }
   }catch(e){ alert('Error: '+e.message); console.error(e); }
   finally{ btn.disabled=false; btn.textContent=isSignup?'Create Profile & Stay Logged In →':'Login & Stay Logged In →'; }
 };
+
 function renderPersonal(u){
   document.getElementById('d_code').textContent=u.classCode;
   document.getElementById('d_name').textContent=u.name;
   document.getElementById('d_phone').textContent=u.phone;
-  document.getElementById('dashUser').innerHTML=`<b>${u.name}</b> • Code ${u.classCode} • Profile saved & stays logged in`;
+  document.getElementById('d_role').textContent=u.role||"Student";
+  document.getElementById('dashUser').innerHTML=`<b>${u.name}</b> • Code ${u.classCode} • Role: ${u.role||'Student'} • Own password`;
   const box=document.getElementById('personalDiaries'); if(u.diaries&&u.diaries.length) box.innerHTML=u.diaries.map(d=>`• ${d}`).join('<br>');
 }
+
 window.openDashboard=async()=>{
   const raw=localStorage.getItem('rumc_user'); if(!raw){openLogin();return;}
+  const adminRaw=localStorage.getItem('rumc_admin');
+  if(adminRaw){ openAdminPanelWithRole(); return; }
   let u=JSON.parse(raw);
   try{ const s=await window.getDoc(window.doc(window.db,'users',u.phone)); if(s.exists()){ u=s.data(); localStorage.setItem('rumc_user',JSON.stringify(u)); } }catch(e){}
   renderPersonal(u); document.getElementById('dashboard').classList.add('active'); updateNav();
   try{ await window.setDoc(window.doc(window.db,'users',u.phone),{lastSeen:new Date().toISOString()},{merge:true}); }catch(e){}
 };
+
+function openAdminPanelWithRole(){
+  const adminRaw=localStorage.getItem('rumc_admin');
+  if(!adminRaw) return;
+  currentAdmin=JSON.parse(adminRaw);
+  document.getElementById('adminName').textContent=`${currentAdmin.name} (${currentAdmin.code||currentAdmin.classCode})`;
+  document.getElementById('adminRole').textContent=currentAdmin.label||currentAdmin.role;
+  document.getElementById('adminAvatar').textContent=currentAdmin.name[0];
+  document.querySelectorAll('.owner-only').forEach(el=> el.style.display = currentAdmin.role==='owner' ? 'block' : 'none');
+  document.querySelectorAll('.admin-only').forEach(el=> el.style.display = (currentAdmin.role==='owner'||currentAdmin.role==='admin') ? 'block' : 'none');
+  document.getElementById('adminPanel').classList.add('active');
+  loadUsers(); if(currentAdmin.role==='owner') setTimeout(loadAdminAccounts,500);
+}
+
 function updateNav(){
-  const raw=localStorage.getItem('rumc_user');
-  const navUser=document.getElementById('navUser'), loginBtn=document.getElementById('loginBtn'), signupBtn=document.getElementById('signupBtn'), dashBtn=document.getElementById('dashBtn'), logoutBtn=document.getElementById('logoutBtn');
+  const raw=localStorage.getItem('rumc_user'), adminRaw=localStorage.getItem('rumc_admin');
+  const navUser=document.getElementById('navUser'), loginBtn=document.getElementById('loginBtn'), signupBtn=document.getElementById('signupBtn'), dashBtn=document.getElementById('dashBtn'), adminBtn=document.getElementById('adminPanelBtn'), logoutBtn=document.getElementById('logoutBtn');
   if(raw){
     const u=JSON.parse(raw);
-    navUser.style.display='inline'; navUser.textContent=`● ${u.name} (${u.classCode}) logged in`;
-    loginBtn.style.display='none'; signupBtn.style.display='none'; dashBtn.style.display='inline'; logoutBtn.style.display='inline';
-  }else{
-    navUser.style.display='none'; loginBtn.style.display='inline'; signupBtn.style.display='inline'; dashBtn.style.display='none'; logoutBtn.style.display='none';
+    navUser.style.display='inline'; navUser.textContent=`● ${u.name} (${u.classCode||u.code}) • ${u.role||'Student'} logged in`;
+    loginBtn.style.display='none'; signupBtn.style.display='none'; logoutBtn.style.display='inline';
+    if(adminRaw){ dashBtn.style.display='none'; adminBtn.style.display='inline'; } else { dashBtn.style.display='inline'; adminBtn.style.display='none'; }
+  } else {
+    navUser.style.display='none'; loginBtn.style.display='inline'; signupBtn.style.display='inline'; dashBtn.style.display='none'; adminBtn.style.display='none'; logoutBtn.style.display='none';
   }
 }
-setTimeout(()=>{ updateNav(); loadConfig(); },800);
+
+// ADMIN FUNCTIONS
+window.loadUsers=async()=>{
+  const tbody=document.getElementById('tbody');
+  if(!tbody) return;
+  tbody.innerHTML='<tr><td colspan="6" style="padding:30px;text-align:center;color:var(--muted)">Loading...</td></tr>';
+  try{
+    const snap=await window.getDocs(window.collection(window.db,'users'));
+    document.getElementById('totalUsers').textContent=snap.size;
+    let online=0; tbody.innerHTML='';
+    if(snap.empty){ tbody.innerHTML='<tr><td colspan="6" style="padding:30px;text-align:center">No users</td></tr>'; return; }
+    snap.forEach(d=>{
+      const u=d.data();
+      const last = u.lastSeen ? new Date(u.lastSeen) : new Date(u.joinedAt);
+      const diffMin = (Date.now()-last.getTime())/60000;
+      const isOnline = diffMin < 5; if(isOnline) online++;
+      const actText = isOnline ? '● Online now' : `Active ${Math.floor(diffMin)}m ago`;
+      let actions='';
+      if(currentAdmin && currentAdmin.role==='owner'){ actions=`<button class="btn btn-ghost" style="padding:6px 10px;font-size:11px" onclick="viewDash('${u.phone}')">View</button> <button class="btn btn-red" style="padding:6px 10px;font-size:11px" onclick="delUser('${u.phone}')">Del</button>`; }
+      else { actions=`<span class="mono" style="color:var(--muted);font-size:11px">View only</span>`; }
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td class="mono" style="color:var(--blue);font-weight:700">${u.classCode||'—'}</td><td style="font-weight:600">${u.name||'—'}</td><td class="mono">${u.phone||'—'}</td><td class="mono" style="font-size:12px">${u.password?u.password.substring(0,8)+'•••':'—'}</td><td><span style="font-size:12px">${actText}</span></td><td style="display:flex;gap:6px">${actions}</td>`;
+      tbody.appendChild(tr);
+    });
+    document.getElementById('onlineUsers').textContent=online;
+  }catch(e){ tbody.innerHTML=`<tr><td colspan="6" style="color:var(--red)">${e.message}</td></tr>`; }
+};
+window.viewDash=async(phone)=>{ const s=await window.getDoc(window.doc(window.db,'users',phone)); if(!s.exists()) return; const u=s.data(); alert(`Dashboard of ${u.name}\nCode: ${u.classCode}\nPhone: ${u.phone}\nPass: ${u.password}\nDiaries:\n${(u.diaries||[]).join('\n')}`); };
+window.delUser=async(phone)=>{ if(!currentAdmin||currentAdmin.role!=='owner'){ alert('Only owner can delete'); return; } if(!confirm(`Delete ${phone}?`)) return; await window.deleteDoc(window.doc(window.db,'users',phone)); loadUsers(); };
+window.broadcast=async()=>{
+  if(!currentAdmin||currentAdmin.role==='assistant'){ alert('Assistants cannot broadcast'); return; }
+  const text=document.getElementById('broadcastText').value.trim(); if(!text){alert('Write something');return;}
+  const snap=await window.getDocs(window.collection(window.db,'users'));
+  for(const d of snap.docs){ const u=d.data(); const newDiaries=[...(u.diaries||[]), text].slice(-20); await window.setDoc(window.doc(window.db,'users',d.id),{diaries:newDiaries},{merge:true}); }
+  alert(`Sent to ${snap.size} users`); document.getElementById('broadcastText').value='';
+};
+window.createAdminAccount=async()=>{
+  if(!currentAdmin||currentAdmin.role!=='owner'){ alert('Only owner'); return; }
+  const phone=document.getElementById('newAdminPhone').value.trim().replace(/\s/g,'');
+  const name=document.getElementById('newAdminName').value.trim();
+  const code=document.getElementById('newAdminCode').value.trim();
+  const pass=document.getElementById('newAdminPass').value.trim();
+  const role=document.getElementById('newAdminRole').value;
+  if(!phone||!name||!code||!pass){ alert('Enter phone, name, code, pass'); return; }
+  if(!/^01[0-9]{9}$/.test(phone)){ alert('Valid phone needed'); return; }
+  await window.setDoc(window.doc(window.db,'adminAccounts',phone),{name,code,pass,role,phone,createdBy:currentAdmin.name,createdAt:new Date().toISOString()});
+  alert(`Created! ${name} can now login on MAIN login page\nPhone: ${phone}\nPass: ${pass}\nRole: ${role}\n\nHe must use same main login box — system will detect role!`);
+  document.getElementById('newAdminPhone').value=''; document.getElementById('newAdminName').value=''; document.getElementById('newAdminCode').value=''; document.getElementById('newAdminPass').value='';
+  loadAdminAccounts();
+};
+window.loadAdminAccounts=async()=>{
+  const box=document.getElementById('adminAccountsList'); if(!box) return;
+  try{
+    const snap=await window.getDocs(window.collection(window.db,'adminAccounts'));
+    box.innerHTML='<div class="k" style="margin-top:12px">Existing custom logins (same main login):</div>';
+    snap.forEach(d=>{
+      const a=d.data();
+      const div=document.createElement('div');
+      div.className='pill mono'; div.style.marginTop='6px'; div.style.fontSize='11px';
+      div.innerHTML=`<b>${a.name} (${a.code})</b><br>Phone: ${a.phone}<br>Pass: <span style="color:var(--blue)">${a.pass}</span> — Role: ${a.role} <button onclick="deleteAdminAcc('${a.phone}')" style="margin-left:8px;background:#1a0a0a;color:#ff6b6b;border:1px solid #3a1a1a;border-radius:6px;padding:2px 6px;cursor:pointer">X</button>`;
+      box.appendChild(div);
+    });
+  }catch(e){ box.innerHTML='Error loading'; }
+};
+window.deleteAdminAcc=async(phone)=>{ if(!confirm(`Delete admin login ${phone}?`)) return; await window.deleteDoc(window.doc(window.db,'adminAccounts',phone)); loadAdminAccounts(); };
+window.addMember=async()=>{ if(!currentAdmin||currentAdmin.role==='assistant'){alert('No permission');return;} const n=document.getElementById('addMName').value.trim(), c=document.getElementById('addMCode').value.trim(); if(!n||!c){alert('Enter');return;} const s=await window.getDoc(window.doc(window.db,'config','lists')); let l=s.exists()?s.data():{members:[],admins:[],assistants:[]}; l.members=l.members||[]; l.members.push([n,c]); await window.setDoc(window.doc(window.db,'config','lists'),l,{merge:true}); alert(`Added ${n}: (${c})`); document.getElementById('addMName').value=''; document.getElementById('addMCode').value=''; loadConfig(); };
+window.saveCounts=async()=>{ if(!currentAdmin||currentAdmin.role!=='owner'){alert('Only owner');return;} const study=parseInt(document.getElementById('studyCount').value)||0, family=parseInt(document.getElementById('familyCount').value)||0; await window.setDoc(window.doc(window.db,'stats','whatsapp'),{study,family,updatedAt:new Date().toISOString()}); alert('Counts saved'); loadConfig(); };
+
+setTimeout(()=>{ updateNav(); loadConfig(); const adminRaw=localStorage.getItem('rumc_admin'); if(adminRaw){ currentAdmin=JSON.parse(adminRaw); } },800);
 </script>
 </body>
 </html>
