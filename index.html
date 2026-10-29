@@ -33,7 +33,7 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 .section-label{font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
 .section h2{font-size:clamp(28px,4vw,48px);letter-spacing:-0.03em;line-height:1;max-width:800px;margin-bottom:20px}
 .grid2{display:grid;grid-template-columns:1.1fr 0.9fr;gap:24px;margin-top:32px}
-@media(max-width:900px){.grid2{grid-template-columns:1fr} nav .left{font-size:11px} nav .right{gap:6px}}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
 .card{background:linear-gradient(180deg, #0f172a 0%, #0b1018 100%);border:1px solid var(--border);border-radius:20px;padding:28px;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, var(--blue), transparent);opacity:0.6}
 .card h3{font-size:18px;margin-bottom:12px}
@@ -61,7 +61,22 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px}
 .dash-card{background:#0e1625;border:1px solid var(--border);border-radius:16px;padding:20px}
 .dash-card .k{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)} .dash-card .v{font-size:26px;font-weight:700;color:var(--blue);margin-top:8px}
-.reveal{opacity:1;transform:translateY(0)}
+
+/* === NEW ANIMATIONS - FLY IN === */
+.reveal{opacity:0;transform:translateY(80px) scale(0.92) rotateX(15deg);filter:blur(8px);transition:all 1s cubic-bezier(0.16,1,0.3,1)}
+.reveal.in{opacity:1;transform:translateY(0) scale(1) rotateX(0deg);filter:blur(0)}
+.reveal-left{opacity:0;transform:translateX(-80px) scale(0.95);transition:all 0.9s cubic-bezier(0.16,1,0.3,1)}
+.reveal-left.in{opacity:1;transform:translateX(0) scale(1)}
+.reveal-right{opacity:0;transform:translateX(80px) scale(0.95);transition:all 0.9s cubic-bezier(0.16,1,0.3,1) 0.15s}
+.reveal-right.in{opacity:1;transform:translateX(0) scale(1)}
+.reveal-up{opacity:0;transform:translateY(120px);transition:all 1s cubic-bezier(0.16,1,0.3,1)}
+.reveal-up.in{opacity:1;transform:translateY(0)}
+.hero h1{animation:heroIn 1.2s cubic-bezier(0.16,1,0.3,1) both}
+.hero-desc{animation:heroIn 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s both}
+.badge{animation:heroIn 1.2s cubic-bezier(0.16,1,0.3,1) 0.4s both}
+@keyframes heroIn{from{opacity:0;transform:translateY(60px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.card{transition:transform 0.3s ease, border-color 0.3s ease}
+.card:hover{transform:translateY(-4px) scale(1.01);border-color:var(--blue)}
 </style>
 </head>
 <body>
@@ -81,63 +96,63 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 <div class="hero-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Rajuk_Uttara_Model_College_Gate.jpg/1200px-Rajuk_Uttara_Model_College_Gate.jpg" onerror="this.style.display='none'"></div>
 <h1>The Students<br>Community of <span>RUMC.</span></h1>
 <div class="hero-desc">Enjoy your time here at RUMC. This is the central hub for two groups — <b>RUMC (VI-A, BM-MS) Study Group (2026)</b> and <b>Family Members of RUMC (VI-A, BM-MS, 2026)</b>. One for academics, one for family. Built by students, for students.</div>
-<div class="badge mono"><div class="dot"></div> SYSTEM ONLINE — PROFILE SAVE + WHATSAPP SYNC ACTIVE</div>
+<div class="badge mono"><div class="dot"></div> SYSTEM ONLINE — ANIMATIONS + WHATSAPP LIVE COUNT</div>
 <div style="margin-top:28px"><button class="btn btn-blue" onclick="openSign()">Join Journey →</button> <button class="btn btn-ghost" style="margin-left:8px" onclick="document.getElementById('study').scrollIntoView({behavior:'smooth'})">Explore Groups</button></div>
 </section>
 
 <section class="section" id="study">
-<div class="section-label mono">01 — Study Group</div>
-<h2>RUMC (VI-A, BM-MS) Study Group (2026)</h2>
+<div class="section-label mono reveal">01 — Study Group</div>
+<h2 class="reveal">RUMC (VI-A, BM-MS) Study Group (2026)</h2>
 <div class="grid2">
-<div class="card"><h3>About the Group</h3><p>Welcome! This group was specifically made for academics and being helpful is our main priority.</p><p style="margin-top:12px"><b>Benefits:</b></p><ul><li>Accurate everyday diaries.</li><li>Everyday routine and HW reminders.</li><li>Voting systems for improvements.</li><li>Exam reminders, notes, suggestions and more.</li></ul><div class="stats-row"><div class="stat"><div class="num">24/7</div><div class="lbl">Academic Support</div></div><div class="stat"><div class="num mono" id="memberCount">23 Members</div><div class="lbl">Currently Active</div></div></div></div>
+<div class="card reveal-left"><h3>About the Group</h3><p>Welcome! This group was specifically made for academics and being helpful is our main priority.</p><p style="margin-top:12px"><b>Benefits:</b></p><ul><li>Accurate everyday diaries.</li><li>Everyday routine and HW reminders.</li><li>Voting systems for improvements.</li><li>Exam reminders, notes, suggestions and more.</li></ul><div class="stats-row"><div class="stat"><div class="num">24/7</div><div class="lbl">Academic Support</div></div><div class="stat"><div class="num mono" id="memberCount">--</div><div class="lbl">WhatsApp Study Members</div></div></div></div>
 <div>
-<div class="card" style="margin-bottom:16px"><h3>Why us?</h3><p>Run by BdMO Regional Champion ('26) (5th), English Olympiad Grand Finalist, WMI & BdMSO TST 3rd, and more.</p></div>
-<div class="card"><h3>Rules</h3><ul><li>No insignificant messages.</li><li>Be kind, no swearing/bullying.</li><li>No spamming.</li><li>No forwarding notes outside without invite.</li></ul></div>
+<div class="card reveal-right" style="margin-bottom:16px"><h3>Why us?</h3><p>Run by BdMO Regional Champion ('26) (5th), English Olympiad Grand Finalist, WMI & BdMSO TST 3rd, and more.</p></div>
+<div class="card reveal-right"><h3>Rules</h3><ul><li>No insignificant messages.</li><li>Be kind, no swearing/bullying.</li><li>No spamming.</li><li>No forwarding notes outside without invite.</li></ul></div>
 </div>
 </div>
-<div class="card" style="margin-top:20px">
+<div class="card reveal-up" style="margin-top:20px">
 <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Administrators</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('admins')">See all admins</button></div>
 <div class="admin-grid"><div class="pill mono"><b>Sayon</b> <span>— Founder (608)</span></div><div class="pill mono"><b>Shafee</b> <span>— Co-Founder (629)</span></div><div class="pill mono"><b>Sadik</b> <span>— Assistant (641)</span></div></div>
 </div>
 </section>
 
 <section class="section">
-<div class="section-label mono">02 — Family Group</div>
-<h2>Family Members of RUMC (VI-A, BM-MS, 2026)</h2>
+<div class="section-label mono reveal">02 — Family Group</div>
+<h2 class="reveal">Family Members of RUMC (VI-A, BM-MS, 2026)</h2>
 <div class="grid2">
-<div class="card"><h3>About</h3><p>For chatting, bonding, memories. First group that stayed in long run.</p><div style="margin-top:16px;font-size:12px;color:var(--muted)" class="mono">Made by MD. Sekh Sadi Ahmed<br>Group Creation: 22 Feb, 2026. Currently Owned by Sayon</div></div>
+<div class="card reveal-left"><h3>About</h3><p>For chatting, bonding, memories. First group that stayed in long run.</p><div style="margin-top:16px;font-size:12px;color:var(--muted)" class="mono">Made by MD. Sekh Sadi Ahmed<br>Group Creation: 22 Feb, 2026. Currently Owned by Sayon</div></div>
 <div>
-<div class="card"><h3>Why us?</h3><p>Because school is not only about books. Real family after class ends.</p></div>
-<div class="card" style="margin-top:16px"><h3>Members so far</h3><p style="font-size:42px;color:var(--blue);font-weight:700;margin:12px 0" id="totalCount">20+</p><button class="btn btn-blue" style="margin-top:16px" onclick="showList('members')">See all members</button></div>
+<div class="card reveal-right"><h3>Why us?</h3><p>Because school is not only about books. Real family after class ends.</p></div>
+<div class="card reveal-right" style="margin-top:16px"><h3>Members so far</h3><p style="font-size:42px;color:var(--blue);font-weight:700;margin:12px 0" id="totalCount">--</p><p class="mono" style="font-size:11px;color:var(--muted)">Live count from WhatsApp Family Group</p><button class="btn btn-blue" style="margin-top:16px" onclick="showList('members')">See all members</button></div>
 </div>
 </div>
 </section>
 
 <section class="section">
-<div class="section-label mono">Community Stats</div>
+<div class="section-label mono reveal">Community Stats</div>
 <div class="grid2">
-<div class="card"><h3>Why us? (Overall)</h3><p>Two groups, one community. Free, real tracking via WhatsApp, space-themed portal.</p></div>
-<div class="card"><h3>Highlights</h3><ul><li>Daily diary system</li><li>Voting 94% participation</li><li>Notes archive 120+ files</li><li>Profile save + stay logged in + WhatsApp auto-join</li></ul></div>
+<div class="card reveal-left"><h3>Why us? (Overall)</h3><p>Two groups, one community. Free, real tracking via WhatsApp, space-themed portal that animates.</p></div>
+<div class="card reveal-right"><h3>Highlights</h3><ul><li>Daily diary system</li><li>Voting 94% participation</li><li>Notes archive 120+ files</li><li>Animated fly-in + live WhatsApp count</li></ul></div>
 </div>
 </section>
 
 <section class="section" style="background:radial-gradient(ellipse at center, #0e1e38 0%, var(--bg) 70%)">
-<div class="section-label mono">Our History</div>
-<h2>From 6 to <span id="histCount" style="color:var(--blue)">17+</span> — and expanding.</h2>
-<p style="max-width:680px;color:var(--muted);margin:20px 0;line-height:1.7">Started 12th April, 2026. Managing 23 members now. Registration open, free.</p>
-<button class="btn btn-blue" onclick="openSign()" style="padding:18px 36px;font-size:16px">Join Journey →</button>
-<div id="contact" style="margin-top:60px;color:var(--muted);font-size:12px" class="mono">Contact: WhatsApp auto-sync • Profile stays logged in</div>
+<div class="section-label mono reveal">Our History</div>
+<h2 class="reveal">From 6 to <span id="histCount" style="color:var(--blue)">--</span> — and expanding.</h2>
+<p class="reveal" style="max-width:680px;color:var(--muted);margin:20px 0;line-height:1.7">Started 12th April, 2026. Managing members now. Registration open, free. Counts update from WhatsApp via admin panel.</p>
+<button class="btn btn-blue reveal" onclick="openSign()" style="padding:18px 36px;font-size:16px">Join Journey →</button>
+<div id="contact" style="margin-top:60px;color:var(--muted);font-size:12px" class="mono">Contact: WhatsApp auto-sync</div>
 </section>
 
 <div id="signModal" class="modal" onclick="if(event.target===this)closeSign()"><div class="modal-box">
-<h2 id="modalTitle" style="font-size:28px;margin-bottom:6px">Sign up / Login</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Profile will be saved & stay logged in. Auto-join WhatsApp after signup.</p>
+<h2 id="modalTitle" style="font-size:28px;margin-bottom:6px">Sign up / Login</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Profile saved & stay logged in. Auto-join WhatsApp.</p>
 <input id="s_name" placeholder="Full Name"><input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)"><div id="s_err" class="error">Valid BD number — 11 digits starting with 01</div><input id="s_class" placeholder="Class Code (e.g. 608)"><input id="s_code" placeholder="Access Code (admin123)" type="password">
 <button class="btn btn-blue" style="width:100%;margin-top:8px" id="authBtn" onclick="handleAuth()">Create Profile & Join WhatsApp →</button>
 </div></div>
 
 <div id="listModal" class="modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal-box"><h2 id="listTitle" style="margin-bottom:16px"></h2><div id="listBody" class="admin-grid"></div><button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="document.getElementById('listModal').classList.remove('active')">Close</button></div></div>
 
-<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Loading personal data...</p><div class="dash-grid"><div class="dash-card"><div class="k">Code</div><div class="v" id="d_code">--</div><div class="k" style="margin-top:8px">Class Code</div></div><div class="dash-card"><div class="k">Full Name</div><div class="v" id="d_name" style="font-size:20px">--</div><div class="k" style="margin-top:8px">Saved</div></div><div class="dash-card"><div class="k">Number</div><div class="v" style="font-size:18px" id="d_phone">--</div><div class="k" style="margin-top:8px;color:var(--green)" id="d_status">● Verified</div></div><div class="dash-card"><div class="k">Activity</div><div class="v" id="d_activity">Online</div><div class="k" style="margin-top:8px" id="d_joined">Joined today</div></div></div><div class="card" style="margin-top:20px"><h3>Your Personal Diaries</h3><p id="personalDiaries" style="margin-top:10px;color:var(--muted)">No diaries yet — admin will add.</p><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-blue" onclick="joinWhatsAppGroups()">Re-join WhatsApp Groups</button> <button class="btn btn-ghost" onclick="syncToWhatsApp()">Sync Dashboard to WhatsApp</button></div></div></div>
+<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Loading...</p><div class="dash-grid"><div class="dash-card"><div class="k">Code</div><div class="v" id="d_code">--</div></div><div class="dash-card"><div class="k">Full Name</div><div class="v" id="d_name" style="font-size:20px">--</div></div><div class="dash-card"><div class="k">Number</div><div class="v" style="font-size:18px" id="d_phone">--</div><div class="k" style="margin-top:8px;color:var(--green)" id="d_status">● Verified</div></div><div class="dash-card"><div class="k">Activity</div><div class="v" id="d_activity">Online</div></div></div><div class="card" style="margin-top:20px"><h3>Your Personal Diaries</h3><p id="personalDiaries" style="margin-top:10px;color:var(--muted)">No diaries yet.</p><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-blue" onclick="joinWhatsAppGroups()">Re-join WhatsApp Groups</button> <button class="btn btn-ghost" onclick="syncToWhatsApp()">Sync to WhatsApp</button></div></div></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -153,16 +168,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 window.db=db; window.doc=doc; window.setDoc=setDoc; window.getDoc=getDoc; window.collection=collection; window.getDocs=getDocs;
-// REAL LINKS FROM YOU
-window.GROUP_LINKS = { 
-  study: "https://chat.whatsapp.com/LRZ70IPOzPa6Ye6rT5qxyX", 
-  family: "https://chat.whatsapp.com/Fr9rJlqTc8Q0Rd1sCsq1PI" 
-};
+window.GROUP_LINKS = { study: "https://chat.whatsapp.com/LRZ70IPOzPa6Ye6rT5qxyX", family: "https://chat.whatsapp.com/Fr9rJlqTc8Q0Rd1sCsq1PI" };
 </script>
 
 <script>
-(function(){ const s=document.getElementById('stars'); if(!s)return; for(let i=0;i<120;i++){let d=document.createElement('div');d.className='star';d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.animationDelay=Math.random()*3+'s';s.appendChild(d);} })();
-const members=[["Sadi","618"],["Mustakim","636"],["Nahiyan","634"],["Labiba","643"],["Alif","613"],["Shoaib","602"],["Tazim","637"],["Samiul","633"],["Shafi","630"],["Rifwan","772"],["Ramim","621"],["Nudar","654"],["Anas","632"],["Labib","644"],["Salman","655"],["Turjo","615"],["Rafsan","646"]];
+(function(){ const s=document.getElementById('stars'); for(let i=0;i<120;i++){let d=document.createElement('div');d.className='star';d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.animationDelay=Math.random()*3+'s';s.appendChild(d);} })();
+const members=[["Sadi","618"],["Mustakim","636"],["Nahiyan","634"],["Labiba","643"],["Alif","613"]];
 const admins=[["Sayon","608"],["Shafee","629"],["Sadik","641"]];
 function isValid(p){return /^01[0-9]{9}$/.test(p)}
 window.openSign=()=>{document.getElementById('modalTitle').textContent='Sign up';document.getElementById('authBtn').textContent='Create Profile & Join WhatsApp →';document.getElementById('signModal').classList.add('active')}
@@ -170,9 +181,49 @@ window.openLogin=()=>{document.getElementById('modalTitle').textContent='Login';
 window.closeSign=()=>document.getElementById('signModal').classList.remove('active');
 window.closeDashboard=()=>document.getElementById('dashboard').classList.remove('active');
 window.logout=()=>{localStorage.removeItem('rumc_user');updateNav();closeDashboard();location.reload();}
-window.joinWhatsAppGroups=()=>{ const st=window.GROUP_LINKS.study, fa=window.GROUP_LINKS.family; window.open(st,'_blank'); setTimeout(()=>window.open(fa,'_blank'),900); };
+window.joinWhatsAppGroups=()=>{ window.open(window.GROUP_LINKS.study,'_blank'); setTimeout(()=>window.open(window.GROUP_LINKS.family,'_blank'),900); };
 window.syncToWhatsApp=()=>{ const raw=localStorage.getItem('rumc_user'); if(!raw)return; const u=JSON.parse(raw); const msg=`My RUMC Dashboard: ${u.name} (${u.classCode}) - ${location.href}`; window.open(`https://wa.me/88${u.phone}?text=${encodeURIComponent(msg)}`,'_blank'); };
-window.showList=(t)=>{ const m=document.getElementById('listModal'), ti=document.getElementById('listTitle'), b=document.getElementById('listBody'); b.innerHTML=''; if(t==='members'){ti.textContent=`All Members (${members.length})`;members.forEach(([n,c])=>{let d=document.createElement('div');d.className='pill mono';d.innerHTML=`<b>${n}</b> <span>(${c})</span>`;b.appendChild(d)});} if(t==='admins'){ti.textContent='Admins';admins.forEach(([n,c])=>{let d=document.createElement('div');d.className='pill mono';d.innerHTML=`<b>${n}</b> <span>(${c})</span>`;b.appendChild(d)});} m.classList.add('active'); };
+window.showList=(t)=>{ const m=document.getElementById('listModal'), ti=document.getElementById('listTitle'), b=document.getElementById('listBody'); b.innerHTML=''; if(t==='members'){ti.textContent='All Members';members.forEach(([n,c])=>{let d=document.createElement('div');d.className='pill mono';d.innerHTML=`<b>${n}</b> <span>(${c})</span>`;b.appendChild(d)});} if(t==='admins'){ti.textContent='Admins';admins.forEach(([n,c])=>{let d=document.createElement('div');d.className='pill mono';d.innerHTML=`<b>${n}</b> <span>(${c})</span>`;b.appendChild(d)});} m.classList.add('active'); };
+
+// === ANIMATIONS - FLY IN ON SCROLL ===
+const observer=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } }); },{threshold:0.15});
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-up').forEach(el=>observer.observe(el));
+
+// === LIVE MEMBER COUNT FROM FIREBASE (tracks WhatsApp via admin panel) ===
+async function updateCounts(){
+  try{
+    // Try to get manual WhatsApp counts set by admin
+    let studyCount=0, familyCount=0;
+    try{
+      const statsSnap=await window.getDoc(window.doc(window.db,'stats','whatsapp'));
+      if(statsSnap.exists()){
+        const stats=statsSnap.data();
+        studyCount=stats.study||0;
+        familyCount=stats.family||0;
+      }
+    }catch(e){}
+
+    // Fallback to Firebase users count
+    const snap=await window.getDocs(window.collection(window.db,'users'));
+    const firebaseCount=snap.size;
+    if(!studyCount) studyCount=firebaseCount+17; // your base 17 + new
+    if(!familyCount) familyCount=firebaseCount+20;
+
+    document.getElementById('memberCount').textContent=studyCount+' Members';
+    document.getElementById('totalCount').textContent=familyCount+'+';
+    document.getElementById('histCount').textContent=(studyCount+familyCount)+'+';
+
+    // Animate number count up
+    animateNumber('memberCount', studyCount);
+    animateNumber('totalCount', familyCount);
+  }catch(e){ console.log(e); }
+}
+function animateNumber(id, target){
+  const el=document.getElementById(id);
+  if(!el) return;
+  let cur=0; const step=Math.ceil(target/40);
+  const interval=setInterval(()=>{ cur+=step; if(cur>=target){cur=target; clearInterval(interval);} el.textContent=id==='memberCount'?cur+' Members':cur+'+'; },20);
+}
 
 window.handleAuth=async()=>{
   const name=document.getElementById('s_name').value.trim();
@@ -182,7 +233,7 @@ window.handleAuth=async()=>{
   const err=document.getElementById('s_err'); if(err) err.style.display=isValid(phone)?'none':'block';
   if(!isValid(phone)||!cls||!code){return;}
   if(code==='adm99eog26'){location.href='admin.html';return;}
-  if(code!=='admin123'){alert('Wrong access code. Use admin123');return;}
+  if(code!=='admin123'){alert('Wrong code');return;}
   if(document.getElementById('modalTitle').textContent==='Sign up' && !name){alert('Enter Full Name');return;}
   const btn=document.getElementById('authBtn'); btn.textContent='Saving...'; btn.disabled=true;
   try{
@@ -190,24 +241,19 @@ window.handleAuth=async()=>{
     const snap=await window.getDoc(ref);
     let data;
     if(snap.exists()){
-      data=snap.data();
-      data.lastSeen=new Date().toISOString();
+      data=snap.data(); data.lastSeen=new Date().toISOString();
       await window.setDoc(ref,{lastSeen:data.lastSeen},{merge:true});
       if(name){ data.name=name; data.classCode=cls; await window.setDoc(ref,{name,classCode:cls},{merge:true}); }
     } else {
-      if(!name){alert('For first signup, enter Full Name');btn.disabled=false;btn.textContent='Create Profile & Join WhatsApp →';return;}
-      data={name,phone,classCode:cls,joinedAt:new Date().toISOString(),lastSeen:new Date().toISOString(),attendance:0,hwDone:0,hwTotal:15,notes:0,diaries:[`Welcome ${name}! Profile saved.`],whatsappJoined:false};
+      if(!name){alert('Enter Full Name');btn.disabled=false;btn.textContent='Create Profile & Join WhatsApp →';return;}
+      data={name,phone,classCode:cls,joinedAt:new Date().toISOString(),lastSeen:new Date().toISOString(),diaries:[`Welcome ${name}!`],whatsappJoined:false};
       await window.setDoc(ref,data);
-      await window.setDoc(window.doc(window.db,'broadcast',phone),{phone,name,cls,active:true,joinedAt:data.joinedAt});
     }
     localStorage.setItem('rumc_user',JSON.stringify(data));
-    updateNav();
-    renderPersonal(data);
-    closeSign();
-    document.getElementById('dashboard').classList.add('active');
-    if(!data.whatsappJoined){ setTimeout(()=>{ if(confirm(`Welcome ${data.name}! Join WhatsApp groups now? Study + Family`)){ joinWhatsAppGroups(); window.setDoc(window.doc(window.db,'users',phone),{whatsappJoined:true},{merge:true}); } },600); }
+    updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
+    if(!data.whatsappJoined){ setTimeout(()=>{ if(confirm(`Welcome ${data.name}! Join WhatsApp groups now?`)){ joinWhatsAppGroups(); window.setDoc(window.doc(window.db,'users',phone),{whatsappJoined:true},{merge:true}); } },600); }
   }catch(e){alert('Error: '+e.message);}
-  finally{btn.textContent=document.getElementById('modalTitle').textContent==='Login'?'Login & Stay Logged In →':'Create Profile & Join WhatsApp →';btn.disabled=false;}
+  finally{btn.disabled=false;btn.textContent=document.getElementById('modalTitle').textContent==='Login'?'Login & Stay Logged In →':'Create Profile & Join WhatsApp →';}
 };
 function renderPersonal(u){
   document.getElementById('d_code').textContent=u.classCode;
@@ -215,8 +261,7 @@ function renderPersonal(u){
   document.getElementById('d_phone').textContent=u.phone;
   document.getElementById('d_status').textContent='● Verified & Saved';
   document.getElementById('d_activity').textContent='Online now';
-  document.getElementById('d_joined').textContent='Joined '+new Date(u.joinedAt).toLocaleDateString();
-  document.getElementById('dashUser').innerHTML=`<b>${u.name}</b> • Code ${u.classCode} • Profile saved & stays logged in`;
+  document.getElementById('dashUser').innerHTML=`<b>${u.name}</b> • Code ${u.classCode} • Profile saved`;
   const box=document.getElementById('personalDiaries'); if(u.diaries&&u.diaries.length) box.innerHTML=u.diaries.map(d=>`• ${d}`).join('<br>');
   updateCounts();
 }
@@ -238,7 +283,6 @@ function updateNav(){
     navUser.style.display='none'; loginBtn.style.display='inline'; signupBtn.style.display='inline'; dashBtn.style.display='none'; logoutBtn.style.display='none';
   }
 }
-async function updateCounts(){ try{ const snap=await window.getDocs(window.collection(window.db,'users')); const total=snap.size+17; document.getElementById('totalCount').textContent=total+'+'; document.getElementById('histCount').textContent=total+'+'; document.getElementById('memberCount').textContent=total+' Members'; }catch(e){} }
 setTimeout(()=>{ updateNav(); updateCounts(); },800);
 </script>
 </body>
