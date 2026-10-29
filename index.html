@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RUMC Group DSH</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = {
+    apiKey: "AIzaSyBMiW2ctlpwAFhW4K4L_kjFP8cleaPSPK8",
+    authDomain: "rumc-groupdsh.firebaseapp.com",
+    projectId: "rumc-groupdsh",
+    storageBucket: "rumc-groupdsh.firebasestorage.app",
+    messagingSenderId: "324007019334",
+    appId: "1:324007019334:web:9cbb3ede9be77435e89b47"
+};
+const app = initializeApp(firebaseConfig);
+window.db = getFirestore(app);
+window.fs = { doc, setDoc, getDoc, getDocs, collection };
+</script>
+</head>
+<body class="bg-[#f6f8fb] min-h-screen"><div id="app"></div>
+<script type="module" src="./app.js"></script></body></html>
