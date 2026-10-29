@@ -38,7 +38,15 @@ td.mono{font-size:13px}
 <button class="btn btn-blue" style="width:100%;padding:14px" onclick="adminLogin()">Unlock Admin Panel →</button>
 <p class="mono" style="color:var(--muted);font-size:10px;margin-top:12px">Pass: adm99eog26 • Profile: Sayon (608)</p>
 </div>
-
+<div class="card" style="min-width:280px">
+<div class="k">Set WhatsApp Group Counts (from WhatsApp app)</div>
+<div style="display:flex;gap:8px;margin-top:10px">
+<input id="studyCount" placeholder="Study group members" type="number">
+<input id="familyCount" placeholder="Family group members" type="number">
+<button class="btn btn-blue" onclick="saveCounts()">Save</button>
+</div>
+<p class="mono" style="font-size:10px;color:var(--muted);margin-top:6px">Open WhatsApp → Group → Members → Count → Enter here → Site updates live</p>
+</div>
 <div id="panel">
 <div class="header">
 <div class="profile">
@@ -153,7 +161,14 @@ window.wa = (phone)=>{
   const msg=`Hi! This is RUMC Admin (Sayon). Your dashboard is active. Check: ${location.origin.replace('admin.html','')}`;
   window.open(`https://wa.me/88${phone}?text=${encodeURIComponent(msg)}`,'_blank');
 };
-
+  
+window.saveCounts = async ()=>{
+  const study=parseInt(document.getElementById('studyCount').value)||0;
+  const family=parseInt(document.getElementById('familyCount').value)||0;
+  await setDoc(doc(db,'stats','whatsapp'),{study,family,updatedAt:new Date().toISOString()});
+  alert(`Saved! Site will show Study: ${study}, Family: ${family}`);
+};
+  
 window.del = async (phone)=>{
   if(!confirm(`Delete user ${phone}? This removes his dashboard.`)) return;
   await deleteDoc(doc(db,'users',phone));
