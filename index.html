@@ -48,11 +48,11 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 .stat{background:#0a121e;border:1px solid var(--border);border-radius:16px;padding:20px 24px;min-width:160px}
 .stat .num{font-size:28px;font-weight:700;color:var(--blue)} .stat .lbl{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 .btn{border:none;cursor:pointer;border-radius:999px;padding:14px 22px;font-weight:600;font-size:14px;transition:all .2s}
-.btn-blue{background:var(--blue);color:#02050a} .btn-blue:hover{background:white;transform:translateY(-2px);box-shadow:0 8px 20px rgba(125,211,252,0.3)}
+.btn-blue{background:var(--blue);color:#02050a} .btn-blue:hover{background:white;transform:translateY(-2px)}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)} .btn-ghost:hover{color:white;border-color:var(--blue)}
 .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(2,5,10,0.85);backdrop-filter:blur(18px);padding:20px}
 .modal.active{display:flex}
-.modal-box{width:100%;max-width:560px;background:#0b111d;border:1px solid var(--border);border-radius:20px;padding:32px;max-height:90vh;overflow:auto}
+.modal-box{width:100%;max-width:480px;background:#0b111d;border:1px solid var(--border);border-radius:20px;padding:32px;max-height:90vh;overflow:auto}
 .modal-box input{width:100%;background:#05070a;border:1px solid var(--border);border-radius:12px;padding:15px;color:white;margin-bottom:12px;outline:none}
 .modal-box input:focus{border-color:var(--blue)}
 .error{color:#ff8a8a;font-size:12px;display:none;margin:-6px 0 10px}
@@ -85,8 +85,8 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 <section class="hero">
 <div class="hero-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Rajuk_Uttara_Model_College_Gate.jpg/1200px-Rajuk_Uttara_Model_College_Gate.jpg" onerror="this.style.display='none'"></div>
 <h1>The Students<br>Community of <span>RUMC.</span></h1>
-<div class="hero-desc">Enjoy your time here at RUMC. This is the central hub for two groups — <b>RUMC (VI-A, BM-MS) Study Group (2026)</b> and <b>Family Members of RUMC (VI-A, BM-MS, 2026)</b>. One for academics, one for family. Built by students, for students. Orbiting around discipline and fun.</div>
-<div class="badge mono"><div class="dot"></div> SYSTEM ONLINE — FULL VERSION RESTORED</div>
+<div class="hero-desc">Enjoy your time here at RUMC. This is the central hub for two groups — <b>RUMC (VI-A, BM-MS) Study Group (2026)</b> and <b>Family Members of RUMC (VI-A, BM-MS, 2026)</b>. One for academics, one for family. Built by students, for students.</div>
+<div class="badge mono"><div class="dot"></div> SYSTEM ONLINE — OPEN SIGNUP — NO PASS NEEDED</div>
 <div style="margin-top:28px"><button class="btn btn-blue" onclick="openSign()">Join Journey →</button> <button class="btn btn-ghost" style="margin-left:8px" onclick="document.getElementById('study').scrollIntoView({behavior:'smooth'})">Explore Groups</button></div>
 </section>
 
@@ -94,18 +94,17 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 <div class="section-label mono reveal">01 — Study Group</div>
 <h2 class="reveal">RUMC (VI-A, BM-MS) Study Group (2026)</h2>
 <div class="grid2">
-<div class="card reveal-left"><h3>About the Group</h3><p>Welcome! This group was specifically made for academics as by the name, and being helpful is our main priority. Want to leave? You will be asked for feedback.</p><p style="margin-top:12px"><b>Benefits:</b></p><ul><li>Accurate everyday diaries.</li><li>Everyday routine and HW reminders.</li><li>Voting systems for improvements.</li><li>Exam reminders, notes, suggestions and more.</li></ul><div class="stats-row"><div class="stat"><div class="num">24/7</div><div class="lbl">Academic Support</div></div><div class="stat"><div class="num mono" id="memberCount">23 Members</div><div class="lbl">WhatsApp Study Members</div></div></div></div>
+<div class="card reveal-left"><h3>About the Group</h3><p>Welcome! This group was specifically made for academics as by the name, and being helpful is our main priority. Want to leave? You will be asked for feedback.</p><p style="margin-top:12px"><b>Benefits:</b></p><ul><li>Accurate everyday diaries.</li><li>Everyday routine and HW reminders.</li><li>Voting systems for improvements.</li><li>Exam reminders, notes, suggestions and more.</li></ul><div class="stats-row"><div class="stat"><div class="num">24/7</div><div class="lbl">Academic Support</div></div><div class="stat"><div class="num mono" id="memberCount">23 Members</div><div class="lbl">Study Members</div></div></div></div>
 <div>
 <div class="card reveal-right" style="margin-bottom:16px"><h3>Why us?</h3><p>Run by BdMO Regional Champion ('26) (5th), English Olympiad Grand Finalist (Malaysia and Singapore '26), WMI & BdMSO TST 3rd, and more. Admins have passed voting and strictly follow rules.</p></div>
 <div class="card reveal-right"><h3>Rules</h3><ul><li>No insignificant or unimportant messages are allowed here. (Memes, random messages, random forwards, stickers, videos etc.)</li><li>Please use proper language and be kind to others. Swearing or bullying will not be tolerated.</li><li>Do not send any too many messages at once. Spamming or replying without reason is forbidden.</li><li>Forwarding or copying messages (Notes, diary, etc) from this group to other areas is strictly restricted. If anyone outside this group wants them, invite them. They will be added.</li></ul></div>
 </div>
 </div>
 <div class="card reveal" style="margin-top:20px">
-<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Administrators</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('admins')">See all admins — names, class code</button></div>
-<div class="admin-grid" id="adminsPreview"><div class="pill mono"><b>Sayon</b> <span>— Founder, Lead Strategist, Owner (608)</span></div><div class="pill mono"><b>Shafee</b> <span>— Co-Founder, AssistantX (629)</span></div><div class="pill mono"><b>Sadik</b> <span>— Assistant, 4CF (641)</span></div></div>
-<div style="margin-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Members</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('members')">See all members (editable)</button></div>
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Administrators</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('admins')">See all admins</button></div>
+<div class="admin-grid" id="adminsPreview"><div class="pill mono"><b>Sayon</b> <span>— Founder (608)</span></div><div class="pill mono"><b>Shafee</b> <span>— Co-Founder (629)</span></div><div class="pill mono"><b>Sadik</b> <span>— Assistant (641)</span></div></div>
+<div style="margin-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Members</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('members')">See all members — Name: (Code)</button></div>
 <div class="admin-grid" id="membersPreview"></div>
-<div style="margin-top:12px;color:var(--muted);font-size:12px" class="mono">Assistants: N/A • Made by Sayon • Creation Date: 12 April, 2026</div>
 </div>
 </section>
 
@@ -113,19 +112,18 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 <div class="section-label mono reveal">02 — Family Group</div>
 <h2 class="reveal">Family Members of RUMC (VI-A, BM-MS, 2026)</h2>
 <div class="grid2">
-<div class="card reveal-left"><h3>About</h3><p>Welcome to our group! This group was made for chatting with one another and having a good time. Chill, chat and have fun. Enjoy this group. If you want academic help, go to the other group (@RUMC (VI-A, BM-MS) Study Group - 2026).</p><p style="margin-top:12px">This one was actually made first in the community, even before it. First group that actually stayed in the long run. So, enjoy this one and be a part of our journey.</p><div style="margin-top:16px;font-size:12px;color:var(--muted)" class="mono">Made by MD. Sekh Sadi Ahmed, (Ex-Owner, Founder, Member)<br>Group Creation Date: 22 February, 2026. Currently Owned by Sayon<br><br>-Sayon, Co-Founder, Owner, Community Owner, Lead Strategist.</div></div>
+<div class="card reveal-left"><h3>About</h3><p>Welcome to our group! This group was made for chatting with one another and having a good time. Chill, chat and have fun. Enjoy this group. If you want academic help, go to the other group.</p><div style="margin-top:16px;font-size:12px;color:var(--muted)" class="mono">Made by MD. Sekh Sadi Ahmed<br>Group Creation: 22 Feb, 2026. Currently Owned by Sayon</div></div>
 <div>
-<div class="card reveal-right"><h3>Why us?</h3><p>Because college is not only about books. This is where memories are made — late night chats, birthday wishes, group photos at the RUMC gate, and a real family that stays after class ends. No rules overload, just respect.</p></div>
-<div class="card reveal-right" style="margin-top:16px"><h3>Members so far that have joined the journey.</h3><p style="font-size:42px;color:var(--blue);font-weight:700;margin:12px 0" id="totalCount">20+</p><p>Members so far.</p><button class="btn btn-blue" style="margin-top:16px" onclick="showList('members')">See all members details</button></div>
+<div class="card reveal-right"><h3>Why us?</h3><p>Because college is not only about books. This is where memories are made — late night chats, birthday wishes, group photos at the RUMC gate, and a real family that stays after class ends.</p></div>
+<div class="card reveal-right" style="margin-top:16px"><h3>Members so far</h3><p style="font-size:42px;color:var(--blue);font-weight:700;margin:12px 0" id="totalCount">20+</p><button class="btn btn-blue" style="margin-top:16px" onclick="showList('members')">See all members details</button></div>
 </div>
 </div>
 </section>
 
-<!-- COMMUNITY STATS SECTION - RESTORED -->
 <section class="section">
 <div class="section-label mono reveal">Community Stats</div>
 <div class="grid2">
-<div class="card reveal-left"><h3>Why us? (Overall)</h3><p>Two groups, one community. Study group for academic discipline with daily diaries, HW reminders, voting systems. Family group for bonding. Managed by champions and strict rules. Free registration, real tracking via WhatsApp, space-themed portal that actually feels like RUMC.</p><div class="stats-row"><div class="stat"><div class="num">100%</div><div class="lbl">Free</div></div><div class="stat"><div class="num">2</div><div class="lbl">Groups</div></div><div class="stat"><div class="num mono" id="communityCount">23+</div><div class="lbl">Total Members</div></div></div></div>
+<div class="card reveal-left"><h3>Why us? (Overall)</h3><p>Two groups, one community. Study group for academic discipline with daily diaries, HW reminders, voting systems. Family group for bonding. Managed by champions and strict rules. Free registration, real tracking via WhatsApp.</p><div class="stats-row"><div class="stat"><div class="num">100%</div><div class="lbl">Free</div></div><div class="stat"><div class="num">2</div><div class="lbl">Groups</div></div><div class="stat"><div class="num mono" id="communityCount">23+</div><div class="lbl">Total Members</div></div></div></div>
 <div class="card reveal-right"><h3>Highlights</h3><ul><li>Daily diary system implemented</li><li>First voting system — 94% participation</li><li>Notes archive — 120+ files</li><li>100% read • Profile save + animations</li></ul></div>
 </div>
 <div class="grid2" style="margin-top:20px">
@@ -137,22 +135,22 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 <section class="section" style="background:radial-gradient(ellipse at center, #0e1e38 0%, var(--bg) 70%)">
 <div class="section-label mono reveal">Our History</div>
 <h2 class="reveal">From 6 to <span id="histCount" style="color:var(--blue)">17+</span> — and expanding.</h2>
-<p class="reveal" style="max-width:680px;color:var(--muted);margin:20px 0;line-height:1.7">Started officially from 12th April, 2026. Our group has gone from a small 6 members to now and expansion is going. It began as a proposed idea. Today, we are managing 23 members, helping people with their academics, celebrating the smallest of wins, and having fun on the way. Registration is open, completely free and waiting for you to click it.</p>
-<button class="btn btn-blue reveal" onclick="openSign()" style="padding:18px 36px;font-size:16px">Join our journey with this group! Sign-up →</button>
-<div id="contact" style="margin-top:60px;color:var(--muted);font-size:12px" class="mono">Contact: WhatsApp required • Profile stays logged in</div>
+<p class="reveal" style="max-width:680px;color:var(--muted);margin:20px 0;line-height:1.7">Started officially from 12th April, 2026. Our group has gone from a small 6 members to now and expansion is going. Registration is open, completely free and waiting for you to click it.</p>
+<button class="btn btn-blue reveal" onclick="openSign()" style="padding:18px 36px;font-size:16px">Join our journey →</button>
 </section>
 
 <div id="signModal" class="modal" onclick="if(event.target===this)closeSign()"><div class="modal-box">
-<h2 id="modalTitle" style="font-size:28px;margin-bottom:6px">Sign up</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Each student has own dashboard to track metrics. WhatsApp number required. Profiles stay logged in.</p>
-<!-- Access code removed - open signup -->
-<input id="s_code" placeholder="Access Code (optional - leave empty)" type="password" style="display:none">
+<h2 id="modalTitle" style="font-size:28px;margin-bottom:6px">Sign up</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Each student has own dashboard. No access code needed. Profile stays logged in.</p>
+<input id="s_name" placeholder="Full Name (for signup)">
+<input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)">
+<div id="s_err" class="error">Valid BD number — 11 digits starting with 01</div>
+<input id="s_class" placeholder="Class Code (e.g. 608)">
 <button class="btn btn-blue" style="width:100%;margin-top:8px" id="authBtn" onclick="handleAuth()">Create Profile & Stay Logged In →</button>
-<p class="mono" style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">Login: just phone + class code + admin123. Signup: also need Full Name.</p>
 </div></div>
 
 <div id="listModal" class="modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal-box"><h2 id="listTitle" style="margin-bottom:16px"></h2><div id="listBody" class="admin-grid"></div><button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="document.getElementById('listModal').classList.remove('active')">Close</button></div></div>
 
-<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Loading...</p><div class="dash-grid"><div class="dash-card"><div class="k">Code</div><div class="v" id="d_code">--</div></div><div class="dash-card"><div class="k">Full Name</div><div class="v" id="d_name" style="font-size:20px">--</div></div><div class="dash-card"><div class="k">Number</div><div class="v" style="font-size:18px" id="d_phone">--</div><div class="k" style="margin-top:8px;color:var(--green)" id="d_status">● Verified</div></div><div class="dash-card"><div class="k">Activity</div><div class="v" id="d_activity">Online</div></div></div><div class="card" style="margin-top:20px"><h3>Your Personal Diaries</h3><p id="personalDiaries" style="margin-top:10px;color:var(--muted)">No diaries yet.</p><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-blue" onclick="joinWhatsAppGroups()">Re-join WhatsApp Groups</button> <button class="btn btn-ghost" onclick="syncToWhatsApp()">Sync to WhatsApp</button></div></div></div>
+<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Loading...</p><div class="dash-grid"><div class="dash-card"><div class="k">Code</div><div class="v" id="d_code">--</div></div><div class="dash-card"><div class="k">Full Name</div><div class="v" id="d_name" style="font-size:20px">--</div></div><div class="dash-card"><div class="k">Number</div><div class="v" style="font-size:18px" id="d_phone">--</div></div><div class="dash-card"><div class="k">Activity</div><div class="v" id="d_activity">Online</div></div></div><div class="card" style="margin-top:20px"><h3>Your Personal Diaries</h3><p id="personalDiaries" style="margin-top:10px;color:var(--muted)">No diaries yet.</p><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-blue" onclick="joinWhatsAppGroups()">Re-join WhatsApp Groups</button></div></div></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -174,30 +172,27 @@ window.GROUP_LINKS = { study: "https://chat.whatsapp.com/LRZ70IPOzPa6Ye6rT5qxyX"
 <script>
 (function(){ const s=document.getElementById('stars'); for(let i=0;i<120;i++){let d=document.createElement('div');d.className='star';d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.animationDelay=Math.random()*3+'s';s.appendChild(d);} })();
 const defaultMembers=[["Sadi","618"],["Mustakim","636"],["Nahiyan","634"],["Labiba","643"],["Alif","613"],["Shoaib","602"],["Tazim","637"],["Samiul","633"],["Shafi","630"],["Rifwan","772"],["Ramim","621"],["Nudar","654"],["Anas","632"],["Labib","644"],["Salman","655"],["Turjo","615"],["Rafsan","646"]];
-const defaultAdmins=[["Sayon","608","Founder, Lead Strategist, Owner"],["Shafee","629","Co-Founder, AssistantX"],["Sadik","641","Assistant, 4CF"]];
+const defaultAdmins=[["Sayon","608","Founder"],["Shafee","629","Co-Founder"],["Sadik","641","Assistant"]];
 const defaultAssistants=[];
-function isValid(p){return /^01[0-9]{9}$/.test(p)}
 let liveMembers=defaultMembers, liveAdmins=defaultAdmins, liveAssistants=defaultAssistants;
-
+function isValid(p){return /^01[0-9]{9}$/.test(p)}
 window.openSign=()=>{document.getElementById('modalTitle').textContent='Sign up';document.getElementById('authBtn').textContent='Create Profile & Stay Logged In →';document.getElementById('signModal').classList.add('active')}
 window.openLogin=()=>{document.getElementById('modalTitle').textContent='Login';document.getElementById('authBtn').textContent='Login & Stay Logged In →';document.getElementById('signModal').classList.add('active')}
-window.closeSign=()=>{document.getElementById('signModal').classList.remove('active'); document.getElementById('s_err').style.display='none'; document.getElementById('s_code_err').style.display='none';}
+window.closeSign=()=>{document.getElementById('signModal').classList.remove('active'); const e=document.getElementById('s_err'); if(e) e.style.display='none';}
 window.closeDashboard=()=>document.getElementById('dashboard').classList.remove('active');
 window.logout=()=>{localStorage.removeItem('rumc_user');updateNav();closeDashboard();location.reload();}
 window.joinWhatsAppGroups=()=>{ window.open(window.GROUP_LINKS.study,'_blank'); setTimeout(()=>window.open(window.GROUP_LINKS.family,'_blank'),900); };
-window.syncToWhatsApp=()=>{ const raw=localStorage.getItem('rumc_user'); if(!raw)return; const u=JSON.parse(raw); const msg=`My RUMC Dashboard: ${u.name} (${u.classCode}) - ${location.href}`; window.open(`https://wa.me/88${u.phone}?text=${encodeURIComponent(msg)}`,'_blank'); };
-
-window.showList=async (type)=>{
+window.showList=async(type)=>{
   await loadConfig();
   const modal=document.getElementById('listModal'), title=document.getElementById('listTitle'), body=document.getElementById('listBody');
   body.innerHTML='';
   if(type==='members'){
-    title.textContent=`All Members (${liveMembers.length}) — format Name: (Code)`;
+    title.textContent=`All Members (${liveMembers.length}) — Name: (Code)`;
     liveMembers.forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; body.appendChild(d); });
   }
   if(type==='admins'){
     title.textContent=`Admins (${liveAdmins.length})`;
-    liveAdmins.forEach(a=>{ let name=a[0], code=a[1], role=a[2]||''; let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${name}</b>: <span>(${code})</span> ${role?'— '+role:''}`; body.appendChild(d); });
+    liveAdmins.forEach(a=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${a[0]}</b>: <span>(${a[1]})</span> ${a[2]?'— '+a[2]:''}`; body.appendChild(d); });
   }
   if(type==='assistants'){
     title.textContent=`Assistants (${liveAssistants.length})`;
@@ -206,7 +201,6 @@ window.showList=async (type)=>{
   }
   modal.classList.add('active');
 };
-
 async function loadConfig(){
   try{
     const snap=await window.getDoc(window.doc(window.db,'config','lists'));
@@ -216,87 +210,51 @@ async function loadConfig(){
       if(data.admins && data.admins.length) liveAdmins=data.admins;
       if(data.assistants) liveAssistants=data.assistants;
     }
-    const statsSnap=await window.getDoc(window.doc(window.db,'stats','whatsapp'));
-    let studyCount=0, familyCount=0;
-    if(statsSnap.exists()){
-      studyCount=statsSnap.data().study||0;
-      familyCount=statsSnap.data().family||0;
-    }
     const usersSnap=await window.getDocs(window.collection(window.db,'users'));
     const fbCount=usersSnap.size;
-    if(!studyCount) studyCount=fbCount+liveMembers.length;
-    if(!familyCount) familyCount=fbCount+20;
-
+    let studyCount=fbCount+liveMembers.length, familyCount=fbCount+20;
+    try{
+      const statsSnap=await window.getDoc(window.doc(window.db,'stats','whatsapp'));
+      if(statsSnap.exists()){ studyCount=statsSnap.data().study||studyCount; familyCount=statsSnap.data().family||familyCount; }
+    }catch(e){}
     document.getElementById('memberCount').textContent=studyCount+' Members';
     document.getElementById('totalCount').textContent=familyCount+'+';
     document.getElementById('histCount').textContent=familyCount+'+';
-    const comm=document.getElementById('communityCount');
-    if(comm) comm.textContent=(studyCount>familyCount?studyCount:familyCount)+'+';
-    const admPrev=document.getElementById('adminsCountPreview');
-    if(admPrev) admPrev.textContent=`Admins: ${liveAdmins.length}`;
-    const assPrev=document.getElementById('assistantsPreviewCount');
-    if(assPrev) assPrev.textContent=`Assistants: ${liveAssistants.length}`;
-    
+    const comm=document.getElementById('communityCount'); if(comm) comm.textContent=(studyCount>familyCount?studyCount:familyCount)+'+';
+    const admPrev=document.getElementById('adminsCountPreview'); if(admPrev) admPrev.textContent=`Admins: ${liveAdmins.length}`;
+    const assPrev=document.getElementById('assistantsPreviewCount'); if(assPrev) assPrev.textContent=`Assistants: ${liveAssistants.length}`;
     const membersPreview=document.getElementById('membersPreview');
     if(membersPreview){
       membersPreview.innerHTML='';
-      liveMembers.slice(0,6).forEach(([n,c])=>{
-        let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; membersPreview.appendChild(d);
-      });
-      if(liveMembers.length>6){ let d=document.createElement('div'); d.className='pill mono'; d.textContent=`+${liveMembers.length-6} more`; membersPreview.appendChild(d); }
+      liveMembers.slice(0,8).forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; membersPreview.appendChild(d); });
+      if(liveMembers.length>8){ let d=document.createElement('div'); d.className='pill mono'; d.textContent=`+${liveMembers.length-8} more`; membersPreview.appendChild(d); }
     }
-  }catch(e){ console.log('config load error',e); }
+  }catch(e){ console.log(e); }
 }
-
-// ANIMATIONS
 const observer=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.15});
 document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el=>observer.observe(el));
 
-// AUTH - FIXED WRONG CODE BUG
+// FIXED AUTH - NO PASS NEEDED
 window.handleAuth=async()=>{
   const name=document.getElementById('s_name').value.trim();
   const phone=document.getElementById('s_phone').value.trim().replace(/\s/g,'');
   const cls=document.getElementById('s_class').value.trim();
-  const code=document.getElementById('s_code').value.trim(); // now optional
   const err=document.getElementById('s_err');
   if(err) err.style.display='none';
-
-  if(!/^01[0-9]{9}$/.test(phone)){
-    if(err){ err.style.display='block'; err.textContent='Enter valid BD number: 01XXXXXXXXX (11 digits)'; }
-    return;
-  }
+  if(!/^01[0-9]{9}$/.test(phone)){ if(err){err.style.display='block';} return; }
   if(!cls){ alert('Enter Class Code e.g. 608'); return; }
-
-  // If they typed an admin pass in main site, redirect to admin.html
-  if(code==='adm99eog26' || code.startsWith('shafee') || code.startsWith('sadik') || code.length>15){
-    // Check if it's an admin custom pass
-    try{
-      const snap=await window.getDoc(window.doc(window.db,'adminAccounts',code));
-      if(snap.exists() || code==='adm99eog26'){
-        alert('Admin pass detected — redirecting to admin panel');
-        location.href='admin.html';
-        return;
-      }
-    }catch(e){}
-  }
-
   const isSignup=document.getElementById('modalTitle').textContent==='Sign up';
-  const btn=document.getElementById('authBtn');
-  btn.textContent='Checking...'; btn.disabled=true;
-
+  const btn=document.getElementById('authBtn'); btn.textContent='Saving...'; btn.disabled=true;
   try{
     const ref=window.doc(window.db,'users',phone);
     const snap=await window.getDoc(ref);
-    
     if(isSignup){
-      if(!name){ alert('Full Name required'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
+      if(!name){ alert('Full Name required for signup'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
       if(snap.exists()){
-        // If already exists, just login them
         let data=snap.data();
-        await window.setDoc(ref,{lastSeen:new Date().toISOString(), classCode:cls},{merge:true});
-        localStorage.setItem('rumc_user',JSON.stringify({...data, classCode:cls, lastSeen:new Date().toISOString()}));
-        updateNav(); renderPersonal({...data, classCode:cls}); closeSign();
-        document.getElementById('dashboard').classList.add('active');
+        await window.setDoc(ref,{lastSeen:new Date().toISOString(), classCode:cls, name},{merge:true});
+        localStorage.setItem('rumc_user',JSON.stringify({...data, classCode:cls, name, lastSeen:new Date().toISOString()}));
+        updateNav(); renderPersonal({...data, classCode:cls, name}); closeSign(); document.getElementById('dashboard').classList.add('active');
         return;
       }
       const data={name,phone,classCode:cls,joinedAt:new Date().toISOString(),lastSeen:new Date().toISOString(),diaries:[`Welcome ${name}!`],whatsappJoined:false};
@@ -304,62 +262,21 @@ window.handleAuth=async()=>{
       localStorage.setItem('rumc_user',JSON.stringify(data));
       updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
       setTimeout(()=>{ if(confirm(`Welcome ${name}! Join WhatsApp groups now?`)){ joinWhatsAppGroups(); } },600);
-      
-    } else {
-      // LOGIN - NO NAME NEEDED, NO PASS NEEDED
-      if(!snap.exists()){
-        alert('No account with this number. Click Sign up first.');
-        btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return;
-      }
+    }else{
+      if(!snap.exists()){ alert('No account with this number. Sign up first.'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
       let data=snap.data();
       await window.setDoc(ref,{lastSeen:new Date().toISOString(), classCode:cls},{merge:true});
       data.classCode=cls; data.lastSeen=new Date().toISOString();
       localStorage.setItem('rumc_user',JSON.stringify(data));
       updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
     }
-  }catch(e){ 
-    console.error(e);
-    alert('Error: '+e.message); 
-  } finally {
-    btn.disabled=false;
-    btn.textContent=isSignup?'Create Profile & Stay Logged In →':'Login & Stay Logged In →';
-  }
-};
-
-  if(code==='adm99eog26'){ location.href='admin.html'; return; }
-  if(code!=='admin123'){ codeErr.style.display='block'; codeErr.textContent='Wrong Code! For students use: admin123'; return; }
-
-  const isSignup=document.getElementById('modalTitle').textContent==='Sign up';
-  if(isSignup && !name){ alert('For Sign up, Full Name required'); return; }
-
-  const btn=document.getElementById('authBtn'); btn.textContent='Saving...'; btn.disabled=true;
-  try{
-    const ref=window.doc(window.db,'users',phone);
-    const snap=await window.getDoc(ref);
-    let data;
-    if(snap.exists()){
-      data=snap.data();
-      await window.setDoc(ref,{lastSeen:new Date().toISOString(), classCode:cls, ...(name?{name}:{})},{merge:true});
-      data.lastSeen=new Date().toISOString();
-      if(name) data.name=name;
-      data.classCode=cls;
-    } else {
-      if(!name){ alert('First time signup needs Full Name'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
-      data={name,phone,classCode:cls,joinedAt:new Date().toISOString(),lastSeen:new Date().toISOString(),diaries:[`Welcome ${name}!`],whatsappJoined:false};
-      await window.setDoc(ref,data);
-    }
-    localStorage.setItem('rumc_user',JSON.stringify(data));
-    updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
-    if(!data.whatsappJoined){ setTimeout(()=>{ if(confirm(`Welcome ${data.name}! Join WhatsApp groups now?`)){ joinWhatsAppGroups(); window.setDoc(window.doc(window.db,'users',phone),{whatsappJoined:true},{merge:true}); } },600); }
-  }catch(e){ alert('Error: '+e.message); }
+  }catch(e){ alert('Error: '+e.message); console.error(e); }
   finally{ btn.disabled=false; btn.textContent=isSignup?'Create Profile & Stay Logged In →':'Login & Stay Logged In →'; }
 };
 function renderPersonal(u){
   document.getElementById('d_code').textContent=u.classCode;
   document.getElementById('d_name').textContent=u.name;
   document.getElementById('d_phone').textContent=u.phone;
-  document.getElementById('d_status').textContent='● Verified & Saved';
-  document.getElementById('d_activity').textContent='Online now';
   document.getElementById('dashUser').innerHTML=`<b>${u.name}</b> • Code ${u.classCode} • Profile saved & stays logged in`;
   const box=document.getElementById('personalDiaries'); if(u.diaries&&u.diaries.length) box.innerHTML=u.diaries.map(d=>`• ${d}`).join('<br>');
 }
@@ -377,7 +294,7 @@ function updateNav(){
     const u=JSON.parse(raw);
     navUser.style.display='inline'; navUser.textContent=`● ${u.name} (${u.classCode}) logged in`;
     loginBtn.style.display='none'; signupBtn.style.display='none'; dashBtn.style.display='inline'; logoutBtn.style.display='inline';
-  } else {
+  }else{
     navUser.style.display='none'; loginBtn.style.display='inline'; signupBtn.style.display='inline'; dashBtn.style.display='none'; logoutBtn.style.display='none';
   }
 }
