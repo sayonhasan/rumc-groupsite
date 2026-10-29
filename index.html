@@ -144,7 +144,8 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 
 <div id="signModal" class="modal" onclick="if(event.target===this)closeSign()"><div class="modal-box">
 <h2 id="modalTitle" style="font-size:28px;margin-bottom:6px">Sign up</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Each student has own dashboard to track metrics. WhatsApp number required. Profiles stay logged in.</p>
-<input id="s_name" placeholder="Full Name (required for signup)"><input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)"><div id="s_err" class="error">Valid BD number required — 11 digits starting with 01</div><input id="s_class" placeholder="Class Code (e.g. 608)"><input id="s_code" placeholder="Access Code" type="password"><div id="s_code_err" class="error">For Students use: admin123 | For Admin use admin.html</div>
+<!-- Access code removed - open signup -->
+<input id="s_code" placeholder="Access Code (optional - leave empty)" type="password" style="display:none">
 <button class="btn btn-blue" style="width:100%;margin-top:8px" id="authBtn" onclick="handleAuth()">Create Profile & Stay Logged In →</button>
 <p class="mono" style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">Login: just phone + class code + admin123. Signup: also need Full Name.</p>
 </div></div>
@@ -254,16 +255,76 @@ document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el=>ob
 // AUTH - FIXED WRONG CODE BUG
 window.handleAuth=async()=>{
   const name=document.getElementById('s_name').value.trim();
-  const phone=document.getElementById('s_phone').value.trim();
+  const phone=document.getElementById('s_phone').value.trim().replace(/\s/g,'');
   const cls=document.getElementById('s_class').value.trim();
-  const code=document.getElementById('s_code').value.trim();
-  const err=document.getElementById('s_err'), codeErr=document.getElementById('s_code_err');
-  let hasError=false;
-  if(!isValid(phone)){ err.style.display='block'; hasError=true; } else err.style.display='none';
-  if(!cls){ hasError=true; }
-  if(!code){ codeErr.style.display='block'; codeErr.textContent='Enter access code: admin123'; hasError=true; }
-  else codeErr.style.display='none';
-  if(hasError) return;
+  const code=document.getElementById('s_code').value.trim(); // now optional
+  const err=document.getElementById('s_err');
+  if(err) err.style.display='none';
+
+  if(!/^01[0-9]{9}$/.test(phone)){
+    if(err){ err.style.display='block'; err.textContent='Enter valid BD number: 01XXXXXXXXX (11 digits)'; }
+    return;
+  }
+  if(!cls){ alert('Enter Class Code e.g. 608'); return; }
+
+  // If they typed an admin pass in main site, redirect to admin.html
+  if(code==='adm99eog26' || code.startsWith('shafee') || code.startsWith('sadik') || code.length>15){
+    // Check if it's an admin custom pass
+    try{
+      const snap=await window.getDoc(window.doc(window.db,'adminAccounts',code));
+      if(snap.exists() || code==='adm99eog26'){
+        alert('Admin pass detected — redirecting to admin panel');
+        location.href='admin.html';
+        return;
+      }
+    }catch(e){}
+  }
+
+  const isSignup=document.getElementById('modalTitle').textContent==='Sign up';
+  const btn=document.getElementById('authBtn');
+  btn.textContent='Checking...'; btn.disabled=true;
+
+  try{
+    const ref=window.doc(window.db,'users',phone);
+    const snap=await window.getDoc(ref);
+    
+    if(isSignup){
+      if(!name){ alert('Full Name required'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
+      if(snap.exists()){
+        // If already exists, just login them
+        let data=snap.data();
+        await window.setDoc(ref,{lastSeen:new Date().toISOString(), classCode:cls},{merge:true});
+        localStorage.setItem('rumc_user',JSON.stringify({...data, classCode:cls, lastSeen:new Date().toISOString()}));
+        updateNav(); renderPersonal({...data, classCode:cls}); closeSign();
+        document.getElementById('dashboard').classList.add('active');
+        return;
+      }
+      const data={name,phone,classCode:cls,joinedAt:new Date().toISOString(),lastSeen:new Date().toISOString(),diaries:[`Welcome ${name}!`],whatsappJoined:false};
+      await window.setDoc(ref,data);
+      localStorage.setItem('rumc_user',JSON.stringify(data));
+      updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
+      setTimeout(()=>{ if(confirm(`Welcome ${name}! Join WhatsApp groups now?`)){ joinWhatsAppGroups(); } },600);
+      
+    } else {
+      // LOGIN - NO NAME NEEDED, NO PASS NEEDED
+      if(!snap.exists()){
+        alert('No account with this number. Click Sign up first.');
+        btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return;
+      }
+      let data=snap.data();
+      await window.setDoc(ref,{lastSeen:new Date().toISOString(), classCode:cls},{merge:true});
+      data.classCode=cls; data.lastSeen=new Date().toISOString();
+      localStorage.setItem('rumc_user',JSON.stringify(data));
+      updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
+    }
+  }catch(e){ 
+    console.error(e);
+    alert('Error: '+e.message); 
+  } finally {
+    btn.disabled=false;
+    btn.textContent=isSignup?'Create Profile & Stay Logged In →':'Login & Stay Logged In →';
+  }
+};
 
   if(code==='adm99eog26'){ location.href='admin.html'; return; }
   if(code!=='admin123'){ codeErr.style.display='block'; codeErr.textContent='Wrong Code! For students use: admin123'; return; }
