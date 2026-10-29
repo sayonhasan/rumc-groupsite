@@ -66,7 +66,11 @@ td.mono{font-size:13px}
 <div style="padding:20px 4% 0;display:flex;gap:12px;flex-wrap:wrap">
 <div class="card" style="min-width:160px"><div class="k">Total Users</div><div style="font-size:26px;font-weight:700;color:var(--blue);margin-top:6px" id="totalUsers">0</div></div>
 <div class="card" style="min-width:160px"><div class="k">Online Now</div><div style="font-size:26px;font-weight:700;color:var(--green);margin-top:6px" id="onlineUsers">0</div></div>
-<div class="card" style="min-width:320px;flex:1"><div class="k">Broadcast Notice</div><div style="display:flex;gap:8px;margin-top:10px"><input id="broadcastText" placeholder="Notice to all dashboards..." style="margin:0"><button class="btn btn-blue" onclick="broadcast()">Send to All</button></div></div>
+<div class="grid" style="padding:0 4%;margin-bottom:20px">
+<div class="card"><h3>Add Member</h3><div class="k">Format will be: Name: (Code)</div><input id="addMName" placeholder="Name"><input id="addMCode" placeholder="Code e.g. 618"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addMember()">Add Member →</button></div>
+<div class="card"><h3>Add Admin</h3><input id="addAName" placeholder="Name"><input id="addACode" placeholder="Code"><input id="addARole" placeholder="Role e.g. Founder"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addAdmin()">Add Admin →</button></div>
+<div class="card"><h3>Add Assistant</h3><input id="addAsName" placeholder="Name"><input id="addAsCode" placeholder="Code"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addAssistant()">Add Assistant →</button></div>
+<div class="card"><h3>Set WhatsApp Counts</h3><input id="studyCount" type="number" placeholder="Study group members count"><input id="familyCount" type="number" placeholder="Family group members count"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="saveCounts()">Save Counts →</button></div>
 </div>
 
 <div class="tableWrap">
@@ -92,7 +96,29 @@ const firebaseConfig = {
 };
 const db = getFirestore(initializeApp(firebaseConfig));
 const ADMIN_PASS = "adm99eog26";
-
+async function getLists(){ const snap=await getDoc(doc(db,'config','lists')); return snap.exists()?snap.data():{members:[],admins:[],assistants:[]} }
+window.addMember=async()=>{
+  const name=document.getElementById('addMName').value.trim(), code=document.getElementById('addMCode').value.trim();
+  if(!name||!code){alert('Enter name and code');return;}
+  const lists=await getLists();
+  lists.members=lists.members||[]; lists.members.push([name,code]);
+  await setDoc(doc(db,'config','lists'),lists,{merge:true});
+  alert(`Added ${name}: (${code})`); document.getElementById('addMName').value=''; document.getElementById('addMCode').value=''; loadUsers();
+};
+window.addAdmin=async()=>{
+  const name=document.getElementById('addAName').value.trim(), code=document.getElementById('addACode').value.trim(), role=document.getElementById('addARole').value.trim();
+  if(!name||!code){alert('Enter');return;}
+  const lists=await getLists(); lists.admins=lists.admins||[]; lists.admins.push([name,code,role]); await setDoc(doc(db,'config','lists'),lists,{merge:true}); alert('Admin added'); loadUsers();
+};
+window.addAssistant=async()=>{
+  const name=document.getElementById('addAsName').value.trim(), code=document.getElementById('addAsCode').value.trim();
+  if(!name||!code){alert('Enter');return;}
+  const lists=await getLists(); lists.assistants=lists.assistants||[]; lists.assistants.push([name,code]); await setDoc(doc(db,'config','lists'),lists,{merge:true}); alert('Assistant added'); loadUsers();
+};
+window.saveCounts=async()=>{
+  const study=parseInt(document.getElementById('studyCount').value)||0, family=parseInt(document.getElementById('familyCount').value)||0;
+  await setDoc(doc(db,'stats','whatsapp'),{study,family,updatedAt:new Date().toISOString()}); alert(`Counts saved: Study ${study}, Family ${family}`);
+};
 window.adminLogin = ()=>{
   const p=document.getElementById('adminPass').value;
   if(p!==ADMIN_PASS){ document.getElementById('loginErr').style.display='block'; return; }
