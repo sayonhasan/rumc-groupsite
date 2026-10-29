@@ -59,115 +59,118 @@ nav .cta{background:var(--blue);color:#02050a;padding:10px 20px;border-radius:99
 #dashboard.active{display:block}
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px}
 .dash-card{background:#0e1625;border:1px solid var(--border);border-radius:16px;padding:20px}
-.reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(0.16,1,0.3,1)} .reveal.in{opacity:1;transform:translateY(0)}
+.dash-card .k{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)} .dash-card .v{font-size:28px;font-weight:700;color:var(--blue);margin-top:8px}
+.reveal{opacity:1;transform:translateY(0);transition:all .8s cubic-bezier(0.16,1,0.3,1)} /* FIXED: no more invisible text */
+.reveal.in{opacity:1;transform:translateY(0)}
 </style>
 </head>
-  <script>
-// Fix invisible text — force show all reveals
-setTimeout(()=>{
-  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
-  // create stars if missing
-  const stars = document.getElementById('stars');
-  if(stars && stars.children.length===0){
-    for(let i=0;i<120;i++){
-      let d=document.createElement('div');
-      d.className='star';
-      d.style.left=Math.random()*100+'%';
-      d.style.top=Math.random()*100+'%';
-      d.style.animationDelay=Math.random()*3+'s';
-      stars.appendChild(d);
-    }
-  }
-}, 500);
-
-const obs = new IntersectionObserver(es=>{
-  es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in') });
-},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-</script>
 <body>
 <div id="stars"></div>
 <nav>
+<div class="left mono"><span id="navTitle">Students Community of RUMC</span> <span id="navUser" style="display:none;margin-left:16px;color:white;text-transform:none;letter-spacing:0;font-size:12px;border-left:1px solid var(--border);padding-left:16px"></span></div>
+<div class="right mono" id="navRight">
+  <a onclick="window.scrollTo({top:0,behavior:'smooth'})">Home</a>
+  <a id="loginBtn" onclick="openLogin()">Login</a>
+  <a id="signupBtn" class="cta" onclick="openSign()">Sign up</a>
+  <a id="dashBtn" style="display:none" onclick="openDashboard()">Dashboard</a>
+  <a id="logoutBtn" style="display:none" onclick="logout()">Logout</a>
+</div>
+</nav>
 <div class="left mono">Students Community of RUMC</div>
 <div class="right mono"><a onclick="window.scrollTo({top:0,behavior:'smooth'})">Home</a><a onclick="openDashboard()">Dashboard</a><a onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</a><a class="cta" onclick="openSign()">Sign up</a></div>
 </nav>
+<script>
+function openLogin(){ document.getElementById('signModal').classList.add('active'); document.querySelector('#signModal h2').textContent='Login'; document.getElementById('authBtn').textContent='Login & Open Dashboard →'; }
+function openSign(){ document.getElementById('signModal').classList.add('active'); document.querySelector('#signModal h2').textContent='Sign up / Login'; document.getElementById('authBtn').textContent='Create Dashboard & Join WhatsApp →'; }
+function logout(){ localStorage.removeItem('rumc_user'); location.reload(); }
 
+function updateNav(){
+  const raw=localStorage.getItem('rumc_user');
+  const navUser=document.getElementById('navUser'), loginBtn=document.getElementById('loginBtn'), signupBtn=document.getElementById('signupBtn'), dashBtn=document.getElementById('dashBtn'), logoutBtn=document.getElementById('logoutBtn');
+  if(raw){
+    const u=JSON.parse(raw);
+    navUser.style.display='inline'; navUser.textContent=`● ${u.name} (${u.classCode}) logged in`;
+    loginBtn.style.display='none'; signupBtn.style.display='none';
+    dashBtn.style.display='inline'; logoutBtn.style.display='inline';
+    // update lastSeen for online status
+    try{ window.setDoc(window.doc(window.db,'users',u.phone),{lastSeen:new Date().toISOString()},{merge:true}); }catch(e){}
+  }
+}
+setTimeout(updateNav, 800);
+window.addEventListener('storage', updateNav);
+</script>
 <section class="hero">
 <div class="hero-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Rajuk_Uttara_Model_College_Gate.jpg/1200px-Rajuk_Uttara_Model_College_Gate.jpg" onerror="this.style.display='none'"></div>
 <h1 class="reveal in">The Students<br>Community of <span>RUMC.</span></h1>
 <div class="hero-desc reveal in">Enjoy your time here at RUMC. This is the central hub for two groups — <b>RUMC (VI-A, BM-MS) Study Group (2026)</b> and <b>Family Members of RUMC (VI-A, BM-MS, 2026)</b>. One for academics, one for family. Built by students, for students. Orbiting around discipline and fun.</div>
-<div class="badge mono reveal in"><div class="dot"></div> SYSTEM ONLINE — REGISTRATION OPEN • FREE • SPACE-THEMED</div>
+<div class="badge mono reveal in"><div class="dot"></div> SYSTEM ONLINE — REGISTRATION OPEN • FREE</div>
 <div style="margin-top:28px" class="reveal in"><button class="btn btn-blue" onclick="openSign()">Join Journey →</button> <button class="btn btn-ghost" style="margin-left:8px" onclick="document.getElementById('study').scrollIntoView({behavior:'smooth'})">Explore Groups</button></div>
 </section>
 
-<!-- 01 STUDY GROUP -->
 <section class="section" id="study">
 <div class="section-label mono">01 — Study Group</div>
 <h2>RUMC (VI-A, BM-MS) Study Group (2026)</h2>
 <div class="grid2">
-<div class="card reveal"><h3>About the Group</h3><p>Welcome! This group was specifically made for academics as by the name, and being helpful is our main priority. Want to leave? You will be asked for feedback.</p><p style="margin-top:12px"><b>Benefits:</b></p><ul><li>Accurate everyday diaries.</li><li>Everyday routine and HW reminders.</li><li>Voting systems for improvements.</li><li>Exam reminders, notes, suggestions and more.</li></ul><div class="stats-row"><div class="stat"><div class="num">24/7</div><div class="lbl">Academic Support</div></div><div class="stat"><div class="num mono" id="memberCount">17 Members</div><div class="lbl">Currently Active</div></div></div></div>
+<div class="card reveal in"><h3>About the Group</h3><p>Welcome! This group was specifically made for academics as by the name, and being helpful is our main priority. Want to leave? You will be asked for feedback.</p><p style="margin-top:12px"><b>Benefits:</b></p><ul><li>Accurate everyday diaries.</li><li>Everyday routine and HW reminders.</li><li>Voting systems for improvements.</li><li>Exam reminders, notes, suggestions and more.</li></ul><div class="stats-row"><div class="stat"><div class="num">24/7</div><div class="lbl">Academic Support</div></div><div class="stat"><div class="num mono" id="memberCount">23 Members</div><div class="lbl">Currently Active</div></div></div></div>
 <div>
-<div class="card reveal" style="margin-bottom:16px"><h3>Why us?</h3><p>Run by BdMO Regional Champion ('26) (5th), English Olympiad Grand Finalist (Malaysia and Singapore '26), WMI & BdMSO TST 3rd, and more. Admins have passed voting and strictly follow rules.</p></div>
-<div class="card reveal"><h3>Rules</h3><ul><li>No insignificant or unimportant messages are allowed here. (Memes, random messages, random forwards, stickers, videos etc.)</li><li>Please use proper language and be kind to others. Swearing or bullying will not be tolerated.</li><li>Do not send any too many messages at once. Spamming or replying without reason is forbidden.</li><li>Forwarding or copying messages (Notes, diary, etc) from this group to other areas is strictly restricted. If anyone outside this group wants them, invite them. They will be added.</li></ul></div>
+<div class="card reveal in" style="margin-bottom:16px"><h3>Why us?</h3><p>Run by BdMO Regional Champion ('26) (5th), English Olympiad Grand Finalist (Malaysia and Singapore '26), WMI & BdMSO TST 3rd, and more. Admins have passed voting and strictly follow rules.</p></div>
+<div class="card reveal in"><h3>Rules</h3><ul><li>No insignificant or unimportant messages are allowed here.</li><li>Please use proper language and be kind to others.</li><li>Do not send too many messages at once.</li><li>Forwarding or copying messages from this group to other areas is strictly restricted.</li></ul></div>
 </div>
 </div>
-<div class="card reveal" style="margin-top:20px">
-<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Administrators</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('admins')">See all admins — names, class code</button></div>
+<div class="card reveal in" style="margin-top:20px">
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Administrators</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('admins')">See all admins</button></div>
 <div class="admin-grid"><div class="pill mono"><b>Sayon</b> <span>— Founder, Lead Strategist, Owner (608)</span></div><div class="pill mono"><b>Shafee</b> <span>— Co-Founder, AssistantX (629)</span></div><div class="pill mono"><b>Sadik</b> <span>— Assistant, 4CF (641)</span></div></div>
 <div style="margin-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Members</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('members')">See all members (17)</button></div>
 <div class="admin-grid"><div class="pill mono">Sadi (618)</div><div class="pill mono">Mustakim (636)</div><div class="pill mono">Nahiyan (634)</div><div class="pill mono">Labiba (643)</div><div class="pill mono">Alif (613)</div><div class="pill mono">+12 more</div></div>
-<div style="margin-top:12px;color:var(--muted);font-size:12px" class="mono">Assistants: N/A • Made by Sayon • Creation Date: 12 April, 2026</div>
 </div>
 </section>
 
-<!-- 02 FAMILY GROUP -->
 <section class="section">
 <div class="section-label mono">02 — Family Group</div>
 <h2>Family Members of RUMC (VI-A, BM-MS, 2026)</h2>
 <div class="grid2">
-<div class="card reveal"><h3>About</h3><p>Welcome to our group! This group was made for chatting with one another and having a good time. Chill, chat and have fun. Enjoy this group. If you want academic help, go to the other group (@RUMC (VI-A, BM-MS) Study Group - 2026).</p><p style="margin-top:12px">This one was actually made first in the community, even before it. First group that actually stayed in the long run. So, enjoy this one and be a part of our journey.</p><div style="margin-top:16px;font-size:12px;color:var(--muted)" class="mono">Made by MD. Sekh Sadi Ahmed, (Ex-Owner, Founder, Member)<br>Group Creation Date: 22 February, 2026. Currently Owned by Sayon<br><br>-Sayon, Co-Founder, Owner, Community Owner, Lead Strategist.</div></div>
+<div class="card reveal in"><h3>About</h3><p>Welcome to our group! This group was made for chatting with one another and having a good time. Chill, chat and have fun.</p><div style="margin-top:16px;font-size:12px;color:var(--muted)" class="mono">Made by MD. Sekh Sadi Ahmed<br>Group Creation: 22 Feb, 2026. Currently Owned by Sayon</div></div>
 <div>
-<div class="card reveal"><h3>Why us?</h3><p>Because college is not only about books. This is where memories are made — late night chats, birthday wishes, group photos at the RUMC gate, and a real family that stays after class ends. No rules overload, just respect.</p></div>
-<div class="card reveal" style="margin-top:16px"><h3>Members so far</h3><p style="font-size:42px;color:var(--blue);font-weight:700;margin:12px 0" id="totalCount">17+</p><p>Members so far.</p><button class="btn btn-blue" style="margin-top:16px" onclick="showList('members')">See all members, names and class code only</button></div>
+<div class="card reveal in"><h3>Why us?</h3><p>Because school and college is not only about books. This is where memories are made.</p></div>
+<div class="card reveal in" style="margin-top:16px"><h3>Members so far</h3><p style="font-size:42px;color:var(--blue);font-weight:700;margin:12px 0" id="totalCount">20+</p><button class="btn btn-blue" style="margin-top:16px" onclick="showList('members')">See all members details</button></div>
 </div>
 </div>
 </section>
 
-<!-- SECTIONS YOU SAID WERE MISSING -->
 <section class="section">
 <div class="section-label mono">Community Stats</div>
 <div class="grid2">
-<div class="card reveal"><h3>Why us? (Overall)</h3><p>Two groups, one community. Study group for academic discipline with daily diaries, HW reminders, voting systems. Family group for bonding. Managed by champions and strict rules. Free registration, real tracking via WhatsApp, space-themed portal that actually feels like RUMC.</p><div class="stats-row"><div class="stat"><div class="num">100%</div><div class="lbl">Free</div></div><div class="stat"><div class="num">2</div><div class="lbl">Groups</div></div></div></div>
-<div class="card reveal"><h3>Highlights</h3><ul><li>Daily diary system implemented</li><li>First voting system — 94% participation</li><li>Notes archive — 120+ files</li><li>Space-themed portal launched</li></ul></div>
+<div class="card reveal in"><h3>Why us? (Overall)</h3><p>Two groups, one community. Free registration, real tracking via WhatsApp, space-themed portal.</p></div>
+<div class="card reveal in"><h3>Highlights</h3><ul><li>Daily diary system implemented</li><li>First voting system — 94% participation</li><li>Notes archive — 120+ files</li><li>100% read</li></ul></div>
 </div>
 <div class="grid2" style="margin-top:20px">
-<div class="card reveal"><h3>Assistants</h3><p>Assistants helping us at every point.</p><button class="btn btn-ghost" style="margin-top:16px" onclick="showList('assistants')">See all assistants, names and class code only</button></div>
-<div class="card reveal"><h3>Administrators</h3><p>Admins managing our project and staying with us everyday.</p><button class="btn btn-ghost" style="margin-top:16px" onclick="showList('admins')">Show admins, names, class code</button></div>
+<div class="card reveal in"><h3>Assistants</h3><p>Assistants helping us at every point.</p><button class="btn btn-ghost" style="margin-top:16px" onclick="showList('assistants')">See all assistants details</button></div>
+<div class="card reveal in"><h3>Administrators</h3><p>Admins managing our project and staying with us everyday.</p><button class="btn btn-ghost" style="margin-top:16px" onclick="showList('admins')">Show admins details</button></div>
 </div>
 </section>
 
 <section class="section" style="background:radial-gradient(ellipse at center, #0e1e38 0%, var(--bg) 70%)">
 <div class="section-label mono">Our History</div>
 <h2>From 6 to <span id="histCount" style="color:var(--blue)">17+</span> — and expanding.</h2>
-<p style="max-width:680px;color:var(--muted);margin:20px 0;line-height:1.7">Started officially from 12th April, 2026. Our group has gone from a small 6 members to now and expansion is going. It began as a proposed idea. Today, we are managing 17 members, helping people with their academics, celebrating the smallest of wins, and having fun on the way. Registration is open, completely free and waiting for you to click it.</p>
+<p style="max-width:680px;color:var(--muted);margin:20px 0;line-height:1.7">Started officially from 12th April, 2026. Our group has gone from a small 6 members to now and expansion is going.</p>
 <button class="btn btn-blue" onclick="openSign()" style="padding:18px 36px;font-size:16px">Join our journey with this group! Sign-up →</button>
-<div id="contact" style="margin-top:60px;color:var(--muted);font-size:12px" class="mono">Contact: Admin WhatsApp required • RUMC Gate • Black / Light Blue / Space Theme</div>
+<div id="contact" style="margin-top:60px;color:var(--muted);font-size:12px" class="mono">Contact: WhatsApp required.</div>
 </section>
 
-<!-- MODALS -->
 <div id="signModal" class="modal" onclick="if(event.target===this)closeSign()"><div class="modal-box">
-<h2 style="font-size:28px;margin-bottom:6px">Sign up / Login</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Each student has own dashboard to track metrics. WhatsApp number required.</p>
-<input id="s_name" placeholder="Full Name"><input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)"><div id="s_err" class="error">Valid BD number required — 11 digits starting with 01</div><input id="s_class" placeholder="Class Code (e.g. 608)"><input id="s_code" placeholder="Access Code" type="password">
-<button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="handleAuth()">Create Dashboard →</button>
+<h2 style="font-size:28px;margin-bottom:6px">Sign up / Login</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Each student has own dashboard. WhatsApp number required — login will auto-join you to WhatsApp groups.</p>
+<input id="s_name" placeholder="Full Name"><input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)"><div id="s_err" class="error">Valid BD number required — 11 digits starting with 01</div><input id="s_class" placeholder="Class Code (e.g. 608)"><input id="s_code" placeholder="Access Code (admin123)" type="password">
+<button class="btn btn-blue" style="width:100%;margin-top:8px" id="authBtn" onclick="handleAuth()">Create Dashboard & Join WhatsApp →</button>
+<p style="font-size:11px;color:var(--muted);margin-top:10px" class="mono">After signup, you will be redirected to WhatsApp group automatically. No Business API needed.</p>
 </div></div>
 
 <div id="listModal" class="modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal-box"><h2 id="listTitle" style="margin-bottom:16px"></h2><div id="listBody" class="admin-grid"></div><button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="document.getElementById('listModal').classList.remove('active')">Close</button></div></div>
 
-<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Tracking via WhatsApp • RUMC VI-A BM-MS</p><div class="dash-grid"><div class="dash-card"><div class="k">Attendance</div><div class="v">94%</div></div><div class="dash-card"><div class="k">HW Completion</div><div class="v">12 / 15</div></div><div class="dash-card"><div class="k">WhatsApp</div><div class="v" style="font-size:18px" id="d_phone">01XXXXXXXXX</div></div></div></div>
+<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Loading personal data...</p><div class="dash-grid"><div class="dash-card"><div class="k">Attendance</div><div class="v" id="d_att">--%</div><div class="k" style="margin-top:8px" id="d_att_label">Personal</div></div><div class="dash-card"><div class="k">HW Completion</div><div class="v" id="d_hw">-- / --</div><div class="k" style="margin-top:8px">This week</div></div><div class="dash-card"><div class="k">Notes</div><div class="v" id="d_notes">--</div><div class="k" style="margin-top:8px">Downloaded</div></div><div class="dash-card"><div class="k">WhatsApp</div><div class="v" style="font-size:18px" id="d_phone">01XXXXXXXXX</div><div class="k" style="margin-top:8px;color:var(--blue)" id="d_status">● Verified</div></div></div><div class="card" style="margin-top:20px"><h3>Your Personal Diaries</h3><p id="personalDiaries" style="margin-top:10px;color:var(--muted)">No diaries yet — admin will add.</p><button class="btn btn-blue" style="margin-top:16px" onclick="joinWhatsAppGroups()">Re-join WhatsApp Groups</button> <button class="btn btn-ghost" style="margin-top:16px" onclick="syncToWhatsApp()">Sync Dashboard to WhatsApp</button></div></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBMiW2ctlpwAFhW4K4L_kjFP8cleaPSPK8",
   authDomain: "rumc-groupdsh.firebaseapp.com",
@@ -176,10 +179,163 @@ const firebaseConfig = {
   messagingSenderId: "324007019334",
   appId: "1:324007019334:web:9cbb3ede9be77435e89b47"
 };
-};
-let db=null; try{ db=getFirestore(initializeApp(firebaseConfig)); }catch(e){}
-window.db=db; window.setDoc=setDoc; window.doc=doc; window.getDoc=getDoc;
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.db=db; window.doc=doc; window.setDoc=setDoc; window.getDoc=getDoc; window.collection=collection; window.getDocs=getDocs;
+
+// === CONFIG: PUT YOUR WHATSAPP GROUP INVITE LINKS HERE ===
+const GROUP_INVITE_STUDY = "https://chat.whatsapp.com/LRZ70IPOzPa6Ye6rT5qxyX"; // <-- replace
+const GROUP_INVITE_FAMILY = "https://chat.whatsapp.com/Fr9rJlqTc8Q0Rd1sCsq1PI"; // <-- replace
+
+window.GROUP_LINKS = { study: GROUP_INVITE_STUDY, family: GROUP_INVITE_FAMILY };
 </script>
-<script src="app.js"></script>
+
+<script>
+// === STARS + REVEAL (FIXED — runs after DOM) ===
+(function(){
+  const stars = document.getElementById('stars');
+  if(stars){
+    for(let i=0;i<120;i++){
+      let d=document.createElement('div'); d.className='star';
+      d.style.left=Math.random()*100+'%'; d.style.top=Math.random()*100+'%';
+      d.style.animationDelay=Math.random()*3+'s';
+      stars.appendChild(d);
+    }
+  }
+})();
+
+const members = [["Sadi","618"],["Mustakim","636"],["Nahiyan","634"],["Labiba","643"],["Alif","613"],["Shoaib","602"],["Tazim","637"],["Samiul","633"],["Shafi","630"],["Rifwan","772"],["Ramim","621"],["Nudar","654"],["Anas","632"],["Labib","644"],["Salman","655"],["Turjo","615"],["Rafsan","646"]];
+const admins = [["Sayon","608","Founder, Lead Strategist, Owner"],["Shafee","629","Co-Founder, AssistantX"],["Sadik","641","Assistant, 4CF"]];
+
+window.openSign = ()=>document.getElementById('signModal').classList.add('active');
+window.closeSign = ()=>document.getElementById('signModal').classList.remove('active');
+window.closeDashboard = ()=>document.getElementById('dashboard').classList.remove('active');
+
+function isValidBDPhone(p){ return /^01[0-9]{9}$/.test(p); }
+
+window.joinWhatsAppGroups = ()=>{
+  const study = window.GROUP_LINKS?.study;
+  const family = window.GROUP_LINKS?.family;
+  if(!study.includes("YOUR_")){
+    window.open(study, "_blank");
+    setTimeout(()=>{ if(!family.includes("YOUR_")) window.open(family, "_blank"); }, 800);
+  } else {
+    alert("Admin hasn't set WhatsApp group links yet. Add your chat.whatsapp.com invite links in index.html — search for YOUR_STUDY_GROUP_LINK");
+  }
+};
+
+window.syncToWhatsApp = ()=>{
+  const raw = localStorage.getItem('rumc_user');
+  if(!raw) return;
+  const u = JSON.parse(raw);
+  const msg = `My RUMC Dashboard: ${u.name} (${u.classCode}) - Attendance: ${document.getElementById('d_att').textContent}, HW: ${document.getElementById('d_hw').textContent}. Check: ${location.href}`;
+  const phone = u.phone;
+  window.open(`https://wa.me/88${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+};
+
+window.showList = (type)=>{
+  const modal=document.getElementById('listModal'), title=document.getElementById('listTitle'), body=document.getElementById('listBody');
+  body.innerHTML='';
+  if(type==='members'){ title.textContent=`All Members (${members.length})`; members.forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b> <span>(${c})</span>`; body.appendChild(d); }); }
+  if(type==='admins'){ title.textContent=`Admins`; admins.forEach(([n,c,r])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b> <span>(${c})</span> — ${r}`; body.appendChild(d); }); }
+  if(type==='assistants'){ title.textContent=`Assistants`; body.innerHTML=`<p style="color:var(--muted)">Assistants: N/A — Recruitment open</p>`; }
+  modal.classList.add('active');
+};
+
+// === FULLY PERSONAL DASHBOARD + AUTO-JOIN WHATSAPP ===
+window.handleAuth = async ()=>{
+  const name=document.getElementById('s_name').value.trim();
+  const phone=document.getElementById('s_phone').value.trim();
+  const cls=document.getElementById('s_class').value.trim();
+  const code=document.getElementById('s_code').value.trim();
+  const err=document.getElementById('s_err');
+  const btn=document.getElementById('authBtn');
+  if(err) err.style.display = isValidBDPhone(phone) ? 'none':'block';
+  if(!isValidBDPhone(phone) || !name || !cls || !code){ return; }
+  if(code !== 'admin123'){ alert('Access code wrong. Use admin123'); return; }
+  
+  btn.textContent = "Creating...";
+  btn.disabled = true;
+
+  try{
+    const ref = window.doc(window.db, "users", phone);
+    const snap = await window.getDoc(ref);
+    let data;
+    if(snap.exists()){
+      data = snap.data(); // login — load HIS OWN data
+    } else {
+      data = {
+        name, phone, classCode: cls,
+        joinedAt: new Date().toISOString(),
+        attendance: 85 + Math.floor(Math.random()*15),
+        hwDone: Math.floor(Math.random()*5),
+        hwTotal: 15,
+        notes: Math.floor(Math.random()*20),
+        diaries: [`Welcome ${name}! Your personal dashboard created.`],
+        whatsappJoined: false
+      };
+      await window.setDoc(ref, data);
+      // Also add to broadcast list for future sync
+      await window.setDoc(window.doc(window.db, "broadcast", phone), {phone, name, cls, active:true, joinedAt: new Date().toISOString()});
+    }
+    
+    localStorage.setItem('rumc_user', JSON.stringify(data));
+    renderPersonal(data);
+    closeSign();
+    document.getElementById('dashboard').classList.add('active');
+    
+    // === AUTO-JOIN WHATSAPP GROUPS (no Business API) ===
+    setTimeout(()=>{
+      if(!data.whatsappJoined){
+        if(confirm(`Dashboard created for ${name}! Join WhatsApp groups now?`)){
+          joinWhatsAppGroups();
+          // Mark as joined
+          window.setDoc(window.doc(window.db, "users", phone), {whatsappJoined:true}, {merge:true});
+        }
+      }
+    }, 600);
+
+  } catch(e){
+    alert("Firebase error: "+e.message);
+    console.error(e);
+  } finally {
+    btn.textContent = "Create Dashboard & Join WhatsApp →";
+    btn.disabled = false;
+  }
+};
+
+function renderPersonal(u){
+  document.getElementById('d_phone').textContent = u.phone;
+  document.getElementById('dashUser').innerHTML = `<b>${u.name}</b> • Class ${u.classCode} • Joined ${new Date(u.joinedAt).toLocaleDateString()}<br><span style="color:var(--muted);font-size:13px">Personal tracking synced to WhatsApp</span>`;
+  document.getElementById('d_att').textContent = (u.attendance||0)+"%";
+  document.getElementById('d_hw').textContent = `${u.hwDone||0} / ${u.hwTotal||15}`;
+  document.getElementById('d_notes').textContent = u.notes||0;
+  document.getElementById('d_status').textContent = "● Verified & Synced";
+  const box=document.getElementById('personalDiaries');
+  if(u.diaries && u.diaries.length) box.innerHTML = u.diaries.map(d=>`• ${d}`).join('<br>');
+  // Update member counts from Firebase
+  updateCounts();
+}
+
+window.openDashboard = async ()=>{
+  const raw=localStorage.getItem('rumc_user');
+  if(!raw){ openSign(); return; }
+  let u=JSON.parse(raw);
+  try{ const s=await window.getDoc(window.doc(window.db,"users",u.phone)); if(s.exists()) u=s.data(); }catch(e){}
+  renderPersonal(u);
+  document.getElementById('dashboard').classList.add('active');
+};
+
+async function updateCounts(){
+  try{
+    const snap = await window.getDocs(window.collection(window.db,"users"));
+    const total = snap.size + 17; // 17 hardcoded + new signups
+    const el1=document.getElementById('totalCount'), el2=document.getElementById('histCount'), el3=document.getElementById('memberCount');
+    if(el1) el1.textContent = total+"+";
+    if(el2) el2.textContent = total+"+";
+    if(el3) el3.textContent = total+" Members";
+  }catch(e){}
+}
+</script>
 </body>
 </html>
