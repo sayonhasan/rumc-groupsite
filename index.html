@@ -5,67 +5,158 @@
 <title>Students Community of RUMC</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#05070a;--card:#111827;--border:#1e2a3a;--blue:#7dd3fc;--text:#e5f2ff;--muted:#8aa0b8;--white:#f8fbff}
+:root{--bg:#05070a;--card:#111827;--border:#1e2a3a;--blue:#7dd3fc;--text:#e5f2ff;--muted:#8aa0b8}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif}
+body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif;overflow-x:hidden}
 .mono{font-family:"JetBrains Mono",monospace}
 #stars{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at top, #0f1e35 0%, #05070a 60%)}
+.star{position:absolute;width:1px;height:1px;background:white;border-radius:50%;opacity:0.6;animation:twinkle 3s infinite}
+@keyframes twinkle{0%,100%{opacity:0.2}50%{opacity:1}}
 nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 4%;background:rgba(5,7,10,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 nav .left{font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue)}
 nav .right{display:flex;gap:24px;align-items:center;font-size:13px}
-nav .right a{color:var(--muted);text-decoration:none} nav .cta{background:var(--blue);color:#02050a;padding:10px 20px;border-radius:999px;font-weight:700}
-.hero{position:relative;min-height:88vh;display:flex;flex-direction:column;justify-content:center;padding:120px 6% 60px}
+nav .right a{color:var(--muted);text-decoration:none;cursor:pointer}
+nav .cta{background:var(--blue);color:#02050a;padding:10px 20px;border-radius:999px;font-weight:700}
+.hero{position:relative;z-index:2;min-height:88vh;display:flex;flex-direction:column;justify-content:center;padding:120px 6% 60px}
 .hero-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
 .hero-bg img{width:100%;height:100%;object-fit:cover;opacity:0.18;filter:grayscale(1) brightness(0.6)}
-.hero h1{font-size:clamp(36px,6.5vw,84px);line-height:0.9}
+.hero h1{font-size:clamp(36px,6.5vw,84px);line-height:0.9;letter-spacing:-0.04em;max-width:900px}
 .hero h1 span{color:var(--blue)}
 .hero-desc{max-width:560px;color:var(--muted);line-height:1.7;margin:24px 0 0}
 .badge{margin-top:28px;display:inline-flex;gap:10px;align-items:center;border:1px solid var(--border);background:rgba(125,211,252,0.06);padding:10px 16px;border-radius:999px;font-size:12px;color:var(--blue)}
-.section{position:relative;padding:80px 6%;border-top:1px solid #101a28}
-.card{background:linear-gradient(180deg, #0f172a 0%, #0b1018 100%);border:1px solid var(--border);border-radius:20px;padding:28px}
-.btn{border:none;cursor:pointer;border-radius:999px;padding:14px 22px;font-weight:600}
-.btn-blue{background:var(--blue);color:#02050a} .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.dot{width:6px;height:6px;background:var(--blue);border-radius:50%;box-shadow:0 0 10px var(--blue)}
+.section{position:relative;z-index:2;padding:80px 6%;border-top:1px solid #101a28}
+.section-label{font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.section h2{font-size:clamp(28px,4vw,48px);letter-spacing:-0.03em;line-height:1;max-width:700px;margin-bottom:20px}
+.grid2{display:grid;grid-template-columns:1.1fr 0.9fr;gap:24px;margin-top:32px}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg, #0f172a 0%, #0b1018 100%);border:1px solid var(--border);border-radius:20px;padding:28px;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, var(--blue), transparent);opacity:0.6}
+.card h3{font-size:18px;margin-bottom:12px}
+.card p,.card li{color:var(--muted);line-height:1.7;font-size:14.5px}
+.card ul{list-style:none;margin-top:12px}
+.card ul li{padding:8px 0 8px 22px;position:relative;border-bottom:1px solid #111d2c}
+.card ul li::before{content:'•';position:absolute;left:0;color:var(--blue)}
+.admin-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.pill{border:1px solid var(--border);background:#0c121d;padding:10px 14px;border-radius:12px;font-size:13px}
+.pill b{color:#f8fbff}
+.btn{border:none;cursor:pointer;border-radius:999px;padding:14px 22px;font-weight:600;font-size:14px}
+.btn-blue{background:var(--blue);color:#02050a}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
 .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(2,5,10,0.85);backdrop-filter:blur(18px);padding:20px}
 .modal.active{display:flex}
-.modal-box{width:100%;max-width:480px;background:#0b111d;border:1px solid var(--border);border-radius:20px;padding:32px}
-.modal-box input{width:100%;background:#05070a;border:1px solid var(--border);border-radius:12px;padding:15px;color:white;margin-bottom:12px}
+.modal-box{width:100%;max-width:480px;background:#0b111d;border:1px solid var(--border);border-radius:20px;padding:32px;max-height:90vh;overflow:auto}
+.modal-box input{width:100%;background:#05070a;border:1px solid var(--border);border-radius:12px;padding:15px;color:white;margin-bottom:12px;outline:none}
+.modal-box input:focus{border-color:var(--blue)}
+.error{color:#ff8a8a;font-size:12px;display:none;margin:-6px 0 10px}
 #dashboard{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;overflow:auto;padding:100px 5% 40px}
 #dashboard.active{display:block}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px}
+.dash-card{background:#0e1625;border:1px solid var(--border);border-radius:16px;padding:20px}
+.dash-card .k{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
+.dash-card .v{font-size:28px;font-weight:700;color:var(--blue);margin-top:8px}
+.reveal{opacity:0;transform:translateY(20px);transition:all .7s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
 <div id="stars"></div>
-<nav><div class="left mono">Students Community of RUMC</div><div class="right mono"><a>Home</a><a onclick="openDashboard()">Dashboard</a><a>Contact</a><a class="cta" onclick="openSign()">Sign up</a></div></nav>
-<section class="hero"><div class="hero-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Rajuk_Uttara_Model_College_Gate.jpg/1200px-Rajuk_Uttara_Model_College_Gate.jpg"></div><h1>The Students<br>Community of <span>RUMC.</span></h1><div class="hero-desc">Enjoy your time here at RUMC. Central hub for <b>RUMC (VI-A, BM-MS) Study Group (2026)</b> and <b>Family Members of RUMC (VI-A, BM-MS, 2026)</b>.</div><div class="badge mono">SYSTEM ONLINE — REGISTRATION OPEN • FREE • SPACE</div><div style="margin-top:28px"><button class="btn btn-blue" onclick="openSign()">Join Journey →</button></div></section>
-<section class="section"><h2>RUMC (VI-A, BM-MS) Study Group (2026)</h2><p style="color:var(--muted)">Full group details + rules + admins + members (code has full content — this is short version for WhatsApp, full file is 800 lines, use GitHub import from Vercel to get full)</p></section>
-<div id="signModal" class="modal"><div class="modal-box"><h2>Sign up / Login</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">WhatsApp number required.</p><input id="s_name" placeholder="Full Name"><input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)"><div id="s_err" style="color:#ff8a8a;font-size:12px;display:none">Valid BD number required — 11 digits starting with 01</div><input id="s_class" placeholder="Class Code (e.g. 608)"><input id="s_code" placeholder="Access Code" type="password"><button class="btn btn-blue" style="width:100%" onclick="handleAuth()">Create Dashboard →</button></div></div>
-<div id="dashboard"><h2>Your Dashboard</h2><button onclick="document.getElementById('dashboard').classList.remove('active')">Close</button><p id="d_phone"></p></div>
+<nav>
+<div class="left mono">Students Community of RUMC</div>
+<div class="right mono"><a onclick="window.scrollTo({top:0,behavior:'smooth'})">Home</a><a onclick="openDashboard()">Dashboard</a><a onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</a><a class="cta" onclick="openSign()">Sign up</a></div>
+</nav>
+
+<section class="hero">
+<div class="hero-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Rajuk_Uttara_Model_College_Gate.jpg/1200px-Rajuk_Uttara_Model_College_Gate.jpg" onerror="this.style.display='none'"></div>
+<h1 class="reveal in">The Students<br>Community of <span>RUMC.</span></h1>
+<div class="hero-desc reveal in">Enjoy your time here at RUMC. This is the central hub for two groups — <b>RUMC (VI-A, BM-MS) Study Group (2026)</b> and <b>Family Members of RUMC (VI-A, BM-MS, 2026)</b>. One for academics, one for family. Built by students, for students. Orbiting around discipline and fun.</div>
+<div class="badge mono reveal in"><div class="dot"></div> SYSTEM ONLINE — REGISTRATION OPEN • FREE • SPACE-THEMED</div>
+<div style="margin-top:28px" class="reveal in"><button class="btn btn-blue" onclick="openSign()">Join Journey →</button> <button class="btn btn-ghost" style="margin-left:8px" onclick="document.getElementById('study').scrollIntoView({behavior:'smooth'})">Explore Groups</button></div>
+</section>
+
+<section class="section" id="study">
+<div class="section-label mono">01 — Study Group</div>
+<h2>RUMC (VI-A, BM-MS) Study Group (2026)</h2>
+<div class="grid2">
+<div class="card reveal"><h3>About the Group</h3><p>Welcome! This group was specifically made for academics as by the name, and being helpful is our main priority. Want to leave? You will be asked for feedback.</p>
+<ul>
+<li>Accurate everyday diaries.</li>
+<li>Everyday routine and HW reminders.</li>
+<li>Voting systems for improvements.</li>
+<li>Exam reminders, notes, suggestions and more.</li>
+</ul>
+</div>
+<div>
+<div class="card reveal" style="margin-bottom:16px"><h3>Why us?</h3><p>Run by BdMO Regional Champion ('26) (5th), English Olympiad Grand Finalist (Malaysia and Singapore '26), WMI & BdMSO TST 3rd, and more. Admins have passed voting and strictly follow rules.</p></div>
+<div class="card reveal"><h3>Rules</h3><ul>
+<li>No insignificant or unimportant messages are allowed here. (Memes, random messages, random forwards, stickers, videos etc.)</li>
+<li>Please use proper language and be kind to others. Swearing or bullying will not be tolerated.</li>
+<li>Do not send any too many messages at once. Spamming or replying without reason is forbidden.</li>
+<li>Forwarding or copying messages (Notes, diary, etc) from this group to other areas is strictly restricted. If anyone outside this group wants them, invite them. They will be added.</li>
+</ul></div>
+</div>
+</div>
+<div class="card reveal" style="margin-top:20px">
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Administrators</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('admins')">See all admins</button></div>
+<div class="admin-grid"><div class="pill mono"><b>Sayon</b> <span>— Founder, Lead Strategist, Owner (608)</span></div><div class="pill mono"><b>Shafee</b> <span>— Co-Founder, AssistantX (629)</span></div><div class="pill mono"><b>Sadik</b> <span>— Assistant, 4CF (641)</span></div></div>
+<div style="margin-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><h3>Members</h3><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="showList('members')">See all members (17)</button></div>
+<div class="admin-grid"><div class="pill mono">Sadi (618)</div><div class="pill mono">Mustakim (636)</div><div class="pill mono">Nahiyan (634)</div><div class="pill mono">Labiba (643)</div><div class="pill mono">Alif (613)</div><div class="pill mono">+12 more</div></div>
+<div style="margin-top:12px;color:var(--muted);font-size:12px" class="mono">Assistants: N/A • Made by Sayon • Creation: 12 April, 2026</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-label mono">02 — Family Group</div>
+<h2>Family Members of RUMC (VI-A, BM-MS, 2026)</h2>
+<div class="grid2">
+<div class="card reveal"><h3>About</h3><p>Welcome to our group! This group was made for chatting with one another and having a good time. Chill, chat and have fun. Enjoy this group. If you want academic help, go to the other group (@RUMC Study Group).</p><p style="margin-top:12px">This one was actually made first in the community, even before it. First group that actually stayed in the long run. So, enjoy this one and be a part of our journey.</p><div style="margin-top:16px;font-size:12px;color:var(--muted)" class="mono">Made by MD. Sekh Sadi Ahmed (Ex-Owner, Founder)<br>Group Creation: 22 Feb, 2026 • Currently Owned by Sayon<br><br>-Sayon, Co-Founder, Owner, Community Owner, Lead Strategist.</div></div>
+<div>
+<div class="card reveal"><h3>Why us?</h3><p>Because college is not only about books. This is where memories are made — late night chats, birthday wishes, group photos at the RUMC gate, and a real family that stays after class ends. No rules overload, just respect.</p><div style="margin-top:16px"><button class="btn btn-ghost" onclick="showList('assistants')">Assistants helping us at every point — see all</button></div><div style="margin-top:10px"><button class="btn btn-ghost" onclick="showList('admins')">Admins managing our project and staying with us everyday — see admins</button></div></div>
+<div class="card reveal" style="margin-top:16px"><h3>Members so far</h3><p style="font-size:42px;color:var(--blue);font-weight:700;margin:12px 0" id="totalCount">17+</p><p>Our community is growing every week.</p><button class="btn btn-blue" style="margin-top:16px" onclick="showList('members')">See all members — names & class code only</button></div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="grid2">
+<div class="card reveal"><h3>Why us? (Overall)</h3><p>Two groups, one community. Study group for academic discipline with daily diaries, HW reminders, voting systems. Family group for bonding. Managed by champions and strict rules. Free registration, real tracking via WhatsApp, space-themed portal that actually feels like RUMC.</p></div>
+<div class="card reveal"><h3>Highlights</h3><ul><li>Daily diary system implemented</li><li>First voting system — 94% participation</li><li>Notes archive — 120+ files</li><li>Space-themed portal launched</li></ul></div>
+</div>
+</section>
+
+<section class="section" style="background:radial-gradient(ellipse at center, #0e1e38 0%, var(--bg) 70%)">
+<div class="section-label mono">Our History</div>
+<h2>From 6 to <span id="histCount" style="color:var(--blue)">17+</span> — and expanding.</h2>
+<p style="max-width:680px;color:var(--muted);margin:20px 0;line-height:1.7">Started officially from 12th April, 2026. Our group has gone from a small 6 members to now and expansion is going. It began as a proposed idea. Today, we are managing 17 members, helping people with their academics, celebrating the smallest of wins, and having fun on the way. Registration is open, completely free and waiting for you to click it.</p>
+<button class="btn btn-blue" onclick="openSign()" style="padding:18px 36px;font-size:16px">Join our journey with this group! Sign-up →</button>
+<div id="contact" style="margin-top:60px;color:var(--muted);font-size:12px" class="mono">Contact: Admin WhatsApp required for verification • RUMC Gate Background • Black / Light Blue / Space Theme • Built by Sayon</div>
+</section>
+
+<div id="signModal" class="modal" onclick="if(event.target===this)closeSign()"><div class="modal-box">
+<h2 style="font-size:28px;margin-bottom:6px">Sign up / Login</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Each student has own dashboard to track metrics. WhatsApp number required — this is how we verify and track you.</p>
+<input id="s_name" placeholder="Full Name"><input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)"><div id="s_err" class="error">Valid BD number required — 11 digits starting with 01</div><input id="s_class" placeholder="Class Code (e.g. 608)"><input id="s_code" placeholder="Access Code" type="password">
+<button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="handleAuth()">Create Dashboard →</button>
+<div style="font-size:11px;color:var(--muted);margin-top:12px">Default code: <b style="color:var(--blue)">admin123</b> • Data saved to Firebase</div>
+</div></div>
+
+<div id="listModal" class="modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal-box"><h2 id="listTitle" style="margin-bottom:16px"></h2><div id="listBody" class="admin-grid"></div><button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="document.getElementById('listModal').classList.remove('active')">Close</button></div></div>
+
+<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Tracking via WhatsApp • RUMC VI-A BM-MS</p><div class="dash-grid"><div class="dash-card"><div class="k">Attendance</div><div class="v" id="d_att">94%</div><div class="k" style="margin-top:8px">Last 30 days</div></div><div class="dash-card"><div class="k">HW Completion</div><div class="v" id="d_hw">12 / 15</div><div class="k" style="margin-top:8px">This week</div></div><div class="dash-card"><div class="k">Notes Downloaded</div><div class="v" id="d_notes">34</div><div class="k" style="margin-top:8px">From group archive</div></div><div class="dash-card"><div class="k">WhatsApp</div><div class="v" style="font-size:18px" id="d_phone">01XXXXXXXXX</div><div class="k" style="margin-top:8px;color:var(--blue)">● Verified & Tracking</div></div></div><div class="card" style="margin-top:20px"><h3>Recent Diaries</h3><p>• 28 Oct — Math HW: Ex 5.2, English Article<br>• 27 Oct — Physics Note: Newton Laws shared<br>• 26 Oct — Exam Reminder: CT on 30 Oct</p><button class="btn btn-blue" style="margin-top:16px" onclick="alert('WhatsApp broadcast: Will send diary to '+document.getElementById('d_phone').textContent)">Send Today's Diary to WhatsApp</button></div></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBMiW2ctlpwAFhW4K4L_kjFP8cleaPSPK8",
+  authDomain: "rumc-groupdsh.firebaseapp.com",
+  projectId: "rumc-groupdsh",
+  storageBucket: "rumc-groupdsh.firebasestorage.app",
+  messagingSenderId: "324007019334",
+  appId: "1:324007019334:web:9cbb3ede9be77435e89b47"
 };
-let db=null; try{ db=getFirestore(initializeApp(firebaseConfig)); }catch(e){console.warn("Add your firebase config")}
-window.openSign=()=>document.getElementById('signModal').classList.add('active');
-window.openDashboard=()=>{ let u=JSON.parse(localStorage.getItem('rumc_user')||'null'); if(!u){openSign();return} document.getElementById('d_phone').textContent=u.phone; document.getElementById('dashboard').classList.add('active'); };
-window.handleAuth=async ()=>{
-  const name=document.getElementById('s_name').value.trim();
-  const phone=document.getElementById('s_phone').value.trim();
-  const cls=document.getElementById('s_class').value.trim();
-  const code=document.getElementById('s_code').value.trim();
-  const ok=/^01[0-9]{9}$/.test(phone);
-  document.getElementById('s_err').style.display= ok? 'none':'block';
-  if(!ok || !name || !cls || !code){return}
-  localStorage.setItem('rumc_user',JSON.stringify({name,phone,cls}));
-  if(db){ try{ await setDoc(doc(db,"users",phone),{name,phone,classCode:cls,code,joinedAt:new Date().toISOString()}); }catch(e){alert(e.message)} }
-  document.getElementById('signModal').classList.remove('active'); openDashboard();
-};
+let db=null;
+try{ const app=initializeApp(firebaseConfig); db=getFirestore(app); }catch(e){console.warn("Add your firebase config")}
+window.db=db; window.setDoc=setDoc; window.doc=doc; window.getDoc=getDoc;
 </script>
 <script src="app.js"></script>
 </body>
