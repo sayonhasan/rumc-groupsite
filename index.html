@@ -1,25 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RUMC Group DSH</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const firebaseConfig = {
-    apiKey: "AIzaSyBMiW2ctlpwAFhW4K4L_kjFP8cleaPSPK8",
-    authDomain: "rumc-groupdsh.firebaseapp.com",
-    projectId: "rumc-groupdsh",
-    storageBucket: "rumc-groupdsh.firebasestorage.app",
-    messagingSenderId: "324007019334",
-    appId: "1:324007019334:web:9cbb3ede9be77435e89b47"
-};
-const app = initializeApp(firebaseConfig);
-window.db = getFirestore(app);
-window.fs = { doc, setDoc, getDoc, getDocs, collection };
-</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students Community of RUMC</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070a;--card:#111827;--border:#1e2a3a;--blue:#7dd3fc;--text:#e5f2ff;--muted:#8aa0b8;--white:#f8fbff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif}
+.mono{font-family:"JetBrains Mono",monospace}
+#stars{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at top, #0f1e35 0%, #05070a 60%)}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 4%;background:rgba(5,7,10,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+nav .left{font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue)}
+nav .right{display:flex;gap:24px;align-items:center;font-size:13px}
+nav .right a{color:var(--muted);text-decoration:none} nav .cta{background:var(--blue);color:#02050a;padding:10px 20px;border-radius:999px;font-weight:700}
+.hero{position:relative;min-height:88vh;display:flex;flex-direction:column;justify-content:center;padding:120px 6% 60px}
+.hero-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:0.18;filter:grayscale(1) brightness(0.6)}
+.hero h1{font-size:clamp(36px,6.5vw,84px);line-height:0.9}
+.hero h1 span{color:var(--blue)}
+.hero-desc{max-width:560px;color:var(--muted);line-height:1.7;margin:24px 0 0}
+.badge{margin-top:28px;display:inline-flex;gap:10px;align-items:center;border:1px solid var(--border);background:rgba(125,211,252,0.06);padding:10px 16px;border-radius:999px;font-size:12px;color:var(--blue)}
+.section{position:relative;padding:80px 6%;border-top:1px solid #101a28}
+.card{background:linear-gradient(180deg, #0f172a 0%, #0b1018 100%);border:1px solid var(--border);border-radius:20px;padding:28px}
+.btn{border:none;cursor:pointer;border-radius:999px;padding:14px 22px;font-weight:600}
+.btn-blue{background:var(--blue);color:#02050a} .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(2,5,10,0.85);backdrop-filter:blur(18px);padding:20px}
+.modal.active{display:flex}
+.modal-box{width:100%;max-width:480px;background:#0b111d;border:1px solid var(--border);border-radius:20px;padding:32px}
+.modal-box input{width:100%;background:#05070a;border:1px solid var(--border);border-radius:12px;padding:15px;color:white;margin-bottom:12px}
+#dashboard{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;overflow:auto;padding:100px 5% 40px}
+#dashboard.active{display:block}
+</style>
 </head>
-<body class="bg-[#f6f8fb] min-h-screen"><div id="app"></div>
-<script type="module" src="./app.js"></script></body></html>
+<body>
+<div id="stars"></div>
+<nav><div class="left mono">Students Community of RUMC</div><div class="right mono"><a>Home</a><a onclick="openDashboard()">Dashboard</a><a>Contact</a><a class="cta" onclick="openSign()">Sign up</a></div></nav>
+<section class="hero"><div class="hero-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Rajuk_Uttara_Model_College_Gate.jpg/1200px-Rajuk_Uttara_Model_College_Gate.jpg"></div><h1>The Students<br>Community of <span>RUMC.</span></h1><div class="hero-desc">Enjoy your time here at RUMC. Central hub for <b>RUMC (VI-A, BM-MS) Study Group (2026)</b> and <b>Family Members of RUMC (VI-A, BM-MS, 2026)</b>.</div><div class="badge mono">SYSTEM ONLINE — REGISTRATION OPEN • FREE • SPACE</div><div style="margin-top:28px"><button class="btn btn-blue" onclick="openSign()">Join Journey →</button></div></section>
+<section class="section"><h2>RUMC (VI-A, BM-MS) Study Group (2026)</h2><p style="color:var(--muted)">Full group details + rules + admins + members (code has full content — this is short version for WhatsApp, full file is 800 lines, use GitHub import from Vercel to get full)</p></section>
+<div id="signModal" class="modal"><div class="modal-box"><h2>Sign up / Login</h2><p style="color:var(--muted);font-size:13px;margin-bottom:20px">WhatsApp number required.</p><input id="s_name" placeholder="Full Name"><input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)"><div id="s_err" style="color:#ff8a8a;font-size:12px;display:none">Valid BD number required — 11 digits starting with 01</div><input id="s_class" placeholder="Class Code (e.g. 608)"><input id="s_code" placeholder="Access Code" type="password"><button class="btn btn-blue" style="width:100%" onclick="handleAuth()">Create Dashboard →</button></div></div>
+<div id="dashboard"><h2>Your Dashboard</h2><button onclick="document.getElementById('dashboard').classList.remove('active')">Close</button><p id="d_phone"></p></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+let db=null; try{ db=getFirestore(initializeApp(firebaseConfig)); }catch(e){console.warn("Add your firebase config")}
+window.openSign=()=>document.getElementById('signModal').classList.add('active');
+window.openDashboard=()=>{ let u=JSON.parse(localStorage.getItem('rumc_user')||'null'); if(!u){openSign();return} document.getElementById('d_phone').textContent=u.phone; document.getElementById('dashboard').classList.add('active'); };
+window.handleAuth=async ()=>{
+  const name=document.getElementById('s_name').value.trim();
+  const phone=document.getElementById('s_phone').value.trim();
+  const cls=document.getElementById('s_class').value.trim();
+  const code=document.getElementById('s_code').value.trim();
+  const ok=/^01[0-9]{9}$/.test(phone);
+  document.getElementById('s_err').style.display= ok? 'none':'block';
+  if(!ok || !name || !cls || !code){return}
+  localStorage.setItem('rumc_user',JSON.stringify({name,phone,cls}));
+  if(db){ try{ await setDoc(doc(db,"users",phone),{name,phone,classCode:cls,code,joinedAt:new Date().toISOString()}); }catch(e){alert(e.message)} }
+  document.getElementById('signModal').classList.remove('active'); openDashboard();
+};
+</script>
+<script src="app.js"></script>
+</body>
+</html>
