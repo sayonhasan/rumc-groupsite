@@ -7,79 +7,76 @@
 <style>
 :root{--bg:#05070a;--border:#1e2a3a;--blue:#7dd3fc;--text:#e5f2ff;--muted:#8aa0b8;--red:#ff6b6b;--green:#4ade80}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif}
 .mono{font-family:"JetBrains Mono",monospace}
 #loginBox{max-width:420px;margin:100px auto;background:#0b111d;border:1px solid var(--border);border-radius:20px;padding:32px}
 #loginBox input{width:100%;background:#05070a;border:1px solid var(--border);border-radius:12px;padding:14px;color:white;margin:12px 0}
 .btn{border:none;cursor:pointer;border-radius:999px;padding:10px 18px;font-weight:600;font-size:13px}
 .btn-blue{background:var(--blue);color:#02050a} .btn-ghost{border:1px solid var(--border);background:transparent;color:var(--muted)} .btn-red{border:1px solid #3a1a1a;background:#1a0a0a;color:var(--red)}
-#panel{display:none;min-height:100vh}
+#panel{display:none}
 .header{display:flex;justify-content:space-between;align-items:center;padding:20px 4%;border-bottom:1px solid var(--border);background:#080c14;flex-wrap:wrap;gap:16px}
-.profile{display:flex;gap:16px;align-items:center}
-.avatar{width:48px;height:48px;background:var(--blue);color:#02050a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
-.tableWrap{padding:24px 4%;overflow:auto}
+.avatar{width:48px;height:48px;background:var(--blue);color:#02050a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800}
+.card{background:#0f172a;border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.k{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)}
 table{width:100%;border-collapse:collapse;min-width:760px}
 th{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-align:left;padding:16px 12px;border-bottom:1px solid var(--border)}
 td{padding:14px 12px;border-bottom:1px solid #0f1a28;font-size:14px}
-td.mono{font-size:13px}
+.tableWrap{padding:24px 4%;overflow:auto}
 .status{padding:4px 10px;border-radius:999px;font-size:11px;border:1px solid var(--border)}
-.online{color:var(--green);border-color:rgba(74,222,128,0.3);background:rgba(74,222,128,0.08)}
-.offline{color:var(--muted)}
-.card{background:#0f172a;border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
-.k{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)}
+.online{color:var(--green);border-color:rgba(74,222,128,0.3);background:rgba(74,222,128,0.08)} .offline{color:var(--muted)}
+.grid{padding:0 4%;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:20px}
+.card input{width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0}
+.owner-only{display:none} .admin-only{display:none}
 </style>
 </head>
 <body>
 
 <div id="loginBox">
-<h2 style="font-size:24px">RUMC Admin Access</h2><p class="mono" style="color:var(--muted);font-size:12px;margin:8px 0 20px">Custom profile • Secure • Only owner</p>
-<input id="adminPass" type="password" placeholder="Enter admin pass">
+<h2>RUMC Admin Access</h2><p class="mono" style="color:var(--muted);font-size:12px;margin:8px 0 20px">Owner: adm99eog26 | Shafee: shafee2026 | Sadik: sadik2026</p>
+<input id="adminPass" type="password" placeholder="Enter your admin pass">
 <div id="loginErr" style="color:var(--red);font-size:12px;display:none;margin-bottom:10px">Wrong password</div>
-<button class="btn btn-blue" style="width:100%;padding:14px" onclick="adminLogin()">Unlock Admin Panel →</button>
-<p class="mono" style="color:var(--muted);font-size:10px;margin-top:12px">Pass: adm99eog26 • Profile: Sayon (608)</p>
+<button class="btn btn-blue" style="width:100%;padding:14px" onclick="adminLogin()">Unlock →</button>
 </div>
-<div class="card" style="min-width:280px">
-<div class="k">Set WhatsApp Group Counts (from WhatsApp app)</div>
-<div style="display:flex;gap:8px;margin-top:10px">
-<input id="studyCount" placeholder="Study group members" type="number">
-<input id="familyCount" placeholder="Family group members" type="number">
-<button class="btn btn-blue" onclick="saveCounts()">Save</button>
-</div>
-<p class="mono" style="font-size:10px;color:var(--muted);margin-top:6px">Open WhatsApp → Group → Members → Count → Enter here → Site updates live</p>
-</div>
+
 <div id="panel">
 <div class="header">
-<div class="profile">
-<div class="avatar">S</div>
-<div>
-<div style="font-weight:700">Sayon — Founder, Lead Strategist, Owner <span style="color:var(--blue)">(608)</span></div>
-<div class="mono" style="font-size:11px;color:var(--muted);margin-top:2px">Admin • RUMC VI-A BM-MS • Access: Full • Status: <span style="color:var(--green)">● Online</span></div>
+<div style="display:flex;gap:16px;align-items:center">
+<div class="avatar" id="avatarLetter">S</div>
+<div><div style="font-weight:700" id="adminName">Loading</div><div class="mono" style="font-size:11px;color:var(--muted)" id="adminRole">Role</div></div>
 </div>
-</div>
-<div style="display:flex;gap:8px;flex-wrap:wrap">
-<button class="btn btn-ghost" onclick="location.href='index.html'">← Site</button>
-<button class="btn btn-ghost" onclick="loadUsers()">↻ Refresh</button>
-<button class="btn btn-red" onclick="adminLogout()">Logout</button>
-</div>
+<div style="display:flex;gap:8px"><button class="btn btn-ghost" onclick="location.href='index.html'">← Site</button><button class="btn btn-ghost" onclick="loadUsers()">↻</button><button class="btn btn-red" onclick="adminLogout()">Logout</button></div>
 </div>
 
 <div style="padding:20px 4% 0;display:flex;gap:12px;flex-wrap:wrap">
 <div class="card" style="min-width:160px"><div class="k">Total Users</div><div style="font-size:26px;font-weight:700;color:var(--blue);margin-top:6px" id="totalUsers">0</div></div>
 <div class="card" style="min-width:160px"><div class="k">Online Now</div><div style="font-size:26px;font-weight:700;color:var(--green);margin-top:6px" id="onlineUsers">0</div></div>
-<div class="grid" style="padding:0 4%;margin-bottom:20px">
-<div class="card"><h3>Add Member</h3><div class="k">Format will be: Name: (Code)</div><input id="addMName" placeholder="Name"><input id="addMCode" placeholder="Code e.g. 618"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addMember()">Add Member →</button></div>
-<div class="card"><h3>Add Admin</h3><input id="addAName" placeholder="Name"><input id="addACode" placeholder="Code"><input id="addARole" placeholder="Role e.g. Founder"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addAdmin()">Add Admin →</button></div>
-<div class="card"><h3>Add Assistant</h3><input id="addAsName" placeholder="Name"><input id="addAsCode" placeholder="Code"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addAssistant()">Add Assistant →</button></div>
-<div class="card"><h3>Set WhatsApp Counts</h3><input id="studyCount" type="number" placeholder="Study group members count"><input id="familyCount" type="number" placeholder="Family group members count"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="saveCounts()">Save Counts →</button></div>
+<div class="card owner-only admin-only" style="min-width:320px;flex:1"><div class="k">Broadcast Notice (Admin+)</div><div style="display:flex;gap:8px;margin-top:10px"><input id="broadcastText" placeholder="Notice to all dashboards..."><button class="btn btn-blue" onclick="broadcast()">Send</button></div></div>
+</div>
+
+<div class="grid">
+<div class="card owner-only admin-only"><h3>Add Member</h3><div class="k">Format: Name: (Code)</div><input id="addMName" placeholder="Name"><input id="addMCode" placeholder="Code e.g. 618"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addMember()">Add Member →</button></div>
+<div class="card owner-only"><h3>Add Admin (Owner only)</h3><input id="addAName" placeholder="Name"><input id="addACode" placeholder="Code"><input id="addARole" placeholder="Role"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addAdmin()">Add Admin →</button></div>
+<div class="card owner-only"><h3>Add Assistant (Owner only)</h3><input id="addAsName" placeholder="Name"><input id="addAsCode" placeholder="Code"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addAssistant()">Add Assistant →</button></div>
+<div class="card owner-only"><h3>Set WhatsApp Counts (Owner only)</h3><input id="studyCount" type="number" placeholder="Study group members"><input id="familyCount" type="number" placeholder="Family group members"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="saveCounts()">Save Counts →</button></div>
+<!-- ADD THIS CARD INSIDE .grid — OWNER ONLY SECTION -->
+<div class="card owner-only" style="border-color:var(--blue)">
+<h3>Create Admin Login (Owner only)</h3>
+<div class="k">You set their custom pass — different for each person</div>
+<input id="newAdminName" placeholder="Name e.g. Shafee">
+<input id="newAdminCode" placeholder="Class Code e.g. 629">
+<input id="newAdminPass" placeholder="Set Custom Pass e.g. shafee@629!" type="text">
+<select id="newAdminRole" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0">
+<option value="admin">Admin — Add members + broadcast</option>
+<option value="assistant">Assistant — View only</option>
+</select>
+<button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="createAdminAccount()">Create Login →</button>
+<div id="adminAccountsList" style="margin-top:12px"></div>
+</div>
 </div>
 
 <div class="tableWrap">
-<h3 style="margin-bottom:12px">Database — Everyone's Dashboards</h3>
-<p class="mono" style="color:var(--muted);font-size:11px;margin-bottom:16px">Columns: Code | Full Name | Number | Activity • Attendance & HW coming soon — not yet enabled</p>
-<table>
-<thead><tr><th>Code</th><th>Full Name</th><th>Number</th><th>Activity</th><th>Actions</th></tr></thead>
-<tbody id="tbody"><tr><td colspan="5" style="color:var(--muted);padding:40px;text-align:center">Loading...</td></tr></tbody>
-</table>
+<h3>Database — Code | Full Name | Number | Activity</h3><p class="mono" style="color:var(--muted);font-size:11px;margin:8px 0 16px">Owner sees all actions • Admins limited • Assistants view only</p>
+<table><thead><tr><th>Code</th><th>Full Name</th><th>Number</th><th>Activity</th><th>Actions</th></tr></thead><tbody id="tbody"><tr><td colspan="5" style="padding:40px;text-align:center;color:var(--muted)">Loading...</td></tr></tbody></table>
 </div>
 </div>
 
@@ -95,126 +92,160 @@ const firebaseConfig = {
   appId: "1:324007019334:web:9cbb3ede9be77435e89b47"
 };
 const db = getFirestore(initializeApp(firebaseConfig));
-const ADMIN_PASS = "adm99eog26";
-async function getLists(){ const snap=await getDoc(doc(db,'config','lists')); return snap.exists()?snap.data():{members:[],admins:[],assistants:[]} }
-window.addMember=async()=>{
-  const name=document.getElementById('addMName').value.trim(), code=document.getElementById('addMCode').value.trim();
-  if(!name||!code){alert('Enter name and code');return;}
-  const lists=await getLists();
-  lists.members=lists.members||[]; lists.members.push([name,code]);
-  await setDoc(doc(db,'config','lists'),lists,{merge:true});
-  alert(`Added ${name}: (${code})`); document.getElementById('addMName').value=''; document.getElementById('addMCode').value=''; loadUsers();
+
+// ROLES — you can change passes here anytime
+const ADMIN_ACCOUNTS = {
+  "adm99eog26": { name:"Sayon", code:"608", role:"owner", label:"Founder, Lead Strategist, Owner — Full Access" },
+  "shafee2026": { name:"Shafee", code:"629", role:"admin", label:"Co-Founder — Can add members + broadcast" },
+  "sadik2026": { name:"Sadik", code:"641", role:"assistant", label:"Assistant — View only" }
 };
-window.addAdmin=async()=>{
-  const name=document.getElementById('addAName').value.trim(), code=document.getElementById('addACode').value.trim(), role=document.getElementById('addARole').value.trim();
-  if(!name||!code){alert('Enter');return;}
-  const lists=await getLists(); lists.admins=lists.admins||[]; lists.admins.push([name,code,role]); await setDoc(doc(db,'config','lists'),lists,{merge:true}); alert('Admin added'); loadUsers();
-};
-window.addAssistant=async()=>{
-  const name=document.getElementById('addAsName').value.trim(), code=document.getElementById('addAsCode').value.trim();
-  if(!name||!code){alert('Enter');return;}
-  const lists=await getLists(); lists.assistants=lists.assistants||[]; lists.assistants.push([name,code]); await setDoc(doc(db,'config','lists'),lists,{merge:true}); alert('Assistant added'); loadUsers();
-};
-window.saveCounts=async()=>{
-  const study=parseInt(document.getElementById('studyCount').value)||0, family=parseInt(document.getElementById('familyCount').value)||0;
-  await setDoc(doc(db,'stats','whatsapp'),{study,family,updatedAt:new Date().toISOString()}); alert(`Counts saved: Study ${study}, Family ${family}`);
-};
+let currentAdmin=null;
+
 window.adminLogin = ()=>{
-  const p=document.getElementById('adminPass').value;
-  if(p!==ADMIN_PASS){ document.getElementById('loginErr').style.display='block'; return; }
-  sessionStorage.setItem('rumc_admin_auth','ok'); // session only, not persistent
-  document.getElementById('loginBox').style.display='none';
-  document.getElementById('panel').style.display='block';
-  loadUsers();
+  const p=document.getElementById('adminPass').value.trim();
+  const acc=ADMIN_ACCOUNTS[p];
+  if(!acc){ document.getElementById('loginErr').style.display='block'; return; }
+  currentAdmin=acc;
+  sessionStorage.setItem('rumc_admin_auth', p);
+  showPanel();
 };
 window.adminLogout = ()=>{ sessionStorage.removeItem('rumc_admin_auth'); location.reload(); };
+// CREATE ADMIN ACCOUNTS WITH CUSTOM PASSES - OWNER ONLY
+window.createAdminAccount = async ()=>{
+  if(currentAdmin.role!=='owner'){ alert('Only owner'); return; }
+  const name=document.getElementById('newAdminName').value.trim();
+  const code=document.getElementById('newAdminCode').value.trim();
+  const pass=document.getElementById('newAdminPass').value.trim();
+  const role=document.getElementById('newAdminRole').value;
+  if(!name||!code||!pass){ alert('Enter name, code, pass'); return; }
+  
+  // Save to Firebase: adminAccounts collection, doc id = pass (so login checks by pass)
+  await setDoc(doc(db,'adminAccounts',pass),{
+    name, code, pass, role,
+    createdBy: currentAdmin.name,
+    createdAt: new Date().toISOString(),
+    label: role==='admin' ? 'Custom Admin' : 'Custom Assistant'
+  });
+  
+  alert(`Created! ${name} can now login with pass: ${pass}\nRole: ${role}`);
+  document.getElementById('newAdminName').value='';
+  document.getElementById('newAdminCode').value='';
+  document.getElementById('newAdminPass').value='';
+  loadAdminAccounts();
+};
 
-// Auto-check session (not localStorage, so closes when tab closed)
-if(sessionStorage.getItem('rumc_admin_auth')==='ok'){
+window.loadAdminAccounts = async ()=>{
+  if(currentAdmin.role!=='owner') return;
+  const box=document.getElementById('adminAccountsList');
+  if(!box) return;
+  try{
+    const snap=await getDocs(collection(db,'adminAccounts'));
+    box.innerHTML='<div class="k" style="margin-top:12px">Existing custom logins:</div>';
+    snap.forEach(d=>{
+      const a=d.data();
+      const div=document.createElement('div');
+      div.className='pill mono';
+      div.style.marginTop='6px';
+      div.innerHTML=`<b>${a.name} (${a.code})</b> — Pass: <span style="color:var(--blue)">${a.pass}</span> — Role: ${a.role} <button onclick="deleteAdminAcc('${a.pass}')" style="margin-left:8px;background:#1a0a0a;color:#ff6b6b;border:1px solid #3a1a1a;border-radius:6px;padding:2px 6px;cursor:pointer">X</button>`;
+      box.appendChild(div);
+    });
+  }catch(e){ box.innerHTML='Error loading'; }
+};
+
+window.deleteAdminAcc = async (pass)=>{
+  if(!confirm(`Delete login with pass ${pass}?`)) return;
+  await deleteDoc(doc(db,'adminAccounts',pass));
+  loadAdminAccounts();
+};
+
+// UPDATE LOGIN TO CHECK FIREBASE CUSTOM PASSES TOO
+const originalShowPanel = showPanel;
+window.adminLogin = async ()=>{
+  const p=document.getElementById('adminPass').value.trim();
+  let acc=ADMIN_ACCOUNTS[p];
+  
+  // If not in hardcoded, check Firebase custom accounts
+  if(!acc){
+    try{
+      const snap=await getDoc(doc(db,'adminAccounts',p));
+      if(snap.exists()){
+        const data=snap.data();
+        acc={ name:data.name, code:data.code, role:data.role, label:`${data.name} — Custom ${data.role}` };
+      }
+    }catch(e){}
+  }
+  
+  if(!acc){ document.getElementById('loginErr').style.display='block'; return; }
+  currentAdmin=acc;
+  sessionStorage.setItem('rumc_admin_auth', p);
+  showPanel();
+  if(currentAdmin.role==='owner') setTimeout(loadAdminAccounts,500);
+};
+function showPanel(){
+  if(!currentAdmin) return;
   document.getElementById('loginBox').style.display='none';
   document.getElementById('panel').style.display='block';
+  document.getElementById('adminName').textContent=`${currentAdmin.name} (${currentAdmin.code})`;
+  document.getElementById('adminRole').textContent=currentAdmin.label;
+  document.getElementById('avatarLetter').textContent=currentAdmin.name[0];
+
+  // Show based on role
+  document.querySelectorAll('.owner-only').forEach(el=> el.style.display = currentAdmin.role==='owner' ? 'block' : 'none');
+  document.querySelectorAll('.admin-only').forEach(el=> el.style.display = (currentAdmin.role==='owner' || currentAdmin.role==='admin') ? 'block' : 'none');
+
+  loadUsers();
 }
+
+const saved=sessionStorage.getItem('rumc_admin_auth');
+if(saved && ADMIN_ACCOUNTS[saved]){ currentAdmin=ADMIN_ACCOUNTS[saved]; showPanel(); }
 
 window.loadUsers = async ()=>{
   const tbody=document.getElementById('tbody');
-  tbody.innerHTML='<tr><td colspan="5" style="padding:30px;text-align:center;color:var(--muted)">Loading from Firebase...</td></tr>';
+  tbody.innerHTML='<tr><td colspan="5" style="padding:30px;text-align:center;color:var(--muted)">Loading...</td></tr>';
   try{
     const snap=await getDocs(collection(db,'users'));
     document.getElementById('totalUsers').textContent=snap.size;
-    let online=0;
-    tbody.innerHTML='';
-    if(snap.empty){ tbody.innerHTML='<tr><td colspan="5" style="padding:30px;text-align:center;color:var(--muted)">No users yet</td></tr>'; return; }
+    let online=0; tbody.innerHTML='';
+    if(snap.empty){ tbody.innerHTML='<tr><td colspan="5" style="padding:30px;text-align:center">No users</td></tr>'; return; }
     snap.forEach(d=>{
       const u=d.data();
       const last = u.lastSeen ? new Date(u.lastSeen) : new Date(u.joinedAt);
       const diffMin = (Date.now()-last.getTime())/60000;
-      const isOnline = diffMin < 5;
-      if(isOnline) online++;
-      let activityText, activityClass;
-      if(isOnline){ activityText='● Online now'; activityClass='online'; }
-      else if(diffMin < 60){ activityText=`Active ${Math.floor(diffMin)}m ago`; activityClass='offline'; }
-      else if(diffMin < 1440){ activityText=`Active ${Math.floor(diffMin/60)}h ago`; activityClass='offline'; }
-      else { activityText=`Last: ${last.toLocaleDateString()}`; activityClass='offline'; }
-
+      const isOnline = diffMin < 5; if(isOnline) online++;
+      const actText = isOnline ? '● Online now' : `Active ${Math.floor(diffMin)}m ago`;
+      const actClass = isOnline ? 'online' : 'offline';
+      // Actions based on role
+      let actions='';
+      if(currentAdmin.role==='owner'){
+        actions=`<button class="btn btn-ghost" style="padding:6px 10px;font-size:11px" onclick="viewDash('${u.phone}')">View</button> <button class="btn btn-ghost" style="padding:6px 10px;font-size:11px" onclick="wa('${u.phone}')">WA</button> <button class="btn btn-red" style="padding:6px 10px;font-size:11px" onclick="del('${u.phone}')">Del</button>`;
+      } else if(currentAdmin.role==='admin'){
+        actions=`<button class="btn btn-ghost" style="padding:6px 10px;font-size:11px" onclick="viewDash('${u.phone}')">View</button> <button class="btn btn-ghost" style="padding:6px 10px;font-size:11px" onclick="wa('${u.phone}')">WA</button>`;
+      } else {
+        actions=`<span class="mono" style="color:var(--muted);font-size:11px">View only</span>`;
+      }
       const tr=document.createElement('tr');
-      tr.innerHTML=`
-        <td class="mono" style="color:var(--blue);font-weight:700">${u.classCode||'—'}</td>
-        <td style="font-weight:600">${u.name||'—'}</td>
-        <td class="mono">${u.phone||'—'}</td>
-        <td><span class="status ${activityClass}">${activityText}</span><div class="mono" style="font-size:10px;color:var(--muted);margin-top:4px">Joined: ${new Date(u.joinedAt).toLocaleDateString()}</div></td>
-        <td style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn btn-ghost" style="padding:6px 10px;font-size:11px" onclick="viewDash('${u.phone}')">View</button>
-          <button class="btn btn-ghost" style="padding:6px 10px;font-size:11px" onclick="wa('${u.phone}')">WhatsApp</button>
-          <button class="btn btn-red" style="padding:6px 10px;font-size:11px" onclick="del('${u.phone}')">Del</button>
-        </td>
-      `;
+      tr.innerHTML=`<td class="mono" style="color:var(--blue);font-weight:700">${u.classCode||'—'}</td><td style="font-weight:600">${u.name||'—'}</td><td class="mono">${u.phone||'—'}</td><td><span class="status ${actClass}">${actText}</span></td><td style="display:flex;gap:6px">${actions}</td>`;
       tbody.appendChild(tr);
     });
     document.getElementById('onlineUsers').textContent=online;
-  }catch(e){
-    tbody.innerHTML=`<tr><td colspan="5" style="color:var(--red);padding:20px">Error: ${e.message}</td></tr>`;
-  }
+  }catch(e){ tbody.innerHTML=`<tr><td colspan="5" style="color:var(--red)">${e.message}</td></tr>`; }
 };
 
-window.viewDash = async (phone)=>{
-  const snap=await getDoc(doc(db,'users',phone));
-  if(!snap.exists()){ alert('Not found'); return; }
-  const u=snap.data();
-  alert(`Dashboard of ${u.name}\n\nCode: ${u.classCode}\nPhone: ${u.phone}\nJoined: ${u.joinedAt}\n\nDiaries:\n${(u.diaries||[]).join('\n')}\n\n(Note: Attendance & HW not yet enabled)`);
-};
-
-window.wa = (phone)=>{
-  const msg=`Hi! This is RUMC Admin (Sayon). Your dashboard is active. Check: ${location.origin.replace('admin.html','')}`;
-  window.open(`https://wa.me/88${phone}?text=${encodeURIComponent(msg)}`,'_blank');
-};
-  
-window.saveCounts = async ()=>{
-  const study=parseInt(document.getElementById('studyCount').value)||0;
-  const family=parseInt(document.getElementById('familyCount').value)||0;
-  await setDoc(doc(db,'stats','whatsapp'),{study,family,updatedAt:new Date().toISOString()});
-  alert(`Saved! Site will show Study: ${study}, Family: ${family}`);
-};
-  
-window.del = async (phone)=>{
-  if(!confirm(`Delete user ${phone}? This removes his dashboard.`)) return;
-  await deleteDoc(doc(db,'users',phone));
-  await deleteDoc(doc(db,'broadcast',phone)).catch(()=>{});
-  loadUsers();
-};
-
+window.viewDash = async (phone)=>{ const s=await getDoc(doc(db,'users',phone)); if(!s.exists()) return; const u=s.data(); alert(`Dashboard of ${u.name}\nCode: ${u.classCode}\nPhone: ${u.phone}\nDiaries:\n${(u.diaries||[]).join('\n')}`); };
+window.wa = (phone)=>{ window.open(`https://wa.me/88${phone}?text=${encodeURIComponent('Hi from RUMC Admin')}`,'_blank'); };
+window.del = async (phone)=>{ if(currentAdmin.role!=='owner'){ alert('Only owner can delete'); return; } if(!confirm(`Delete ${phone}?`)) return; await deleteDoc(doc(db,'users',phone)); loadUsers(); };
 window.broadcast = async ()=>{
-  const text=document.getElementById('broadcastText').value.trim();
-  if(!text){ alert('Write something'); return; }
+  if(currentAdmin.role==='assistant'){ alert('Assistants cannot broadcast'); return; }
+  const text=document.getElementById('broadcastText').value.trim(); if(!text){alert('Write something');return;}
   const snap=await getDocs(collection(db,'users'));
-  for(const d of snap.docs){
-    const u=d.data();
-    const newDiaries=[...(u.diaries||[]), text].slice(-20);
-    await setDoc(doc(db,'users',d.id),{diaries:newDiaries,lastNotice:text,lastNoticeAt:new Date().toISOString()},{merge:true});
-  }
-  alert(`Sent to ${snap.size} users!`);
-  document.getElementById('broadcastText').value='';
-  loadUsers();
+  for(const d of snap.docs){ const u=d.data(); const newDiaries=[...(u.diaries||[]), text].slice(-20); await setDoc(doc(db,'users',d.id),{diaries:newDiaries},{merge:true}); }
+  alert(`Sent to ${snap.size} users`); document.getElementById('broadcastText').value='';
 };
+async function getLists(){ const s=await getDoc(doc(db,'config','lists')); return s.exists()?s.data():{members:[],admins:[],assistants:[]} }
+window.addMember=async()=>{ if(currentAdmin.role==='assistant'){alert('No permission');return;} const n=document.getElementById('addMName').value.trim(), c=document.getElementById('addMCode').value.trim(); if(!n||!c){alert('Enter');return;} const l=await getLists(); l.members=l.members||[]; l.members.push([n,c]); await setDoc(doc(db,'config','lists'),l,{merge:true}); alert(`Added ${n}: (${c})`); document.getElementById('addMName').value=''; document.getElementById('addMCode').value=''; };
+window.addAdmin=async()=>{ if(currentAdmin.role!=='owner'){alert('Only owner');return;} const n=document.getElementById('addAName').value.trim(), c=document.getElementById('addACode').value.trim(), r=document.getElementById('addARole').value.trim(); if(!n||!c)return; const l=await getLists(); l.admins=l.admins||[]; l.admins.push([n,c,r]); await setDoc(doc(db,'config','lists'),l,{merge:true}); alert('Admin added'); };
+window.addAssistant=async()=>{ if(currentAdmin.role!=='owner'){alert('Only owner');return;} const n=document.getElementById('addAsName').value.trim(), c=document.getElementById('addAsCode').value.trim(); if(!n||!c)return; const l=await getLists(); l.assistants=l.assistants||[]; l.assistants.push([n,c]); await setDoc(doc(db,'config','lists'),l,{merge:true}); alert('Assistant added'); };
+window.saveCounts=async()=>{ if(currentAdmin.role!=='owner'){alert('Only owner');return;} const study=parseInt(document.getElementById('studyCount').value)||0, family=parseInt(document.getElementById('familyCount').value)||0; await setDoc(doc(db,'stats','whatsapp'),{study,family,updatedAt:new Date().toISOString()}); alert('Counts saved'); };
 </script>
 </body>
 </html>
