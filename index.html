@@ -16,7 +16,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:
 nav .left{display:flex;align-items:center;gap:16px;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue)}
 nav .left #navUser{letter-spacing:0;text-transform:none;color:var(--green);font-size:12px;border-left:1px solid var(--border);padding-left:16px;display:none}
 nav .right{display:flex;gap:14px;align-items:center;font-size:13px}
-nav .right a{color:var(--muted);text-decoration:none;cursor:pointer;padding:8px 14px;border-radius:999px;border:1px solid transparent}
+nav .right a{color:var(--muted);text-decoration:none;cursor:pointer;padding:8px 14px;border-radius:999px;border:1px solid transparent;transition:all 0.2s}
 nav .right a:hover{color:white;border-color:var(--border)}
 nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!important;font-weight:700;padding:10px 20px!important}
 .hero{position:relative;z-index:2;min-height:88vh;display:flex;flex-direction:column;justify-content:center;padding:120px 6% 60px}
@@ -57,8 +57,8 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 .modal-box input,.modal-box select,.modal-box textarea{width:100%;background:#05070a;border:1px solid var(--border);border-radius:12px;padding:15px;color:white;margin-bottom:12px;outline:none;font-family:inherit}
 .modal-box input:focus,.modal-box textarea:focus{border-color:var(--blue)}
 .error{color:#ff8a8a;font-size:12px;display:none;margin:-6px 0 10px}
-#dashboard,#adminPanel{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;overflow:auto;padding:100px 5% 40px}
-#dashboard.active,#adminPanel.active{display:block}
+#dashboard,#adminPanel,#milestonesModal{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;overflow:auto;padding:100px 5% 40px}
+#dashboard.active,#adminPanel.active,#milestonesModal.active{display:block}
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px}
 .dash-card{background:#0e1625;border:1px solid var(--border);border-radius:16px;padding:20px}
 .dash-card .k{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)} .dash-card .v{font-size:26px;font-weight:700;color:var(--blue);margin-top:8px}
@@ -88,6 +88,7 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
 <div class="left mono"><span id="navBrandText">Students Community of RUMC</span><span id="navUser"></span></div>
 <div class="right mono">
 <a onclick="window.scrollTo({top:0,behavior:'smooth'})">Home</a>
+<a onclick="openMilestones()">Milestones</a>
 <a id="loginBtn" onclick="openLogin()">Login</a>
 <a id="signupBtn" class="cta" onclick="openSign()">Sign up</a>
 <a id="dashBtn" style="display:none" onclick="openDashboard()">Dashboard</a>
@@ -218,6 +219,46 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
 
 <div id="listModal" class="modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal-box"><h2 id="listTitle"></h2><div id="listBody" class="admin-grid"></div><button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="document.getElementById('listModal').classList.remove('active')">Close</button></div></div>
 
+<!-- MILESTONES MODAL SHOWCASE -->
+<div id="milestonesModal">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:20px">
+    <div>
+      <h2 style="font-size:36px;color:var(--blue)">Community Milestones</h2>
+      <p style="color:var(--muted);margin-top:4px" class="mono">Official hall of growth, academic honors, and journey archives.</p>
+    </div>
+    <button class="btn btn-ghost" onclick="closeMilestones()">← Back to Site</button>
+  </div>
+
+  <div class="dash-grid" style="margin-top:32px">
+    <!-- SUB-SECTION 1 -->
+    <div class="card" style="border-color:var(--blue)">
+      <h3 style="color:var(--blue)">01 — Community Growth Timeline</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Milestones from group creation to member expansion.</p>
+      <ul id="m_growthList" style="margin-top:0">
+        <li style="color:var(--muted);font-style:italic">No milestones added yet. Add from Owner Panel.</li>
+      </ul>
+    </div>
+
+    <!-- SUB-SECTION 2 -->
+    <div class="card" style="border-color:var(--blue)">
+      <h3 style="color:var(--blue)">02 — Academic Wall of Honor</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Olympiad trophies, contest ranks, and academic achievements.</p>
+      <ul id="m_honorList" style="margin-top:0">
+        <li style="color:var(--muted);font-style:italic">No achievements added yet. Add from Owner Panel.</li>
+      </ul>
+    </div>
+
+    <!-- SUB-SECTION 3 -->
+    <div class="card" style="border-color:var(--blue)">
+      <h3 style="color:var(--blue)">03 — The Journey</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Key stories, voting turnouts, and community memories.</p>
+      <ul id="m_journeyList" style="margin-top:0">
+        <li style="color:var(--muted);font-style:italic">No journey entries added yet. Add from Owner Panel.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <!-- DASHBOARD -->
 <div id="dashboard">
 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div>
@@ -274,7 +315,7 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
 <!-- OWNER EXCLUSIVE WEBSITE CMS & THEME CUSTOMIZER -->
 <div class="card owner-only" style="margin-top:24px;border-color:var(--blue);background:linear-gradient(180deg, #091324 0%, #050a14 100%)">
   <h3 style="color:var(--blue)">Website Content Editor & Theme Customizer (Owner Only)</h3>
-  <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Edit any text, description, title, or color scheme across the entire website live.</p>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Edit any text, description, title, milestones, or color scheme across the entire website live.</p>
   
   <div class="dash-grid" style="margin-top:0">
     <div>
@@ -302,12 +343,18 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
       <div class="k">Highlights (1 per line)</div><textarea id="cms_highlights" rows="4"></textarea>
     </div>
     <div>
+      <div class="k" style="color:var(--blue)">Milestone 1: Growth Timeline (1 per line)</div>
+      <textarea id="cms_mGrowth" rows="3" placeholder="Leave blank or enter timeline points..."></textarea>
+      <div class="k" style="color:var(--blue)">Milestone 2: Wall of Honor (1 per line)</div>
+      <textarea id="cms_mHonor" rows="3" placeholder="Leave blank or enter academic honors..."></textarea>
+      <div class="k" style="color:var(--blue)">Milestone 3: The Journey (1 per line)</div>
+      <textarea id="cms_mJourney" rows="3" placeholder="Leave blank or enter journey stories..."></textarea>
+    </div>
+    <div>
       <div class="k">History Section Header</div><input id="cms_historyHeader">
       <div class="k">History Description</div><textarea id="cms_historyDesc" rows="3"></textarea>
       <div class="k">Footer Text Left</div><input id="cms_footer1">
       <div class="k">Footer Text Right</div><input id="cms_footer2">
-    </div>
-    <div>
       <div class="k" style="color:var(--blue);font-weight:700">Theme Colors (Hex Codes)</div>
       <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><input type="color" id="col_bg" style="width:50px;height:40px;padding:0;cursor:pointer"><span class="k">Background (--bg)</span></div>
       <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><input type="color" id="col_blue" style="width:50px;height:40px;padding:0;cursor:pointer"><span class="k">Accent Blue (--blue)</span></div>
@@ -358,6 +405,9 @@ let liveMembers=defaultMembers, liveAdmins=defaultAdmins, liveAssistants=default
 let currentAdmin=null;
 const OWNER_PASS="adm99eog26";
 
+window.openMilestones=()=>document.getElementById('milestonesModal').classList.add('active');
+window.closeMilestones=()=>document.getElementById('milestonesModal').classList.remove('active');
+
 window.openSign=()=>{document.getElementById('modalTitle').textContent='Sign up';document.getElementById('authBtn').textContent='Create Profile & Stay Logged In →';document.getElementById('signModal').classList.add('active')}
 window.openLogin=()=>{document.getElementById('modalTitle').textContent='Login';document.getElementById('authBtn').textContent='Login & Stay Logged In →';document.getElementById('signModal').classList.add('active')}
 window.closeSign=()=>document.getElementById('signModal').classList.remove('active');
@@ -379,7 +429,6 @@ window.showList=async(type)=>{
 
 async function loadConfig(){
   try{
-    // Load lists
     const snap=await window.getDoc(window.doc(window.db,'config','lists'));
     if(snap.exists()){
       const data=snap.data();
@@ -388,7 +437,6 @@ async function loadConfig(){
       if(data.assistants) liveAssistants=data.assistants;
     }
 
-    // Load Site Content CMS
     const cmsSnap=await window.getDoc(window.doc(window.db,'config','site_content'));
     if(cmsSnap.exists()){
       applyCMS(cmsSnap.data());
@@ -425,7 +473,7 @@ function applyCMS(d){
 
   if(d.familyTitle) document.getElementById('familyTitle').textContent = d.familyTitle;
   if(d.familyDesc) document.getElementById('familyDesc').textContent = d.familyDesc;
-  if(d.familyWhyUs) document.querySelector('.card .card h3 + p').textContent = d.familyWhyUs; // Family why us
+  if(d.familyWhyUs) document.querySelector('.card .card h3 + p').textContent = d.familyWhyUs;
   if(d.familyMeta) document.getElementById('familyMeta').innerHTML = d.familyMeta;
 
   if(d.statsTitle) document.getElementById('statsTitle').textContent = d.statsTitle;
@@ -433,6 +481,20 @@ function applyCMS(d){
   if(d.highlights) {
     const hl = d.highlights.split('\n').filter(Boolean);
     document.getElementById('highlightsList').innerHTML = hl.map(h=>`<li>${h}</li>`).join('');
+  }
+
+  // Render Milestones
+  if(d.mGrowth) {
+    const items = d.mGrowth.split('\n').filter(Boolean);
+    document.getElementById('m_growthList').innerHTML = items.length ? items.map(i=>`<li>${i}</li>`).join('') : '<li style="color:var(--muted);font-style:italic">No milestones added yet.</li>';
+  }
+  if(d.mHonor) {
+    const items = d.mHonor.split('\n').filter(Boolean);
+    document.getElementById('m_honorList').innerHTML = items.length ? items.map(i=>`<li>${i}</li>`).join('') : '<li style="color:var(--muted);font-style:italic">No achievements added yet.</li>';
+  }
+  if(d.mJourney) {
+    const items = d.mJourney.split('\n').filter(Boolean);
+    document.getElementById('m_journeyList').innerHTML = items.length ? items.map(i=>`<li>${i}</li>`).join('') : '<li style="color:var(--muted);font-style:italic">No journey entries added yet.</li>';
   }
 
   if(d.historyHeader) document.getElementById('historyHeader').innerHTML = `${d.historyHeader.split('17+')[0]}<span id="histCount" style="color:var(--blue)">17+</span> — and expanding.`;
@@ -449,7 +511,7 @@ function applyCMS(d){
     if(d.colors.border) document.documentElement.style.setProperty('--border', d.colors.border);
   }
 
-  // Fill CMS form inputs if present
+  // Populate inputs in Owner Panel
   for(let k in d){
     if(k==='colors'){
       for(let ck in d.colors){
@@ -483,6 +545,9 @@ window.saveWebsiteCMS = async () => {
     statsTitle: document.getElementById('cms_statsTitle').value,
     statsDesc: document.getElementById('cms_statsDesc').value,
     highlights: document.getElementById('cms_highlights').value,
+    mGrowth: document.getElementById('cms_mGrowth').value,
+    mHonor: document.getElementById('cms_mHonor').value,
+    mJourney: document.getElementById('cms_mJourney').value,
     historyHeader: document.getElementById('cms_historyHeader').value,
     historyDesc: document.getElementById('cms_historyDesc').value,
     footer1: document.getElementById('cms_footer1').value,
@@ -500,7 +565,7 @@ window.saveWebsiteCMS = async () => {
   try {
     await window.setDoc(window.doc(window.db, 'config', 'site_content'), payload);
     applyCMS(payload);
-    showToast('Website content and theme published live successfully!');
+    showToast('Website content, Milestones, and theme published live!');
   } catch(e) {
     showToast('Error saving CMS: ' + e.message);
   }
@@ -700,7 +765,7 @@ window.loadUsers=async()=>{
 window.viewDash=async(phone)=>{ const s=await window.getDoc(window.doc(window.db,'users',phone)); if(!s.exists()) return; const u=s.data(); showToast(`Viewing user: ${u.name}`); alert(`Dashboard of ${u.name}\nCode: ${u.classCode}\nPhone: ${u.phone}\nPass: ${u.password}\nDiaries:\n${(u.diaries||[]).join('\n')}`); };
 window.delUser=async(phone)=>{ if(!currentAdmin||currentAdmin.role!=='owner'){ showToast('Only owner can delete'); return; } if(!confirm(`Delete ${phone}?`)) return; await window.deleteDoc(window.doc(window.db,'users',phone)); loadUsers(); showToast('User deleted'); };
 window.broadcast=async()=>{ if(!currentAdmin||currentAdmin.role==='assistant'){ showToast('No permission'); return; } const text=document.getElementById('broadcastText').value.trim(); if(!text){showToast('Write notice text first');return;} const snap=await window.getDocs(window.collection(window.db,'users')); for(const d of snap.docs){ const u=d.data(); const newDiaries=[...(u.diaries||[]), text].slice(-20); await window.setDoc(window.doc(window.db,'users',d.id),{diaries:newDiaries},{merge:true}); } showToast(`Notice sent to ${snap.size} students`); document.getElementById('broadcastText').value=''; };
-window.createAdminAccount=async()=>{ if(!currentAdmin||currentAdmin.role!=='owner'){ showToast('Only owner can create admins'); return; } const phone=document.getElementById('newAdminPhone').value.trim().replace(/\s/g,''); const name=document.getElementById('newAdminName').value.trim(); const code=document.getElementById('newAdminCode').value.trim(); const pass=document.getElementById('newAdminPass').value.trim(); const role=document.getElementById('newAdminRole').value; if(!phone||!name||!code||!pass){ showToast('Fill all admin fields'); return; } if(!/^01[0-9]{9}$/.test(phone)){ showToast('Invalid phone format'); return; } await window.setDoc(window.doc(window.db,'adminAccounts',phone),{name,code,pass,role,phone,createdBy:currentAdmin.name,createdAt:new Date().toISOString()}); showToast(`Created admin account for ${name}`); document.getElementById('newAdminPhone').value=''; document.getElementById('newAdminName').value=''; document.getElementById('newAdminCode').value=''; document.getElementById('newAdminPass').value=''; loadAdminAccounts(); };
+window.createAdminAccount=async()=>{ if(!currentAdmin||currentAdmin.role!=='owner'){ showToast('Only owner can create admins'); return; } const phone=document.getElementById('newAdminPhone').value.trim().replace(/\s/g,''); const name=document.getElementById('newAdminName').value.trim(); const code=document.getElementById('newAdminCode').value.trim(); const pass=document.getElementById('newAdminPass').value.trim(); const role=document.getElementById('newAdminRole').value; if(!phone||!name||!code||!pass){ showToast('Fill all admin fields'); return; } if(!/^01[0-9]{9}$/.test(phone)){ showToast('Invalid phone format'); return; } await window.setDoc(window.doc(window.doc(window.db,'adminAccounts',phone)),{name,code,pass,role,phone,createdBy:currentAdmin.name,createdAt:new Date().toISOString()}); showToast(`Created admin account for ${name}`); document.getElementById('newAdminPhone').value=''; document.getElementById('newAdminName').value=''; document.getElementById('newAdminCode').value=''; document.getElementById('newAdminPass').value=''; loadAdminAccounts(); };
 window.loadAdminAccounts=async()=>{ const box=document.getElementById('adminAccountsList'); if(!box) return; try{ const snap=await window.getDocs(window.collection(window.db,'adminAccounts')); box.innerHTML='<div class="k" style="margin-top:12px">Existing logins (same main login):</div>'; snap.forEach(d=>{ const a=d.data(); const div=document.createElement('div'); div.className='pill mono'; div.style.marginTop='6px'; div.style.fontSize='11px'; div.innerHTML=`<b>${a.name} (${a.code})</b><br>Phone: ${a.phone}<br>Pass: <span style="color:var(--blue)">${a.pass}</span> — Role: ${a.role} <button onclick="deleteAdminAcc('${a.phone}')" style="margin-left:8px;background:#1a0a0a;color:#ff6b6b;border:1px solid #3a1a1a;border-radius:6px;padding:2px 6px;cursor:pointer">X</button>`; box.appendChild(div); }); }catch(e){ box.innerHTML='Error loading admins'; } };
 window.deleteAdminAcc=async(phone)=>{ if(!confirm(`Delete ${phone}?`)) return; await window.deleteDoc(window.doc(window.db,'adminAccounts',phone)); loadAdminAccounts(); showToast('Admin login removed'); };
 window.addMember=async()=>{ if(!currentAdmin||currentAdmin.role==='assistant'){showToast('No permission');return;} const n=document.getElementById('addMName').value.trim(), c=document.getElementById('addMCode').value.trim(); if(!n||!c){showToast('Enter name and code');return;} const s=await window.getDoc(window.doc(window.db,'config','lists')); let l=s.exists()?s.data():{members:[],admins:[],assistants:[]}; l.members=l.members||[]; l.members.push([n,c]); await window.setDoc(window.doc(window.db,'config','lists'),l,{merge:true}); showToast(`Added member ${n}`); document.getElementById('addMName').value=''; document.getElementById('addMCode').value=''; loadConfig(); };
