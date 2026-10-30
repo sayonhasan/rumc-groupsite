@@ -23,7 +23,7 @@ body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-ser
 .shooting-star{position:absolute;height:2px;background:linear-gradient(90deg, rgba(255,255,255,1), rgba(125,211,252,0));border-radius:999px;opacity:0;animation:shoot linear infinite}
 @keyframes shoot{0%{transform:translateX(0) translateY(0) rotate(-45deg);opacity:1}100%{transform:translateX(-600px) translateY(600px) rotate(-45deg);opacity:0}}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 4%;background:rgba(5,7,10,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 4%;background:rgba(5,7,10,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 nav .left{display:flex;align-items:center;gap:16px;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue)}
 nav .left #navUser{letter-spacing:0;text-transform:none;color:var(--green);font-size:12px;border-left:1px solid var(--border);padding-left:16px;display:none}
 nav .right{display:flex;gap:14px;align-items:center;font-size:13px}
@@ -45,33 +45,35 @@ nav .cta{background:var(--blue)!important;color:#02050a!important;border:none!im
 .section h2{font-size:clamp(28px,4vw,48px);letter-spacing:-0.03em;line-height:1;max-width:800px;margin-bottom:20px}
 .grid2{display:grid;grid-template-columns:1.1fr 0.9fr;gap:24px;margin-top:32px}
 @media(max-width:900px){.grid2{grid-template-columns:1fr}}
-.card{background:linear-gradient(180deg, #0f172a 0%, #0b1018 100%);border:1px solid var(--border);border-radius:20px;padding:28px;position:relative;overflow:hidden}
+
+/* Semi-Transparent Glassmorphism Cards */
+.card{background:linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(11, 16, 24, 0.75) 100%);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255, 255, 255, 0.08);border-radius:20px;padding:28px;position:relative;overflow:hidden;box-shadow:0 8px 32px 0 rgba(0, 0, 0, 0.37)}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, var(--blue), transparent);opacity:0.6}
 .card h3{font-size:18px;margin-bottom:12px}
 .card p,.card li{color:var(--muted);line-height:1.7;font-size:14.5px}
 .card ul{list-style:none;margin-top:12px}
-.card ul li{padding:8px 0 8px 22px;position:relative;border-bottom:1px solid #111d2c}
+.card ul li{padding:8px 0 8px 22px;position:relative;border-bottom:1px solid rgba(255, 255, 255, 0.04)}
 .card ul li::before{content:'•';position:absolute;left:0;color:var(--blue)}
 .admin-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.pill{border:1px solid var(--border);background:#0c121d;padding:10px 14px;border-radius:12px;font-size:13px}
+.pill{border:1px solid rgba(255, 255, 255, 0.08);background:rgba(12, 18, 29, 0.6);backdrop-filter:blur(8px);padding:10px 14px;border-radius:12px;font-size:13px}
 .pill b{color:#f8fbff} .pill span{color:var(--muted)}
 .stats-row{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
-.stat{background:#0a121e;border:1px solid var(--border);border-radius:16px;padding:20px 24px;min-width:160px}
+.stat{background:rgba(10, 18, 30, 0.6);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.08);border-radius:16px;padding:20px 24px;min-width:160px}
 .stat .num{font-size:28px;font-weight:700;color:var(--blue)} .stat .lbl{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 .btn{border:none;cursor:pointer;border-radius:999px;padding:14px 22px;font-weight:600;font-size:14px;transition:all .2s}
 .btn-blue{background:var(--blue);color:#02050a} .btn-blue:hover{background:white;transform:translateY(-2px)}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)} .btn-ghost:hover{color:white;border-color:var(--blue)}
-.btn-red{border:1px solid #3a1a1a;background:#1a0a0a;color:var(--red)}
+.btn-ghost{background:rgba(255,255,255,0.03);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.08);color:var(--muted)} .btn-ghost:hover{color:white;border-color:var(--blue)}
+.btn-red{border:1px solid #3a1a1a;background:rgba(26, 10, 10, 0.8);color:var(--red)}
 .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(2,5,10,0.85);backdrop-filter:blur(18px);padding:20px}
 .modal.active{display:flex}
-.modal-box{width:100%;max-width:480px;background:#0b111d;border:1px solid var(--border);border-radius:20px;padding:32px;max-height:90vh;overflow:auto}
-.modal-box input,.modal-box select,.modal-box textarea{width:100%;background:#05070a;border:1px solid var(--border);border-radius:12px;padding:15px;color:white;margin-bottom:12px;outline:none;font-family:inherit}
+.modal-box{width:100%;max-width:480px;background:rgba(11, 17, 29, 0.9);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;max-height:90vh;overflow:auto}
+.modal-box input,.modal-box select,.modal-box textarea{width:100%;background:rgba(5, 7, 10, 0.6);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:15px;color:white;margin-bottom:12px;outline:none;font-family:inherit}
 .modal-box input:focus,.modal-box textarea:focus{border-color:var(--blue)}
 .error{color:#ff8a8a;font-size:12px;display:none;margin:-6px 0 10px}
 #dashboard,#adminPanel,#milestonesModal{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;overflow:auto;padding:100px 5% 40px}
 #dashboard.active,#adminPanel.active,#milestonesModal.active{display:block}
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px}
-.dash-card{background:#0e1625;border:1px solid var(--border);border-radius:16px;padding:20px}
+.dash-card{background:rgba(14, 22, 37, 0.75);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px}
 .dash-card .k{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)} .dash-card .v{font-size:26px;font-weight:700;color:var(--blue);margin-top:8px}
 table{width:100%;border-collapse:collapse;min-width:760px}
 th{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-align:left;padding:16px 12px;border-bottom:1px solid var(--border)}
@@ -81,7 +83,7 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
 
 /* Toast System */
 #toastContainer{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px}
-.toast{background:#0f172a;border:1px solid var(--blue);color:var(--text);padding:14px 20px;border-radius:12px;font-size:13px;box-shadow:0 10px 25px rgba(0,0,0,0.5);animation:toastIn 0.3s forwards}
+.toast{background:rgba(15, 23, 42, 0.9);backdrop-filter:blur(10px);border:1px solid var(--blue);color:var(--text);padding:14px 20px;border-radius:12px;font-size:13px;box-shadow:0 10px 25px rgba(0,0,0,0.5);animation:toastIn 0.3s forwards}
 @keyframes toastIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
@@ -97,7 +99,7 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
 <a id="loginBtn" onclick="openLogin()">Login</a>
 <a id="signupBtn" class="cta" onclick="openSign()">Sign up</a>
 <a id="dashBtn" style="display:none" onclick="openDashboard()">Dashboard</a>
-<a id="adminPanelBtn" style="display:none;background:#0f172a;border:1px solid var(--blue);color:var(--blue);padding:8px 14px;border-radius:999px" onclick="openAdminPanel()">Admin Panel</a>
+<a id="adminPanelBtn" style="display:none;background:rgba(15,23,42,0.8);border:1px solid var(--blue);color:var(--blue);padding:8px 14px;border-radius:999px" onclick="openAdminPanel()">Admin Panel</a>
 <a id="logoutBtn" style="display:none" onclick="logout()">Logout</a>
 </div>
 </nav>
@@ -276,13 +278,13 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
     <h3>Edit Profile & Credentials</h3>
     <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Update your name, class code, WhatsApp phone number, or password anytime.</p>
     <div class="k">Full Name</div>
-    <input id="edit_name" placeholder="Full Name" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0 12px">
+    <input id="edit_name" placeholder="Full Name" style="width:100%;background:rgba(5,7,10,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;color:white;margin:6px 0 12px">
     <div class="k">Class Code</div>
-    <input id="edit_code" placeholder="Class Code e.g. 608" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0 12px">
+    <input id="edit_code" placeholder="Class Code e.g. 608" style="width:100%;background:rgba(5,7,10,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;color:white;margin:6px 0 12px">
     <div class="k">WhatsApp Phone Number</div>
-    <input id="edit_phone" placeholder="WhatsApp Phone" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0 12px">
+    <input id="edit_phone" placeholder="WhatsApp Phone" style="width:100%;background:rgba(5,7,10,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;color:white;margin:6px 0 12px">
     <div class="k">New Password</div>
-    <input id="edit_pass" type="password" placeholder="New Password (min 4 chars)" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0 16px">
+    <input id="edit_pass" type="password" placeholder="New Password (min 4 chars)" style="width:100%;background:rgba(5,7,10,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;color:white;margin:6px 0 16px">
     <button class="btn btn-blue" style="width:100%" id="saveProfileBtn" onclick="saveProfileChanges()">Save Changes →</button>
   </div>
   <div class="card">
@@ -305,17 +307,17 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
 <div style="padding-top:20px;display:flex;gap:12px;flex-wrap:wrap">
 <div class="card" style="min-width:160px"><div class="k">Total Users</div><div style="font-size:26px;font-weight:700;color:var(--blue);margin-top:6px" id="totalUsers">0</div></div>
 <div class="card" style="min-width:160px"><div class="k">Online Now</div><div style="font-size:26px;font-weight:700;color:var(--green);margin-top:6px" id="onlineUsers">0</div></div>
-<div class="card admin-only owner-only" style="min-width:320px;flex:1"><div class="k">Broadcast Notice (Admin+)</div><div style="display:flex;gap:8px;margin-top:10px"><input id="broadcastText" placeholder="Notice to all dashboards..." style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white"><button class="btn btn-blue" onclick="broadcast()">Send</button></div></div>
+<div class="card admin-only owner-only" style="min-width:320px;flex:1"><div class="k">Broadcast Notice (Admin+)</div><div style="display:flex;gap:8px;margin-top:10px"><input id="broadcastText" placeholder="Notice to all dashboards..." style="width:100%;background:rgba(5,7,10,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;color:white"><button class="btn btn-blue" onclick="broadcast()">Send</button></div></div>
 </div>
 
 <div class="dash-grid" style="margin-top:20px">
 <div class="card owner-only admin-only"><h3>Add Member</h3><div class="k">Name: (Code)</div><input id="addMName" placeholder="Name"><input id="addMCode" placeholder="Code"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addMember()">Add Member →</button></div>
-<div class="card owner-only" style="border-color:var(--blue)"><h3>Create Admin Login (Owner)</h3><div class="k">Set different pass for each admin</div><input id="newAdminPhone" placeholder="Admin Phone (01...)"><input id="newAdminName" placeholder="Name e.g. Shafee"><input id="newAdminCode" placeholder="Class Code e.g. 629"><input id="newAdminPass" placeholder="Set Custom Pass e.g. Shafee@629!" type="text"><select id="newAdminRole" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0"><option value="admin">Admin — Add members + broadcast</option><option value="assistant">Assistant — View only</option></select><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="createAdminAccount()">Create Login →</button><div id="adminAccountsList" style="margin-top:12px"></div></div>
+<div class="card owner-only" style="border-color:var(--blue)"><h3>Create Admin Login (Owner)</h3><div class="k">Set different pass for each admin</div><input id="newAdminPhone" placeholder="Admin Phone (01...)"><input id="newAdminName" placeholder="Name e.g. Shafee"><input id="newAdminCode" placeholder="Class Code e.g. 629"><input id="newAdminPass" placeholder="Set Custom Pass e.g. Shafee@629!" type="text"><select id="newAdminRole" style="width:100%;background:rgba(5,7,10,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;color:white;margin:6px 0"><option value="admin">Admin — Add members + broadcast</option><option value="assistant">Assistant — View only</option></select><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="createAdminAccount()">Create Login →</button><div id="adminAccountsList" style="margin-top:12px"></div></div>
 <div class="card owner-only"><h3>Set WhatsApp Counts</h3><input id="studyCount" type="number" placeholder="Study group members"><input id="familyCount" type="number" placeholder="Family group members"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="saveCounts()">Save Counts →</button></div>
 </div>
 
 <!-- OWNER EXCLUSIVE WEBSITE CMS & THEME CUSTOMIZER -->
-<div class="card owner-only" style="margin-top:24px;border-color:var(--blue);background:linear-gradient(180deg, #091324 0%, #050a14 100%)">
+<div class="card owner-only" style="margin-top:24px;border-color:var(--blue);background:linear-gradient(180deg, rgba(9, 19, 36, 0.85) 0%, rgba(5, 10, 20, 0.85) 100%)">
   <h3 style="color:var(--blue)">Website Content Editor & Theme Customizer (Owner Only)</h3>
   <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Edit any text, description, title, milestones, or color scheme across the entire website live.</p>
   
@@ -394,7 +396,6 @@ window.GROUP_LINKS = { study: "https://chat.whatsapp.com/LRZ70IPOzPa6Ye6rT5qxyX"
   const container = document.getElementById('stars');
   const starCount = 80;
   
-  // Create fixed twinkling stars
   for(let i=0; i<starCount; i++){
     let d = document.createElement('div');
     d.className = 'star';
@@ -404,7 +405,6 @@ window.GROUP_LINKS = { study: "https://chat.whatsapp.com/LRZ70IPOzPa6Ye6rT5qxyX"
     container.appendChild(d);
   }
 
-  // Create slowly drifting stars
   for(let i=0; i<15; i++){
     let d = document.createElement('div');
     d.className = 'drift-star';
@@ -418,7 +418,6 @@ window.GROUP_LINKS = { study: "https://chat.whatsapp.com/LRZ70IPOzPa6Ye6rT5qxyX"
     container.appendChild(d);
   }
 
-  // Create occasional shooting stars
   function spawnShootingStar(){
     let s = document.createElement('div');
     s.className = 'shooting-star';
