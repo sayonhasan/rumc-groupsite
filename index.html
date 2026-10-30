@@ -73,10 +73,17 @@ td{padding:14px 12px;border-bottom:1px solid #0f1a28;font-size:14px}
 .reveal-right.in{opacity:1;transform:translateX(0)}
 .owner-only{display:none} .admin-only{display:none}
 footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:12px}
+
+/* Toast System */
+#toastContainer{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px}
+.toast{background:#0f172a;border:1px solid var(--blue);color:var(--text);padding:14px 20px;border-radius:12px;font-size:13px;box-shadow:0 10px 25px rgba(0,0,0,0.5);animation:toastIn 0.3s forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 <div id="stars"></div>
+<div id="toastContainer"></div>
+
 <nav>
 <div class="left mono"><span>Students Community of RUMC</span><span id="navUser"></span></div>
 <div class="right mono">
@@ -151,7 +158,7 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
 <input id="s_phone" placeholder="WhatsApp Number (01XXXXXXXXX)">
 <div id="s_err" class="error">Valid BD number — 11 digits starting with 01</div>
 <input id="s_class" placeholder="Class Code (e.g. 608)">
-<input id="s_pass" placeholder="Your Own Password (min 4 chars) — everyone needs this" type="password">
+<input id="s_pass" placeholder="Your Own Password (min 4 chars)" type="password">
 <div id="s_pass_err" class="error">Password required (min 4 chars)</div>
 <button class="btn btn-blue" style="width:100%;margin-top:8px" id="authBtn" onclick="handleAuth()">Create Profile & Stay Logged In →</button>
 <p style="color:var(--muted);font-size:11px;margin-top:12px" class="mono">Owner uses their own password, and you use your own.</p>
@@ -159,7 +166,41 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
 
 <div id="listModal" class="modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal-box"><h2 id="listTitle"></h2><div id="listBody" class="admin-grid"></div><button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="document.getElementById('listModal').classList.remove('active')">Close</button></div></div>
 
-<div id="dashboard"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div><p style="color:var(--muted);margin-top:8px" id="dashUser">Loading...</p><div class="dash-grid"><div class="dash-card"><div class="k">Code</div><div class="v" id="d_code">--</div></div><div class="dash-card"><div class="k">Full Name</div><div class="v" id="d_name" style="font-size:20px">--</div></div><div class="dash-card"><div class="k">Number</div><div class="v" style="font-size:18px" id="d_phone">--</div></div><div class="dash-card"><div class="k">Role</div><div class="v" id="d_role" style="font-size:18px">Student</div></div></div><div class="card" style="margin-top:20px"><h3>Your Personal Diaries</h3><p id="personalDiaries" style="margin-top:10px;color:var(--muted)">No diaries yet.</p><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-blue" onclick="joinWhatsAppGroups()">Re-join WhatsApp Groups</button></div></div></div>
+<!-- DASHBOARD WITH PROFILE EDITING -->
+<div id="dashboard">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="font-size:36px">Your Dashboard</h2><button class="btn btn-ghost" onclick="closeDashboard()">← Back Home</button></div>
+<p style="color:var(--muted);margin-top:8px" id="dashUser">Loading...</p>
+<div class="dash-grid">
+  <div class="dash-card"><div class="k">Code</div><div class="v" id="d_code">--</div></div>
+  <div class="dash-card"><div class="k">Full Name</div><div class="v" id="d_name" style="font-size:20px">--</div></div>
+  <div class="dash-card"><div class="k">Number</div><div class="v" style="font-size:18px" id="d_phone">--</div></div>
+  <div class="dash-card"><div class="k">Role</div><div class="v" id="d_role" style="font-size:18px">Student</div></div>
+</div>
+
+<div class="grid2" style="margin-top:20px">
+  <div class="card">
+    <h3>Edit Profile & Credentials</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Update your name, class code, WhatsApp phone number, or password anytime.</p>
+    <div class="k">Full Name</div>
+    <input id="edit_name" placeholder="Full Name" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0 12px">
+    <div class="k">Class Code</div>
+    <input id="edit_code" placeholder="Class Code e.g. 608" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0 12px">
+    <div class="k">WhatsApp Phone Number</div>
+    <input id="edit_phone" placeholder="WhatsApp Phone" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0 12px">
+    <div class="k">New Password</div>
+    <input id="edit_pass" type="password" placeholder="New Password (min 4 chars)" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0 16px">
+    <button class="btn btn-blue" style="width:100%" id="saveProfileBtn" onclick="saveProfileChanges()">Save Changes →</button>
+  </div>
+
+  <div class="card">
+    <h3>Your Personal Diaries & Notices</h3>
+    <div id="personalDiaries" style="margin-top:10px;color:var(--muted);max-height:220px;overflow-y:auto">No diaries yet.</div>
+    <div style="margin-top:20px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-blue" onclick="joinWhatsAppGroups()">Re-join WhatsApp Groups</button>
+    </div>
+  </div>
+</div>
+</div>
 
 <div id="adminPanel">
 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:20px">
@@ -173,7 +214,7 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid #101a28;
 </div>
 <div class="dash-grid" style="margin-top:20px">
 <div class="card owner-only admin-only"><h3>Add Member</h3><div class="k">Name: (Code)</div><input id="addMName" placeholder="Name"><input id="addMCode" placeholder="Code"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="addMember()">Add Member →</button></div>
-<div class="card owner-only" style="border-color:var(--blue)"><h3>Create Admin Login (Owner) — Different pass for each</h3><div class="k">Set different pass for each admin — own passwords, same main login</div><input id="newAdminPhone" placeholder="Admin Phone (01...)"><input id="newAdminName" placeholder="Name e.g. Shafee"><input id="newAdminCode" placeholder="Class Code e.g. 629"><input id="newAdminPass" placeholder="Set Custom Pass e.g. Shafee@629!" type="text"><select id="newAdminRole" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0"><option value="admin">Admin — Add members + broadcast</option><option value="assistant">Assistant — View only</option></select><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="createAdminAccount()">Create Login →</button><div id="adminAccountsList" style="margin-top:12px"></div></div>
+<div class="card owner-only" style="border-color:var(--blue)"><h3>Create Admin Login (Owner)</h3><div class="k">Set different pass for each admin</div><input id="newAdminPhone" placeholder="Admin Phone (01...)"><input id="newAdminName" placeholder="Name e.g. Shafee"><input id="newAdminCode" placeholder="Class Code e.g. 629"><input id="newAdminPass" placeholder="Set Custom Pass e.g. Shafee@629!" type="text"><select id="newAdminRole" style="width:100%;background:#05070a;border:1px solid var(--border);border-radius:10px;padding:12px;color:white;margin:6px 0"><option value="admin">Admin — Add members + broadcast</option><option value="assistant">Assistant — View only</option></select><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="createAdminAccount()">Create Login →</button><div id="adminAccountsList" style="margin-top:12px"></div></div>
 <div class="card owner-only"><h3>Set WhatsApp Counts</h3><input id="studyCount" type="number" placeholder="Study group members"><input id="familyCount" type="number" placeholder="Family group members"><button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="saveCounts()">Save Counts →</button></div>
 </div>
 <div style="margin-top:20px"><h3>Database — Code | Full Name | Number | Password | Activity</h3><div style="overflow:auto;margin-top:16px"><table><thead><tr><th>Code</th><th>Full Name</th><th>Number</th><th>Pass</th><th>Activity</th><th>Actions</th></tr></thead><tbody id="tbody"><tr><td colspan="6" style="padding:30px;text-align:center;color:var(--muted)">Loading...</td></tr></tbody></table></div></div>
@@ -198,12 +239,23 @@ window.GROUP_LINKS = { study: "https://chat.whatsapp.com/LRZ70IPOzPa6Ye6rT5qxyX"
 
 <script>
 (function(){ const s=document.getElementById('stars'); for(let i=0;i<120;i++){let d=document.createElement('div');d.className='star';d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.animationDelay=Math.random()*3+'s';s.appendChild(d);} })();
+
+function showToast(msg){
+  const container = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast mono';
+  t.textContent = msg;
+  container.appendChild(t);
+  setTimeout(()=>{ t.remove(); }, 3500);
+}
+
 const defaultMembers=[["Sadi","618"],["Mustakim","636"],["Nahiyan","634"],["Labiba","643"],["Alif","613"],["Shoaib","602"],["Tazim","637"],["Samiul","633"],["Shafi","630"],["Rifwan","772"],["Ramim","621"],["Nudar","654"],["Anas","632"],["Labib","644"],["Salman","655"],["Turjo","615"],["Rafsan","646"]];
 const defaultAdmins=[["Sayon","608","Founder, Lead Strategist, Owner"],["Shafee","629","Co-Founder"],["Sadik","641","Assistant"]];
 const defaultAssistants=[];
 let liveMembers=defaultMembers, liveAdmins=defaultAdmins, liveAssistants=defaultAssistants;
 let currentAdmin=null;
 const OWNER_PASS="adm99eog26";
+
 window.openSign=()=>{document.getElementById('modalTitle').textContent='Sign up';document.getElementById('authBtn').textContent='Create Profile & Stay Logged In →';document.getElementById('signModal').classList.add('active')}
 window.openLogin=()=>{document.getElementById('modalTitle').textContent='Login';document.getElementById('authBtn').textContent='Login & Stay Logged In →';document.getElementById('signModal').classList.add('active')}
 window.closeSign=()=>document.getElementById('signModal').classList.remove('active');
@@ -212,6 +264,7 @@ window.closeAdminPanel=()=>document.getElementById('adminPanel').classList.remov
 window.openAdminPanel=()=>{ if(currentAdmin) document.getElementById('adminPanel').classList.add('active'); };
 window.logout=()=>{localStorage.removeItem('rumc_user');localStorage.removeItem('rumc_admin');sessionStorage.removeItem('rumc_admin_auth');updateNav();closeDashboard();closeAdminPanel();location.reload();}
 window.joinWhatsAppGroups=()=>{ window.open(window.GROUP_LINKS.study,'_blank'); setTimeout(()=>window.open(window.GROUP_LINKS.family,'_blank'),900); };
+
 window.showList=async(type)=>{
   await loadConfig();
   const modal=document.getElementById('listModal'), title=document.getElementById('listTitle'), body=document.getElementById('listBody');
@@ -221,6 +274,7 @@ window.showList=async(type)=>{
   if(type==='assistants'){ title.textContent=`Assistants (${liveAssistants.length})`; if(liveAssistants.length===0) body.innerHTML='<p style="color:var(--muted)">No assistants yet</p>'; else liveAssistants.forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; body.appendChild(d); }); }
   modal.classList.add('active');
 };
+
 async function loadConfig(){
   try{
     const snap=await window.getDoc(window.doc(window.db,'config','lists'));
@@ -244,8 +298,10 @@ async function loadConfig(){
     const ap=document.getElementById('adminsPreview'); if(ap){ ap.innerHTML=''; liveAdmins.forEach(a=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${a[0]}</b>: <span>(${a[1]})</span> ${a[2]?'— '+a[2]:''}`; ap.appendChild(d); }); }
   }catch(e){ console.log(e); }
 }
+
 const observer=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.15});
 document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el=>observer.observe(el));
+
 window.handleAuth=async()=>{
   const name=document.getElementById('s_name').value.trim();
   const phone=document.getElementById('s_phone').value.trim().replace(/\s/g,'');
@@ -254,7 +310,7 @@ window.handleAuth=async()=>{
   const err=document.getElementById('s_err'), passErr=document.getElementById('s_pass_err');
   if(err) err.style.display='none'; if(passErr) passErr.style.display='none';
   if(!/^01[0-9]{9}$/.test(phone)){ if(err) err.style.display='block'; return; }
-  if(!cls){ alert('Enter Class Code e.g. 608'); return; }
+  if(!cls){ showToast('Enter Class Code e.g. 608'); return; }
   if(!pass||pass.length<4){ if(passErr) passErr.style.display='block'; return; }
   const isSignup=document.getElementById('modalTitle').textContent==='Sign up';
   const btn=document.getElementById('authBtn'); btn.textContent='Checking...'; btn.disabled=true;
@@ -262,50 +318,123 @@ window.handleAuth=async()=>{
     if(pass===OWNER_PASS){
       const ownerData={name:name||"Sayon", phone, classCode:cls||"608", role:"owner", pass, label:"Founder, Lead Strategist, Owner — Full Access"};
       currentAdmin=ownerData; localStorage.setItem('rumc_admin', JSON.stringify(ownerData)); localStorage.setItem('rumc_user', JSON.stringify({name:ownerData.name, phone, classCode:ownerData.classCode, role:"owner"}));
-      updateNav(); closeSign(); openAdminPanelWithRole(); return;
+      updateNav(); closeSign(); openAdminPanelWithRole(); showToast('Welcome Owner'); return;
     }
     try{
       const adminRef=window.doc(window.db,'adminAccounts',phone);
       const adminSnap=await window.getDoc(adminRef);
       if(adminSnap.exists()){
         const a=adminSnap.data();
-        if(isSignup){ alert('This admin phone already has account. Use Login.'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
-        if(a.pass!==pass){ alert('Wrong admin password!'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
+        if(isSignup){ showToast('Admin phone already exists. Please Login.'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
+        if(a.pass!==pass){ showToast('Wrong admin password!'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
         currentAdmin={name:a.name, code:a.code, role:a.role, phone, pass, label:`${a.name} — Custom ${a.role}`};
         localStorage.setItem('rumc_admin', JSON.stringify(currentAdmin)); localStorage.setItem('rumc_user', JSON.stringify({name:a.name, phone, classCode:a.code, role:a.role}));
-        updateNav(); closeSign(); openAdminPanelWithRole(); return;
+        updateNav(); closeSign(); openAdminPanelWithRole(); showToast('Logged in as Admin'); return;
       }
     }catch(e){}
     const ref=window.doc(window.db,'users',phone);
     const snap=await window.getDoc(ref);
     if(isSignup){
-      if(!name){ alert('Full Name required'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
-      if(snap.exists()){ alert('Account exists — Login'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
+      if(!name){ showToast('Full Name required'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
+      if(snap.exists()){ showToast('Account exists — Please Login'); btn.disabled=false; btn.textContent='Create Profile & Stay Logged In →'; return; }
       const data={name,phone,classCode:cls,password:pass,role:"student",joinedAt:new Date().toISOString(),lastSeen:new Date().toISOString(),diaries:[`Welcome ${name}!`],whatsappJoined:false};
       await window.setDoc(ref,data); localStorage.setItem('rumc_user',JSON.stringify(data)); localStorage.removeItem('rumc_admin'); currentAdmin=null;
       updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
+      showToast(`Welcome ${name}!`);
       setTimeout(()=>{ if(confirm(`Welcome ${name}! Join WhatsApp groups now?`)){ joinWhatsAppGroups(); } },600);
     } else {
-      if(!snap.exists()){ alert('No account. Sign up first.'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
+      if(!snap.exists()){ showToast('No account found. Sign up first.'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
       let data=snap.data();
       if(!data.password){ await window.setDoc(ref,{password:pass},{merge:true}); data.password=pass; }
-      else if(data.password!==pass){ alert('Wrong password! Use your own password'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
+      else if(data.password!==pass){ showToast('Wrong password! Use your own password'); btn.disabled=false; btn.textContent='Login & Stay Logged In →'; return; }
       await window.setDoc(ref,{lastSeen:new Date().toISOString(), classCode:cls},{merge:true});
       data.classCode=cls; data.lastSeen=new Date().toISOString();
       localStorage.setItem('rumc_user',JSON.stringify(data)); localStorage.removeItem('rumc_admin'); currentAdmin=null;
       updateNav(); renderPersonal(data); closeSign(); document.getElementById('dashboard').classList.add('active');
+      showToast('Logged in successfully');
     }
-  }catch(e){ alert('Error: '+e.message); console.error(e); }
+  }catch(e){ showToast('Error: '+e.message); console.error(e); }
   finally{ btn.disabled=false; btn.textContent=isSignup?'Create Profile & Stay Logged In →':'Login & Stay Logged In →'; }
 };
+
 function renderPersonal(u){
-  document.getElementById('d_code').textContent=u.classCode;
-  document.getElementById('d_name').textContent=u.name;
-  document.getElementById('d_phone').textContent=u.phone;
+  document.getElementById('d_code').textContent=u.classCode||'--';
+  document.getElementById('d_name').textContent=u.name||'--';
+  document.getElementById('d_phone').textContent=u.phone||'--';
   document.getElementById('d_role').textContent=u.role||"Student";
   document.getElementById('dashUser').innerHTML=`<b>${u.name}</b> • Code ${u.classCode} • Role: ${u.role||'Student'} • Own password`;
+  
+  // Populate edit fields
+  document.getElementById('edit_name').value = u.name||'';
+  document.getElementById('edit_code').value = u.classCode||'';
+  document.getElementById('edit_phone').value = u.phone||'';
+  document.getElementById('edit_pass').value = u.password||'';
+
   const box=document.getElementById('personalDiaries'); if(u.diaries&&u.diaries.length) box.innerHTML=u.diaries.map(d=>`• ${d}`).join('<br>');
 }
+
+window.saveProfileChanges = async () => {
+  const raw = localStorage.getItem('rumc_user');
+  if(!raw) return;
+  const current = JSON.parse(raw);
+
+  const newName = document.getElementById('edit_name').value.trim();
+  const newCode = document.getElementById('edit_code').value.trim();
+  const newPhone = document.getElementById('edit_phone').value.trim().replace(/\s/g,'');
+  const newPass = document.getElementById('edit_pass').value.trim();
+
+  if(!newName || !newCode || !newPhone || !newPass){
+    showToast('All profile fields are required!');
+    return;
+  }
+  if(!/^01[0-9]{9}$/.test(newPhone)){
+    showToast('Invalid phone number! Must be 11 digits starting 01');
+    return;
+  }
+  if(newPass.length < 4){
+    showToast('Password must be at least 4 characters');
+    return;
+  }
+
+  const saveBtn = document.getElementById('saveProfileBtn');
+  saveBtn.disabled = true; saveBtn.textContent = 'Saving...';
+
+  try {
+    const oldPhone = current.phone;
+    let userRef = window.doc(window.db, 'users', oldPhone);
+    const snap = await window.getDoc(userRef);
+    let existingData = snap.exists() ? snap.data() : current;
+
+    existingData.name = newName;
+    existingData.classCode = newCode;
+    existingData.password = newPass;
+
+    if(oldPhone !== newPhone) {
+      // Check if new phone is occupied
+      const checkSnap = await window.getDoc(window.doc(window.db, 'users', newPhone));
+      if(checkSnap.exists()){
+        showToast('This phone number is already registered to another account!');
+        saveBtn.disabled = false; saveBtn.textContent = 'Save Changes →';
+        return;
+      }
+      existingData.phone = newPhone;
+      await window.setDoc(window.doc(window.db, 'users', newPhone), existingData);
+      await window.deleteDoc(userRef);
+    } else {
+      await window.setDoc(userRef, existingData, { merge: true });
+    }
+
+    localStorage.setItem('rumc_user', JSON.stringify(existingData));
+    renderPersonal(existingData);
+    updateNav();
+    showToast('Profile updated successfully!');
+  } catch(e) {
+    showToast('Error updating profile: ' + e.message);
+  } finally {
+    saveBtn.disabled = false; saveBtn.textContent = 'Save Changes →';
+  }
+};
+
 window.openDashboard=async()=>{
   const raw=localStorage.getItem('rumc_user'); if(!raw){openLogin();return;}
   const adminRaw=localStorage.getItem('rumc_admin');
@@ -315,6 +444,7 @@ window.openDashboard=async()=>{
   renderPersonal(u); document.getElementById('dashboard').classList.add('active'); updateNav();
   try{ await window.setDoc(window.doc(window.db,'users',u.phone),{lastSeen:new Date().toISOString()},{merge:true}); }catch(e){}
 };
+
 function openAdminPanelWithRole(){
   const adminRaw=localStorage.getItem('rumc_admin'); if(!adminRaw) return;
   currentAdmin=JSON.parse(adminRaw);
@@ -325,6 +455,7 @@ function openAdminPanelWithRole(){
   document.querySelectorAll('.admin-only').forEach(el=> el.style.display = (currentAdmin.role==='owner'||currentAdmin.role==='admin') ? 'block' : 'none');
   document.getElementById('adminPanel').classList.add('active'); loadUsers(); if(currentAdmin.role==='owner') setTimeout(loadAdminAccounts,500);
 }
+
 function updateNav(){
   const raw=localStorage.getItem('rumc_user'), adminRaw=localStorage.getItem('rumc_admin');
   const navUser=document.getElementById('navUser'), loginBtn=document.getElementById('loginBtn'), signupBtn=document.getElementById('signupBtn'), dashBtn=document.getElementById('dashBtn'), adminBtn=document.getElementById('adminPanelBtn'), logoutBtn=document.getElementById('logoutBtn');
@@ -337,6 +468,7 @@ function updateNav(){
     navUser.style.display='none'; loginBtn.style.display='inline'; signupBtn.style.display='inline'; dashBtn.style.display='none'; adminBtn.style.display='none'; logoutBtn.style.display='none';
   }
 }
+
 window.loadUsers=async()=>{
   const tbody=document.getElementById('tbody'); if(!tbody) return;
   tbody.innerHTML='<tr><td colspan="6" style="padding:30px;text-align:center;color:var(--muted)">Loading...</td></tr>';
@@ -359,14 +491,16 @@ window.loadUsers=async()=>{
     document.getElementById('onlineUsers').textContent=online;
   }catch(e){ tbody.innerHTML=`<tr><td colspan="6" style="color:var(--red)">${e.message}</td></tr>`; }
 };
-window.viewDash=async(phone)=>{ const s=await window.getDoc(window.doc(window.db,'users',phone)); if(!s.exists()) return; const u=s.data(); alert(`Dashboard of ${u.name}\nCode: ${u.classCode}\nPhone: ${u.phone}\nPass: ${u.password}\nDiaries:\n${(u.diaries||[]).join('\n')}`); };
-window.delUser=async(phone)=>{ if(!currentAdmin||currentAdmin.role!=='owner'){ alert('Only owner'); return; } if(!confirm(`Delete ${phone}?`)) return; await window.deleteDoc(window.doc(window.db,'users',phone)); loadUsers(); };
-window.broadcast=async()=>{ if(!currentAdmin||currentAdmin.role==='assistant'){ alert('No permission'); return; } const text=document.getElementById('broadcastText').value.trim(); if(!text){alert('Write');return;} const snap=await window.getDocs(window.collection(window.db,'users')); for(const d of snap.docs){ const u=d.data(); const newDiaries=[...(u.diaries||[]), text].slice(-20); await window.setDoc(window.doc(window.db,'users',d.id),{diaries:newDiaries},{merge:true}); } alert(`Sent to ${snap.size}`); document.getElementById('broadcastText').value=''; };
-window.createAdminAccount=async()=>{ if(!currentAdmin||currentAdmin.role!=='owner'){ alert('Only owner'); return; } const phone=document.getElementById('newAdminPhone').value.trim().replace(/\s/g,''); const name=document.getElementById('newAdminName').value.trim(); const code=document.getElementById('newAdminCode').value.trim(); const pass=document.getElementById('newAdminPass').value.trim(); const role=document.getElementById('newAdminRole').value; if(!phone||!name||!code||!pass){ alert('Enter all'); return; } if(!/^01[0-9]{9}$/.test(phone)){ alert('Valid phone'); return; } await window.setDoc(window.doc(window.db,'adminAccounts',phone),{name,code,pass,role,phone,createdBy:currentAdmin.name,createdAt:new Date().toISOString()}); alert(`Created! ${name} login on MAIN login — Phone: ${phone} Pass: ${pass} Role: ${role}`); document.getElementById('newAdminPhone').value=''; document.getElementById('newAdminName').value=''; document.getElementById('newAdminCode').value=''; document.getElementById('newAdminPass').value=''; loadAdminAccounts(); };
-window.loadAdminAccounts=async()=>{ const box=document.getElementById('adminAccountsList'); if(!box) return; try{ const snap=await window.getDocs(window.collection(window.db,'adminAccounts')); box.innerHTML='<div class="k" style="margin-top:12px">Existing logins (same main login):</div>'; snap.forEach(d=>{ const a=d.data(); const div=document.createElement('div'); div.className='pill mono'; div.style.marginTop='6px'; div.style.fontSize='11px'; div.innerHTML=`<b>${a.name} (${a.code})</b><br>Phone: ${a.phone}<br>Pass: <span style="color:var(--blue)">${a.pass}</span> — Role: ${a.role} <button onclick="deleteAdminAcc('${a.phone}')" style="margin-left:8px;background:#1a0a0a;color:#ff6b6b;border:1px solid #3a1a1a;border-radius:6px;padding:2px 6px;cursor:pointer">X</button>`; box.appendChild(div); }); }catch(e){ box.innerHTML='Error'; } };
-window.deleteAdminAcc=async(phone)=>{ if(!confirm(`Delete ${phone}?`)) return; await window.deleteDoc(window.doc(window.db,'adminAccounts',phone)); loadAdminAccounts(); };
-window.addMember=async()=>{ if(!currentAdmin||currentAdmin.role==='assistant'){alert('No permission');return;} const n=document.getElementById('addMName').value.trim(), c=document.getElementById('addMCode').value.trim(); if(!n||!c){alert('Enter');return;} const s=await window.getDoc(window.doc(window.db,'config','lists')); let l=s.exists()?s.data():{members:[],admins:[],assistants:[]}; l.members=l.members||[]; l.members.push([n,c]); await window.setDoc(window.doc(window.db,'config','lists'),l,{merge:true}); alert(`Added ${n}: (${c})`); document.getElementById('addMName').value=''; document.getElementById('addMCode').value=''; loadConfig(); };
-window.saveCounts=async()=>{ if(!currentAdmin||currentAdmin.role!=='owner'){alert('Only owner');return;} const study=parseInt(document.getElementById('studyCount').value)||0, family=parseInt(document.getElementById('familyCount').value)||0; await window.setDoc(window.doc(window.db,'stats','whatsapp'),{study,family,updatedAt:new Date().toISOString()}); alert('Counts saved'); loadConfig(); };
+
+window.viewDash=async(phone)=>{ const s=await window.getDoc(window.doc(window.db,'users',phone)); if(!s.exists()) return; const u=s.data(); showToast(`Viewing user: ${u.name}`); alert(`Dashboard of ${u.name}\nCode: ${u.classCode}\nPhone: ${u.phone}\nPass: ${u.password}\nDiaries:\n${(u.diaries||[]).join('\n')}`); };
+window.delUser=async(phone)=>{ if(!currentAdmin||currentAdmin.role!=='owner'){ showToast('Only owner can delete'); return; } if(!confirm(`Delete ${phone}?`)) return; await window.deleteDoc(window.doc(window.db,'users',phone)); loadUsers(); showToast('User deleted'); };
+window.broadcast=async()=>{ if(!currentAdmin||currentAdmin.role==='assistant'){ showToast('No permission'); return; } const text=document.getElementById('broadcastText').value.trim(); if(!text){showToast('Write notice text first');return;} const snap=await window.getDocs(window.collection(window.db,'users')); for(const d of snap.docs){ const u=d.data(); const newDiaries=[...(u.diaries||[]), text].slice(-20); await window.setDoc(window.doc(window.db,'users',d.id),{diaries:newDiaries},{merge:true}); } showToast(`Notice sent to ${snap.size} students`); document.getElementById('broadcastText').value=''; };
+window.createAdminAccount=async()=>{ if(!currentAdmin||currentAdmin.role!=='owner'){ showToast('Only owner can create admins'); return; } const phone=document.getElementById('newAdminPhone').value.trim().replace(/\s/g,''); const name=document.getElementById('newAdminName').value.trim(); const code=document.getElementById('newAdminCode').value.trim(); const pass=document.getElementById('newAdminPass').value.trim(); const role=document.getElementById('newAdminRole').value; if(!phone||!name||!code||!pass){ showToast('Fill all admin fields'); return; } if(!/^01[0-9]{9}$/.test(phone)){ showToast('Invalid phone format'); return; } await window.setDoc(window.doc(window.db,'adminAccounts',phone),{name,code,pass,role,phone,createdBy:currentAdmin.name,createdAt:new Date().toISOString()}); showToast(`Created admin account for ${name}`); document.getElementById('newAdminPhone').value=''; document.getElementById('newAdminName').value=''; document.getElementById('newAdminCode').value=''; document.getElementById('newAdminPass').value=''; loadAdminAccounts(); };
+window.loadAdminAccounts=async()=>{ const box=document.getElementById('adminAccountsList'); if(!box) return; try{ const snap=await window.getDocs(window.collection(window.db,'adminAccounts')); box.innerHTML='<div class="k" style="margin-top:12px">Existing logins (same main login):</div>'; snap.forEach(d=>{ const a=d.data(); const div=document.createElement('div'); div.className='pill mono'; div.style.marginTop='6px'; div.style.fontSize='11px'; div.innerHTML=`<b>${a.name} (${a.code})</b><br>Phone: ${a.phone}<br>Pass: <span style="color:var(--blue)">${a.pass}</span> — Role: ${a.role} <button onclick="deleteAdminAcc('${a.phone}')" style="margin-left:8px;background:#1a0a0a;color:#ff6b6b;border:1px solid #3a1a1a;border-radius:6px;padding:2px 6px;cursor:pointer">X</button>`; box.appendChild(div); }); }catch(e){ box.innerHTML='Error loading admins'; } };
+window.deleteAdminAcc=async(phone)=>{ if(!confirm(`Delete ${phone}?`)) return; await window.deleteDoc(window.doc(window.db,'adminAccounts',phone)); loadAdminAccounts(); showToast('Admin login removed'); };
+window.addMember=async()=>{ if(!currentAdmin||currentAdmin.role==='assistant'){showToast('No permission');return;} const n=document.getElementById('addMName').value.trim(), c=document.getElementById('addMCode').value.trim(); if(!n||!c){showToast('Enter name and code');return;} const s=await window.getDoc(window.doc(window.db,'config','lists')); let l=s.exists()?s.data():{members:[],admins:[],assistants:[]}; l.members=l.members||[]; l.members.push([n,c]); await window.setDoc(window.doc(window.db,'config','lists'),l,{merge:true}); showToast(`Added member ${n}`); document.getElementById('addMName').value=''; document.getElementById('addMCode').value=''; loadConfig(); };
+window.saveCounts=async()=>{ if(!currentAdmin||currentAdmin.role!=='owner'){showToast('Only owner can set counts');return;} const study=parseInt(document.getElementById('studyCount').value)||0, family=parseInt(document.getElementById('familyCount').value)||0; await window.setDoc(window.doc(window.db,'stats','whatsapp'),{study,family,updatedAt:new Date().toISOString()}); showToast('WhatsApp counts saved'); loadConfig(); };
+
 setTimeout(()=>{ updateNav(); loadConfig(); const adminRaw=localStorage.getItem('rumc_admin'); if(adminRaw){ currentAdmin=JSON.parse(adminRaw); } },800);
 </script>
 </body>
