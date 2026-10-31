@@ -11,14 +11,14 @@
 }
 [data-theme="light"]{
   --bg:#f0f4f8;--border:#cbd5e1;--blue:#0284c7;--text:#0f172a;--muted:#475569;--green:#16a34a;--red:#dc2626;
-  --card-bg:rgba(255, 255, 255, 0.65);--card-border:rgba(0, 0, 0, 0.08);--pill-bg:rgba(255, 255, 255, 0.8);
+  --card-bg:rgba(255, 255, 255, 0.85);--card-border:rgba(0, 0, 0, 0.08);--pill-bg:rgba(255, 255, 255, 0.95);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif;overflow-x:hidden;transition:background 0.3s, color 0.3s}
 .mono{font-family:"JetBrains Mono",monospace}
 
 #stars{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at top, #0f1e35 0%, var(--bg) 60%);overflow:hidden;pointer-events:none;transition:background 0.3s}
-[data-theme="light"] #stars{background:radial-gradient(ellipse at top, #e2e8f0 0%, var(--bg) 60%)}
+[data-theme="light"] #stars{background:radial-gradient(ellipse at top, #cbd5e1 0%, var(--bg) 60%)}
 .star{position:absolute;width:2px;height:2px;background:var(--text);border-radius:50%;opacity:0.6;animation:twinkle 3s infinite}
 @keyframes twinkle{0%,100%{opacity:0.2}50%{opacity:1}}
 
@@ -56,7 +56,6 @@ nav .cta{background:var(--blue)!important;color:var(--bg)!important;border:none!
 .grid2{display:grid;grid-template-columns:1.1fr 0.9fr;gap:24px;margin-top:32px}
 @media(max-width:900px){.grid2{grid-template-columns:1fr}}
 
-/* Semi-Transparent Glassmorphism Cards */
 .card{background:var(--card-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--card-border);border-radius:20px;padding:28px;position:relative;overflow:hidden;box-shadow:0 8px 32px 0 rgba(0,0,0,0.15)}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, var(--blue), transparent);opacity:0.6}
 .card h3{font-size:18px;margin-bottom:12px}
@@ -186,7 +185,9 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid var(--bo
     <p id="familyWhyUs">Because college is not only about books. This is where memories are made — late night chats, birthday wishes, group photos at the RUMC gate, and a real family that stays after class ends.</p>
   </div>
   <div class="card" style="margin-top:16px">
-    <h3>Members (Family Group)</h3>
+    <h3>Family Group Admins</h3>
+    <div class="admin-grid" id="familyAdminsPreview"></div>
+    <h3 style="margin-top:16px">Members (Family Group)</h3>
     <div class="scroll-ticker" id="familyMembersTicker"></div>
     <button class="btn btn-blue" style="margin-top:16px" onclick="showList('family')">See all family details</button>
   </div>
@@ -201,7 +202,7 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid var(--bo
 <div class="card">
   <h3 id="statCardTitle">Why us? (Overall)</h3>
   <p id="statsOverallDesc">Two groups, one community. Study group for academic discipline with daily diaries, HW reminders, voting systems. Family group for bonding. Managed by champions and strict rules. Free registration, real tracking via WhatsApp, own passwords for everyone.</p>
-  <div class="stats-row"><div class="stat"><div class="num" id="stat1_val">100%</div><div class="lbl" id="stat1_lbl">Free</div></div><div class="stat"><div class="num" id="stat2_val">2</div><div class="lbl" id="stat2_lbl">Groups</div></div><div class="stat"><div class="num mono" id="communityCount">23+</div><div class="lbl" id="stat3_lbl">Total Members</div></div></div>
+  <div class="stats-row"><div class="stat"><div class="num" id="stat1_val">100%</div><div class="lbl" id="stat1_lbl">Free</div></div><div class="stat"><div class="num" id="stat2_val">2</div><div class="lbl" id="stat2_lbl">Groups</div></div><div class="stat"><div class="num mono" id="communityCount">27+</div><div class="lbl" id="stat3_lbl">Total Members</div></div></div>
 </div>
 <div class="card">
   <h3 id="highlightsTitle">Highlights</h3>
@@ -222,7 +223,7 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid var(--bo
 
 <section class="section" style="background:radial-gradient(ellipse at center, rgba(14,30,56,0.3) 0%, var(--bg) 70%)">
 <div class="section-label mono" id="label_history">04 — Our History</div>
-<h2 id="historyHeader">From 6 to <span id="histCount" style="color:var(--blue)">17+</span> — and expanding.</h2>
+<h2 id="historyHeader">From 6 to <span id="histCount" style="color:var(--blue)">27+</span> — and expanding.</h2>
 <p id="historyDesc" style="max-width:680px;color:var(--muted);margin:20px 0;line-height:1.7">Started officially from 12th April, 2026. Our group has gone from a small 6 members to now and expansion is going. Registration is open, completely free and waiting for you to click it. One login, own passwords, role-based panels — owner gets full power, admins get limited panel, assistants view only — all from same domain.</p>
 <button class="btn btn-blue" onclick="openSign()" style="padding:18px 36px;font-size:16px;margin-top:12px">Join our journey →</button>
 </section>
@@ -363,7 +364,7 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid var(--bo
       <div class="k">Overall Desc</div><textarea id="cms_statsDesc" rows="2"></textarea>
       <div class="k">Stat 1 (Val | Lbl)</div><input id="cms_stat1" placeholder="100% | Free">
       <div class="k">Stat 2 (Val | Lbl)</div><input id="cms_stat2" placeholder="2 | Groups">
-      <div class="k">Stat 3 (Val | Lbl)</div><input id="cms_stat3" placeholder="23+ | Total Members">
+      <div class="k">Stat 3 (Val | Lbl)</div><input id="cms_stat3" placeholder="27+ | Total Members">
       <div class="k">Highlights Title</div><input id="cms_highlightsTitle">
       <div class="k">Highlights (1/line)</div><textarea id="cms_highlights" rows="3"></textarea>
     </div>
@@ -380,14 +381,18 @@ footer{position:relative;z-index:2;padding:40px 6%;border-top:1px solid var(--bo
       <div class="k">Growth Timeline</div><textarea id="cms_mGrowth" rows="2"></textarea>
       <div class="k">Wall of Honor</div><textarea id="cms_mHonor" rows="2"></textarea>
       <div class="k">Journey</div><textarea id="cms_mJourney" rows="2"></textarea>
-      <div class="k" style="color:var(--blue);font-weight:700">Dark Colors</div>
+      
+      <div class="k" style="color:var(--blue);font-weight:700">Dark Theme Palette</div>
       <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="dark_bg" style="width:40px"><span>Background</span></div>
       <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="dark_blue" style="width:40px"><span>Accent Blue</span></div>
-      <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="dark_text" style="width:40px"><span>Text</span></div>
-      <div class="k" style="color:var(--blue);font-weight:700">Light Colors</div>
+      <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="dark_text" style="width:40px"><span>Main Text</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="dark_muted" style="width:40px"><span>Muted Text</span></div>
+
+      <div class="k" style="color:var(--blue);font-weight:700">Light Theme Palette</div>
       <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="light_bg" style="width:40px"><span>Background</span></div>
       <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="light_blue" style="width:40px"><span>Accent Blue</span></div>
-      <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="light_text" style="width:40px"><span>Text</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="light_text" style="width:40px"><span>Main Text</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:6px"><input type="color" id="light_muted" style="width:40px"><span>Muted Text</span></div>
     </div>
   </div>
   <button class="btn btn-blue" style="width:100%;margin-top:16px" onclick="saveWebsiteCMS()">Publish Website Changes Live →</button>
@@ -460,24 +465,43 @@ function showToast(msg){
 }
 
 const defaultMembers=[["Sadi","618"],["Mustakim","636"],["Nahiyan","634"],["Labiba","643"],["Alif","613"],["Shoaib","602"],["Tazim","637"],["Samiul","633"],["Shafi","630"],["Rifwan","772"],["Ramim","621"],["Nudar","654"],["Anas","632"],["Labib","644"],["Salman","655"],["Turjo","615"],["Rafsan","646"]];
-const defaultFamily=[["Sayon","608"],["Shafee","629"],["Sadik","641"],["Farhan","610"],["Zahin","612"],["Adib","619"],["Tahmid","625"],["Raian","635"]];
+const defaultFamily=[["Labib","644"],["Mustakim","636"],["Rafsan","646"],["Sadi","618"],["Sadik","641"],["Salman","655"],["Ramim","621"],["Alif","613"],["Nudar","654"],["Shoaib","602"],["Samiul","633"],["Rifwan","772"],["Ruhan","658"],["Shafi","630"],["Tazim","637"]];
+const defaultFamilyAdmins=[["Sayon","608","Owner"],["Shafee","629","Co-Founder"]];
 const defaultAdmins=[["Sayon","608","Founder, Lead Strategist, Owner"],["Shafee","629","Co-Founder"],["Sadik","641","Assistant"]];
 const defaultAssistants=[];
 
-let liveMembers=defaultMembers, liveFamily=defaultFamily, liveAdmins=defaultAdmins, liveAssistants=defaultAssistants;
+let liveMembers=defaultMembers, liveFamily=defaultFamily, liveFamilyAdmins=defaultFamilyAdmins, liveAdmins=defaultAdmins, liveAssistants=defaultAssistants;
 let currentAdmin=null;
 const OWNER_PASS="adm99eog26";
 
 window.toggleTheme = () => {
-  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const newTheme = isLight ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem('rumc_theme', newTheme);
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  applyThemeColors(next);
 };
 
+function applyThemeColors(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('rumc_theme', theme);
+  const isLight = theme === 'light';
+  const dbColors = window.lastDBCachedColors || {};
+  
+  if(isLight){
+    document.documentElement.style.setProperty('--bg', dbColors.light_bg || '#f0f4f8');
+    document.documentElement.style.setProperty('--blue', dbColors.light_blue || '#0284c7');
+    document.documentElement.style.setProperty('--text', dbColors.light_text || '#0f172a');
+    document.documentElement.style.setProperty('--muted', dbColors.light_muted || '#475569');
+  } else {
+    document.documentElement.style.setProperty('--bg', dbColors.dark_bg || '#05070a');
+    document.documentElement.style.setProperty('--blue', dbColors.dark_blue || '#7dd3fc');
+    document.documentElement.style.setProperty('--text', dbColors.dark_text || '#e5f2ff');
+    document.documentElement.style.setProperty('--muted', dbColors.dark_muted || '#8aa0b8');
+  }
+}
+
 (function(){
-  const savedTheme = localStorage.getItem('rumc_theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme);
+  const saved = localStorage.getItem('rumc_theme') || 'dark';
+  applyThemeColors(saved);
 })();
 
 window.openMilestones=()=>document.getElementById('milestonesModal').classList.add('active');
@@ -488,7 +512,7 @@ window.closeSign=()=>document.getElementById('signModal').classList.remove('acti
 window.closeDashboard=()=>document.getElementById('dashboard').classList.remove('active');
 window.closeAdminPanel=()=>document.getElementById('adminPanel').classList.remove('active');
 window.openAdminPanel=()=>{ if(currentAdmin) document.getElementById('adminPanel').classList.add('active'); };
-window.logout=()=>{localStorage.removeItem('rumc_user');localStorage.removeItem('rumc_admin');sessionStorage.removeItem('rumc_admin_auth');updateNav();closeDashboard();closeAdminPanel();location.reload();}
+window.logout=()=>{localStorage.removeItem('rumc_user');localStorage.removeItem('rumc_admin');updateNav();closeDashboard();closeAdminPanel();location.reload();}
 window.joinWhatsAppGroups=()=>{ window.open(window.GROUP_LINKS.study,'_blank'); setTimeout(()=>window.open(window.GROUP_LINKS.family,'_blank'),900); };
 
 window.showList=async(type)=>{
@@ -509,6 +533,7 @@ async function loadConfig(){
       const data=snap.data();
       if(data.members&&data.members.length) liveMembers=data.members;
       if(data.family&&data.family.length) liveFamily=data.family;
+      if(data.familyAdmins&&data.familyAdmins.length) liveFamilyAdmins=data.familyAdmins;
       if(data.admins&&data.admins.length) liveAdmins=data.admins;
       if(data.assistants) liveAssistants=data.assistants;
     }
@@ -518,13 +543,13 @@ async function loadConfig(){
 
     const usersSnap=await window.getDocs(window.collection(window.db,'users'));
     const fbCount=usersSnap.size;
-    let studyCount=fbCount+liveMembers.length, familyCount=liveFamily.length+20;
+    let studyCount=fbCount+liveMembers.length, familyCount=27;
     try{ const statsSnap=await window.getDoc(window.doc(window.db,'stats','whatsapp')); if(statsSnap.exists()){ studyCount=statsSnap.data().study||studyCount; familyCount=statsSnap.data().family||familyCount; } }catch(e){}
     
     document.getElementById('memberCount').textContent=studyCount+' Members';
     document.getElementById('totalCount').textContent=familyCount+'+';
     document.getElementById('histCount').textContent=familyCount+'+';
-    const cc=document.getElementById('communityCount'); if(cc) cc.textContent=(studyCount>familyCount?studyCount:familyCount)+'+';
+    const cc=document.getElementById('communityCount'); if(cc) cc.textContent=familyCount+'+';
     document.getElementById('adminsCountPreview').textContent=`Admins: ${liveAdmins.length}`;
     document.getElementById('assistantsPreviewCount').textContent=`Assistants: ${liveAssistants.length}`;
 
@@ -537,6 +562,11 @@ async function loadConfig(){
     if(famTicker){
       famTicker.innerHTML='';
       liveFamily.forEach(([n,c])=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${n}</b>: <span>(${c})</span>`; famTicker.appendChild(d); });
+    }
+    const famAdmins = document.getElementById('familyAdminsPreview');
+    if(famAdmins){
+      famAdmins.innerHTML='';
+      liveFamilyAdmins.forEach(a=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${a[0]}</b>: <span>(${a[1]})</span> ${a[2]?'— '+a[2]:''}`; famAdmins.appendChild(d); });
     }
     const ap=document.getElementById('adminsPreview'); if(ap){ ap.innerHTML=''; liveAdmins.forEach(a=>{ let d=document.createElement('div'); d.className='pill mono'; d.innerHTML=`<b>${a[0]}</b>: <span>(${a[1]})</span> ${a[2]?'— '+a[2]:''}`; ap.appendChild(d); }); }
   }catch(e){ console.log(e); }
@@ -586,7 +616,7 @@ function applyCMS(d){
   if(d.admDesc) document.getElementById('admDesc').textContent = d.admDesc;
 
   if(d.label_history) document.getElementById('label_history').textContent = d.label_history;
-  if(d.historyHeader) document.getElementById('historyHeader').innerHTML = `${d.historyHeader.split('17+')[0]}<span id="histCount" style="color:var(--blue)">17+</span> — and expanding.`;
+  if(d.historyHeader) document.getElementById('historyHeader').innerHTML = `${d.historyHeader.split('27+')[0]}<span id="histCount" style="color:var(--blue)">27+</span> — and expanding.`;
   if(d.historyDesc) document.getElementById('historyDesc').textContent = d.historyDesc;
   if(d.footer1) document.getElementById('footerText1').textContent = d.footer1;
   if(d.footer2) document.getElementById('footerText2').textContent = d.footer2;
@@ -605,9 +635,9 @@ function applyCMS(d){
   }
 
   if(d.colors){
-    if(d.colors.dark_bg) document.documentElement.style.setProperty('--bg', d.colors.dark_bg);
-    if(d.colors.dark_blue) document.documentElement.style.setProperty('--blue', d.colors.dark_blue);
-    if(d.colors.dark_text) document.documentElement.style.setProperty('--text', d.colors.dark_text);
+    window.lastDBCachedColors = d.colors;
+    const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    applyThemeColors(curTheme);
   }
 
   for(let k in d){
@@ -615,12 +645,10 @@ function applyCMS(d){
     if(el) el.value = d[k];
   }
   if(d.colors){
-    if(d.colors.dark_bg) document.getElementById('dark_bg').value = d.colors.dark_bg;
-    if(d.colors.dark_blue) document.getElementById('dark_blue').value = d.colors.dark_blue;
-    if(d.colors.dark_text) document.getElementById('dark_text').value = d.colors.dark_text;
-    if(d.colors.light_bg) document.getElementById('light_bg').value = d.colors.light_bg;
-    if(d.colors.light_blue) document.getElementById('light_blue').value = d.colors.light_blue;
-    if(d.colors.light_text) document.getElementById('light_text').value = d.colors.light_text;
+    for(let ck in d.colors){
+      let el = document.getElementById(ck);
+      if(el) el.value = d.colors[ck];
+    }
   }
 }
 
@@ -669,9 +697,11 @@ window.saveWebsiteCMS = async () => {
       dark_bg: document.getElementById('dark_bg').value,
       dark_blue: document.getElementById('dark_blue').value,
       dark_text: document.getElementById('dark_text').value,
+      dark_muted: document.getElementById('dark_muted').value,
       light_bg: document.getElementById('light_bg').value,
       light_blue: document.getElementById('light_blue').value,
-      light_text: document.getElementById('light_text').value
+      light_text: document.getElementById('light_text').value,
+      light_muted: document.getElementById('light_muted').value
     },
     updatedAt: new Date().toISOString()
   };
