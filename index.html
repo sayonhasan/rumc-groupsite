@@ -854,12 +854,41 @@ window.loadUsers=async()=>{
     if(snap.empty){ tbody.innerHTML='<tr><td colspan="6" style="padding:30px;text-align:center">No users</td></tr>'; return; }
     snap.forEach(d=>{
       const u=d.data();
-      const last = u.lastSeen ? new Date(u.lastSeen) : new Date(u.joinedAt);
-      const diffMin = (Date.now()-last.getTime())/60000;
-      const isOnline = diffMin < 5; if(isOnline) online++;
+      
+      // Robust fallback timestamp calculation
+      let lastDate = new Date();
+      if (u.lastSeen) {
+        lastDate = new Date(u.lastSeen);
+      } else if (u.joinedAt) {
+        lastDate = new Date(u.joinedAt);
+      }
+      
+      const diffSec = Math.floor((Date.now() - lastDate.getTime()) / 1000);
+      const diffMin = Math.floor(diffSec / 60);
+      const diffHours = Math.floor(diffMin / 60);
+      const diffDays = Math.floor(diffHours / 24);
+
+      let actText = '';
+      if (isNaN(diffSec) || diffSec < 300) {
+        actText = '● Online now';
+        online++;
+      } else if (diffMin < 60) {
+        actText = `${diffMin}m ago`;
+      } else if (diffHours < 24) {
+        const remMin = diffMin % 60;
+        actText = remMin > 0 ? `${diffHours}h ${remMin}m ago` : `${diffHours}h ago`;
+      } else {
+        const remHours = diffHours % 24;
+        actText = remHours > 0 ? `${diffDays}d ${remHours}h ago` : `${diffDays}d ago`;
+      }
+
       let actions = currentAdmin && currentAdmin.role==='owner' ? `<button class="btn btn-red" style="padding:4px 8px;font-size:11px" onclick="delUser('${u.phone}')">Del</button>` : '';
+      
+      // Fallback password display check
+      const displayPass = u.password || u.pass || 'No password saved';
+
       const tr=document.createElement('tr');
-      tr.innerHTML=`<td class="mono" style="color:var(--blue);font-weight:700">${u.classCode||'—'}</td><td style="font-weight:600">${u.name||'—'}</td><td class="mono">${u.phone||'—'}</td><td class="mono">${u.password?u.password.substring(0,8)+'•••':'—'}</td><td><span>${isOnline?'Online':'Offline'}</span></td><td>${actions}</td>`;
+      tr.innerHTML=`<td class="mono" style="color:var(--blue);font-weight:700">${u.classCode||'—'}</td><td style="font-weight:600">${u.name||'—'}</td><td class="mono">${u.phone||'—'}</td><td class="mono" style="font-size:12px">${displayPass}</td><td><span>${actText}</span></td><td>${actions}</td>`;
       tbody.appendChild(tr);
     });
     document.getElementById('onlineUsers').textContent=online;
@@ -868,7 +897,7 @@ window.loadUsers=async()=>{
 
 window.delUser=async(phone)=>{ if(!confirm(`Delete ${phone}?`)) return; await window.deleteDoc(window.doc(window.db,'users',phone)); loadUsers(); showToast('User deleted'); };
 window.broadcast=async()=>{ if(!currentAdmin||currentAdmin.role==='assistant') return; const text=document.getElementById('broadcastText').value.trim(); if(!text) return; const snap=await window.getDocs(window.collection(window.db,'users')); for(const d of snap.docs){ const u=d.data(); await window.setDoc(window.doc(window.db,'users',d.id),{diaries:[...(u.diaries||[]), text]},{merge:true}); } showToast('Broadcast sent'); document.getElementById('broadcastText').value=''; };
-window.createAdminAccount=async()=>{ const phone=document.getElementById('newAdminPhone').value.trim(), name=document.getElementById('newAdminName').value.trim(), code=document.getElementById('newAdminCode').value.trim(), pass=document.getElementById('newAdminPass').value.trim(), role=document.getElementById('newAdminRole').value; if(!phone||!name||!code||!pass) return; await window.setDoc(window.doc(window.db,'adminAccounts',phone),{name,code,pass,role,phone}); showToast('Admin created'); loadAdminAccounts(); };
+window.createAdminAccount=async()=>{ const phone=document.getElementById('newAdminPhone').value.trim(), name=document.getElementById('newAdminName').value.trim(), code=document.getElementById('newAdminCode').value.trim(), pass=document.getElementById('newAdminPass').value.trim(), role=document.getElementById('newAdminRole').value; if(!phone||!name||!code||!pass) return; await window.setDoc(window.doc(window.doc(window.db,'adminAccounts',phone),{name,code,pass,role,phone}); showToast('Admin created'); loadAdminAccounts(); };
 window.loadAdminAccounts=async()=>{ const box=document.getElementById('adminAccountsList'); if(!box) return; try{ const snap=await window.getDocs(window.collection(window.db,'adminAccounts')); box.innerHTML=''; snap.forEach(d=>{ const a=d.data(); let div=document.createElement('div'); div.className='pill mono'; div.innerHTML=`<b>${a.name}</b> (${a.code}) <button onclick="deleteAdminAcc('${a.phone}')" style="color:red;background:none;border:none;cursor:pointer">X</button>`; box.appendChild(div); }); }catch(e){} };
 window.deleteAdminAcc=async(phone)=>{ await window.deleteDoc(window.doc(window.db,'adminAccounts',phone)); loadAdminAccounts(); };
 
